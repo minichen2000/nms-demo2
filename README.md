@@ -6,9 +6,10 @@ This is a NMS demo, including web(angularjs 1.5+bootstrap) and server (jetty9+we
 Installation/Run:
 <br>
 To install and run it you need Maven, NPM and JDK1.8 installed in your system.
-<br>
-1. cd nms-demo2\src\main\webapp
-2. npm install
-3. cd nms-demo2
-4. mvn jetty:run
+<ul>
+<li>1. cd nms-demo2\src\main\webapp</li>
+<li>2. npm install</li>
+<li>3. cd nms-demo2</li>
+<li>4. mvn jetty:run</li>
+</ul>
 Visit http://localhost in a web brower to see it!
