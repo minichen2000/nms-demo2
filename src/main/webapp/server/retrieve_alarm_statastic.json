@@ -1,0 +1,10 @@
+{
+    "rlt": {
+        "critical": 1,
+        "major": 2,
+        "minor": 2,
+        "warning": 1,
+        "indeterminate": 0,
+        "cleared": 5
+    }
+}

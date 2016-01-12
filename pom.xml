@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nmsdemo</groupId>
+	<artifactId>hello-world</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+	<name>Jetty HelloWorld WebApp</name>
+
+	<properties>
+		<jettyVersion>9.3.6.v20151106</jettyVersion>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jettyVersion}</version>
+				<configuration>
+					<jettyXml>jetty-conf/jetty.xml,jetty-conf/jetty-http.xml</jettyXml>
+					<defaultsDescriptor>jetty-conf/webdefault.xml</defaultsDescriptor>  
+					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>  
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<scanTargets>
+					  <scanTarget>src/main/java</scanTarget>
+					</scanTargets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,75 @@
+<div id="wrapper">
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+					NMS Demo v1.0
+				</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-envelope fa-fw">
+						</i>
+                    <i class="fa fa-caret-down">
+						</i>
+                </a>
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-tasks fa-fw">
+						</i>
+                    <i class="fa fa-caret-down">
+						</i>
+                </a>
+
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell fa-fw">
+						</i>
+                    <i class="fa fa-caret-down">
+						</i>
+                </a>
+
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw">
+						</i>
+                    <i class="fa fa-caret-down">
+						</i>
+                </a>
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <maintree ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData" trail-tree-data="vm.trailTreeData"
+        path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged" tree-item-clicked="vm.treeItemClicked">
+        </maintree>
+        <!--1
+        {{neData}}
+        {{vm.neTreeData.name}}
+        2-->
+
+        <!-- /.navbar-static-side -->
+    </nav>
+    <div id="middle-page-wrapper">
+         <nvd3 options="vm.options" data="vm.data"></nvd3>
+        <div ui-view="middleView">
+        </div>
+    </div>
+    <div id="operation-page-wrapper">
+        <div ui-view="operationView">
+        </div>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,24 @@
+{
+  "name": "nms-demo",
+  "description": "It's a NMS demo (using AngularJS)",
+  "version": "0.0.0",
+  "homepage": "https://github.com/minichen2000/nms-demo",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.5.0-rc.0",
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.6",
+    "angular-ui-router": "0.2.15",
+    "angular-resource": "1.5.0-rc.0",
+    "angular-animate": "1.5.0-rc.0",
+    "font-awesome": "4.5.0",
+    "angular-bootstrap": "0.14.3",
+    "angular-morris-chart": "1.1.0",
+    "angular-nvd3": "1.0.5"
+  },
+  "resolutions": {
+    "font-awesome": "4.5.0",
+    "angular": "1.5.0-rc.0"
+  }
+}
