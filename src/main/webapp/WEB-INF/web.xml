@@ -10,9 +10,17 @@
     <servlet-name>Hello</servlet-name>
     <servlet-class>org.nmsdemo.HelloServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Echo</servlet-name>
+    <servlet-class>org.nmsdemo.MyEchoServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
-    <servlet-name>Hello </servlet-name>
+    <servlet-name>Hello</servlet-name>
     <url-pattern>/hello/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Echo</servlet-name>
+    <url-pattern>/echo/*</url-pattern>
   </servlet-mapping>
  
 </web-app>

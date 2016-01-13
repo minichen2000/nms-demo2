@@ -10,6 +10,8 @@
 
 	<properties>
 		<jettyVersion>9.3.6.v20151106</jettyVersion>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -19,7 +21,29 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-api</artifactId>
+			<version>9.3.6.v20151106</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-client</artifactId>
+			<version>9.3.6.v20151106</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-servlet</artifactId>
+			<version>9.3.6.v20151106</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
+	
+	
 
 	<build>
 		<plugins>
@@ -29,12 +53,13 @@
 				<version>${jettyVersion}</version>
 				<configuration>
 					<jettyXml>jetty-conf/jetty.xml,jetty-conf/jetty-http.xml</jettyXml>
-					<defaultsDescriptor>jetty-conf/webdefault.xml</defaultsDescriptor>  
+					<defaultsDescriptor>src/main/webapp/webdefault.xml</defaultsDescriptor>  
 					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>  
 					<scanIntervalSeconds>3</scanIntervalSeconds>
 					<scanTargets>
 					  <scanTarget>src/main/java</scanTarget>
 					</scanTargets>
+					<dumpOnStart>false</dumpOnStart>
 				</configuration>
 			</plugin>
 		</plugins>

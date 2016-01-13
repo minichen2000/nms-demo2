@@ -14,5 +14,6 @@ public class HelloServlet extends HttpServlet
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println("<h1>Hello cc Servlet9</h1>");
         response.getWriter().println("session=" + request.getSession(true).getId());
+        System.out.println("HelloServlet");
     }
 }

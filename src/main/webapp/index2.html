@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="websocketApp">
+<head>
+	<title>WebSocket Examples: Reverse</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/js/bootstrap.min.js">
+	
+	<script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="app.js"></script>
+</head>
+<body>
+   <div class="container-fluid">
+	   <div class="row" style="height:150px;">
+	   		<div class="col-md-12">
+	   		</div>
+	   </div>
+	   <div class="row">
+	   		<div class="col-md-2" ng-controller="UserListCtrl">
+	   			<ul class="list-group" >
+				  <li class="list-group-item" ng-repeat="user in users">
+				    <span class="badge">{{user.messages}}</span>
+				    {{user.name}}
+				  </li>
+				</ul>
+			</div>
+			<div class="col-md-10" ng-controller="MessagesCtrl">
+				<ul class="nav nav-pills">
+				  <li role="presentation" class="active"><a href="#">Home</a></li>
+				  <li role="presentation"><a href="#">Profile</a></li>
+				  <li role="presentation"><a href="#">Messages</a></li>
+				</ul>
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				    <form class="form-horizontal">
+					  <div class="form-group">
+					    <div class="col-md-12" style="height:300px;">
+					    	<div ng-class="{true:'pull-left',false:'pull-right'}[m.type==1]" ng-repeat="m in messages">
+					    		{{m.message}}
+					    	</div>
+						</div>
+						<textarea ng-model="message" class="form-control" rows="5"></textarea>
+					  </div>
+					  <div class="form-group">
+					    <div class="pull-right">
+					      <button ng-click="send()" type="submit" class="btn btn-primary">发&nbsp;送</button>
+					    </div>
+					  </div>
+					</form>
+				  </div>
+				</div>
+			</div>
+	   </div>
+   </div>
+</body>
+</html>
