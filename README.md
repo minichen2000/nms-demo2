@@ -11,6 +11,6 @@ To install and run it you need Maven, NPM and JDK1.8 installed in your system.
 <li>npm install</li>
 <li>cd nms-demo2</li>
 <li>mvn jetty:run</li>
-<li>Visit <a href="http://localhost">http://localhost</a> in a web brower to see it!</li>
+<li>Visit <a href="http://127.0.0.1/">http://127.0.0.1/</a> in a web brower to see it!</li>
 </ol>
 
