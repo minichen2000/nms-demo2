@@ -3,15 +3,16 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nmsdemo</groupId>
-	<artifactId>hello-world</artifactId>
+	<artifactId>nms-demo</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	<name>Jetty HelloWorld WebApp</name>
+	<name>NMS Demo WebApp</name>
 
 	<properties>
 		<jettyVersion>9.3.6.v20151106</jettyVersion>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson.version>2.7.0-rc3</jackson.version>
 	</properties>
 
 	<dependencies>
@@ -41,6 +42,24 @@
 			<version>9.3.6.v20151106</version>
 			<scope>provided</scope>
 		</dependency>
+        
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 	</dependencies>
 	
 	
@@ -53,12 +72,19 @@
 				<version>${jettyVersion}</version>
 				<configuration>
 					<jettyXml>jetty-conf/jetty.xml,jetty-conf/jetty-http.xml</jettyXml>
-					<defaultsDescriptor>src/main/webapp/webdefault.xml</defaultsDescriptor>  
 					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>  
 					<scanIntervalSeconds>3</scanIntervalSeconds>
 					<scanTargets>
 					  <scanTarget>src/main/java</scanTarget>
 					</scanTargets>
+                    
+                    <!--Below content is not neccessory. "/" is the default path; for defaultsDescriptor we can define some parameters in our webapp/WEB-INF/web.xml.
+                    for example: "useFileMappedBuffer" for default servlet.-->
+					<!--<webApp>
+					  <contextPath>/</contextPath>
+					  <defaultsDescriptor>src/main/webapp/webdefault.xml</defaultsDescriptor>
+					</webApp>-->
+                    
 					<dumpOnStart>false</dumpOnStart>
 				</configuration>
 			</plugin>

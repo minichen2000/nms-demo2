@@ -149,14 +149,17 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/server/retrieve_alarm_statastic.json')
+        return $http.get('/retrieve_alarm_statastic')
             .then(OK)
             .catch(KO);
 
 
         function OK(rsp) {
-            logger.log("retrieveAlarmStatasticOK");
+            logger.log("retrieveAlarmStatasticOK: "+JSON.stringify(rsp.data));
+
             statasticService.setAlarmSt(rsp.data.rlt);
+			//logger.log(JSON.stringify(statasticService.getAlarmSt()));
+			//logger.log(JSON.stringify(statasticService.getNEGroupList()));
             if (lpcb) {
                 lpcb(true, progress, "获取告警统计成功");
             }

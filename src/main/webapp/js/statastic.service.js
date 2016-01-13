@@ -9,6 +9,10 @@ angular
     .factory('statasticService', statasticService);
 statasticService.$inject = ['logger'];
 function statasticService(logger) {
+	
+	
+	
+	
     var neList;
     var neGroupList;
     var alarmSt;
@@ -47,8 +51,7 @@ function statasticService(logger) {
     };
 
 
-
-    return {
+	return {
         setNEGroupList: setNEGroupList,
         getNEGroupList: getNEGroupList,
         setNEList: setNEList,
@@ -63,6 +66,7 @@ function statasticService(logger) {
         getPathTreeData: getPathTreeData,
         getEVCTreeData: getEVCTreeData
     }
+    
     function setNEList(nes) {
         neList = nes;
         buildNETreeData();

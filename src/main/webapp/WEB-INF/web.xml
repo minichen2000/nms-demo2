@@ -5,15 +5,54 @@
    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
    metadata-complete="false"
    version="3.1">
+   
+   
+   
+   <servlet>
+    <servlet-name>default</servlet-name>
+    <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+	</servlet>
+	<servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
  
   <servlet>
     <servlet-name>Hello</servlet-name>
     <servlet-class>org.nmsdemo.HelloServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
   </servlet>
+  
   <servlet>
     <servlet-name>Echo</servlet-name>
     <servlet-class>org.nmsdemo.MyEchoServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
   </servlet>
+  
+  <servlet>
+    <servlet-name>retrieve_alarm_statastic</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.model.MDL_AlarmPSStatasticServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+  
+  
+  
+  
+  
+  
   <servlet-mapping>
     <servlet-name>Hello</servlet-name>
     <url-pattern>/hello/*</url-pattern>
@@ -21,6 +60,10 @@
   <servlet-mapping>
     <servlet-name>Echo</servlet-name>
     <url-pattern>/echo/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>retrieve_alarm_statastic</servlet-name>
+    <url-pattern>/retrieve_alarm_statastic/*</url-pattern>
   </servlet-mapping>
  
 </web-app>
