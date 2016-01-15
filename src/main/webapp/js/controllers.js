@@ -42,8 +42,8 @@ function LoginController($state, loginService) {
 angular
     .module('nmsdemoApp')
     .controller('TreeController', TreeController);
-TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location'];
-function TreeController($state, statasticService, serverNotificationService, $location) {
+TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', '$timeout'];
+function TreeController($state, statasticService, serverNotificationService, $location, $timeout) {
     var vm = this;
     vm.neTreeData = statasticService.getNETreeData();
     vm.mapTreeData = statasticService.getMapTreeData();
@@ -51,14 +51,11 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.trailTreeData = statasticService.getTrailTreeData();
     vm.pathTreeData = statasticService.getPathTreeData();
     vm.evcTreeData = statasticService.getEVCTreeData();
+    vm.alarmStatastic=statasticService.getAlarmSt();
     vm.leftTreeChanged = { changed: true };
     vm.treeItemClicked = treeItemClicked;
     
-    serverNotificationService.connect("ws://"+$location.host()+":"+$location.port()+"/echo", "5000");
-
-    function treeItemClicked(itemName) {
-        $state.go('main.treeitem', { treeItemName: itemName });
-    };
+    
     
     
     
@@ -83,43 +80,27 @@ function TreeController($state, statasticService, serverNotificationService, $lo
               duration: 1000,
               labelThreshold: 0.02,
               showLegend: false,
-              height: 300,
-
-              
+              height: 300
             }
           };
-          vm.data=[
-        {
-          key: "严重",
-          color: "#d62728",
-          y: 6
-        },
-        {
-          key: "重要",
-          color: "#ff7f0e",
-          y: 8
-        },
-        {
-          key: "次要",
-          color: "#ffbb78",
-          y: 2
-        },
-        {
-          key: "警告",
-          color: "#aec7e8",
-          y: 2
-        },
-        {
-          key: "待定",
-          color: "#98df8a",
-          y: 0
-        },
-        {
-          key: "清除",
-          color: "#2ca02c",
-          y: 10
-        }
-      ];
+          
+          vm.config = {
+    visible: true, // default: true
+    extended: false, // default: false
+    disabled: false, // default: false
+    refreshDataOnly: true, // default: true
+    deepWatchOptions: true, // default: true
+    deepWatchData: true, // default: true
+    deepWatchDataDepth: 2, // default: 2
+    debounce: 1 // default: 10
+};
+          vm.data=statasticService.alarmStatasticChartData;
+    ///////////////////////////////////////////////
+    serverNotificationService.connect("ws://"+$location.host()+":"+$location.port()+"/echo", "5000");
+
+    function treeItemClicked(itemName) {
+        $state.go('main.treeitem', { treeItemName: itemName });
+    };
     ///////////////////////////////////////////////
 }
 

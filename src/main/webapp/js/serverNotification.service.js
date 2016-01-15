@@ -17,18 +17,36 @@
      * @memberOf Factories
      */
     function serverNotificationService(logger, $timeout, $interval) {
-        var service = {
+        
+        var ws_listeners=[];
+        var ws;
+        var ws_state = 0; //0: not connected, 1: connected, 2: trying to connect
+        var heartbeatLaunched=false;
+        
+        return {
+            addListener: addListener,
+            removeListener: removeListener,
             connect: connect,
             sendJSON: sendJSON,
             sendMessage: sendMessage
         };
-        return service;
-
-        var ws= new WebSocket("");
-        var ws_state = 0; //0: not connected, 1: connected, 2: trying to connect
-        var heartbeatLaunched=false;
+        
 
         
+
+        
+        
+        function addListener(fun){
+            ws_listeners.push(fun);
+        }
+        function removeListener(fun){
+            for(var i=0;i<ws_listeners.length;i++){
+                if(ws_listeners[i]==fun){
+                    ws_listeners.splice(i,1);
+                    return;
+                }
+            }
+        }
         ////////////
 
         /**
@@ -82,6 +100,9 @@
 
                 ws.onmessage = function (event) {
                     logger.log("onmessage: " + event.data);
+                    for(var i=0;i<ws_listeners.length;i++){
+                        ws_listeners[i](event.data);
+                    }
                 };
 
 
@@ -113,5 +134,6 @@
             ws.send(str);
             return true;
         }
+
     }
 })();

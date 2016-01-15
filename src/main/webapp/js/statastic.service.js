@@ -7,12 +7,9 @@
 angular
     .module('nmsdemoApp')
     .factory('statasticService', statasticService);
-statasticService.$inject = ['logger'];
-function statasticService(logger) {
-	
-	
-	
-	
+statasticService.$inject = ['logger','serverNotificationService','$rootScope'];
+function statasticService(logger, serverNotificationService, $rootScope) {
+
     var neList;
     var neGroupList;
     var alarmSt;
@@ -49,6 +46,40 @@ function statasticService(logger) {
             }
         ]
     };
+    var alarmStatasticChartData=[
+        {
+          key: "严重",
+          color: "#d62728",
+          y: 0
+        },
+        {
+          key: "重要",
+          color: "#ff7f0e",
+          y: 0
+        },
+        {
+          key: "次要",
+          color: "#ffbb78",
+          y: 0
+        },
+        {
+          key: "警告",
+          color: "#aec7e8",
+          y: 0
+        },
+        {
+          key: "待定",
+          color: "#98df8a",
+          y: 0
+        },
+        {
+          key: "清除",
+          color: "#2ca02c",
+          y: 0
+        }
+      ];
+    
+    serverNotificationService.addListener(eventListener);
 
 
 	return {
@@ -64,7 +95,18 @@ function statasticService(logger) {
         getTLTreeData: getTLTreeData,
         getTrailTreeData: getTrailTreeData,
         getPathTreeData: getPathTreeData,
-        getEVCTreeData: getEVCTreeData
+        getEVCTreeData: getEVCTreeData,
+        alarmStatasticChartData: alarmStatasticChartData
+    }
+    
+    
+    function eventListener(event){
+        logger.log("eventListener: event:\n"+event);
+        event=JSON.parse(event);
+        if(event.eventType=="alarmStatastic"){
+            setAlarmSt(event.event);
+            logger.log("eventListener: alarmStatastic:\n"+JSON.stringify(alarmSt));
+        }
     }
     
     function setNEList(nes) {
@@ -80,8 +122,21 @@ function statasticService(logger) {
     function getNEGroupList() {
         return neGroupList;
     }
+    
+    function buildAlarmStatasticChartData(){
+        //$rootScope.$apply(function(){
+        alarmStatasticChartData[0].y=alarmSt.critical;
+            alarmStatasticChartData[1].y=alarmSt.major;
+            alarmStatasticChartData[2].y=alarmSt.minor;
+            alarmStatasticChartData[3].y=alarmSt.warning;
+            alarmStatasticChartData[4].y=alarmSt.indeterminate;
+            alarmStatasticChartData[5].y=alarmSt.cleared;
+        //}
+       // );
+    }
     function setAlarmSt(ast) {
         alarmSt = ast;
+        buildAlarmStatasticChartData();
     }
     function getAlarmSt() {
         return alarmSt;

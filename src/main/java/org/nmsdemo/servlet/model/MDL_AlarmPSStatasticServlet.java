@@ -23,7 +23,7 @@ public class MDL_AlarmPSStatasticServlet extends HttpServlet
 		//req.setCharacterEncoding("utf-8");
 		PrintWriter out = resp.getWriter();
 		MDL_AlarmPSStatastic apss=new MDL_AlarmPSStatastic(4, 4, 2, 2, 0, 10);
-		String msg=MDLUtil.gRLT(apss);
+		String msg=MDLUtil.Object_WRAP(apss);
 		System.out.println(msg);
 		out.println(msg);
     }

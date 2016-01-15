@@ -13,6 +13,9 @@ function loginService($http, $q, $timeout, logger, statasticService) {
     var username = "";
     var password = "";
     var lpcb;
+    
+    
+    
     return {
         setUsername: setUsername,
         setPassword: setPassword,
@@ -157,7 +160,7 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         function OK(rsp) {
             logger.log("retrieveAlarmStatasticOK: "+JSON.stringify(rsp.data));
 
-            statasticService.setAlarmSt(rsp.data.rlt);
+            statasticService.setAlarmSt(rsp.data);
 			//logger.log(JSON.stringify(statasticService.getAlarmSt()));
 			//logger.log(JSON.stringify(statasticService.getNEGroupList()));
             if (lpcb) {
