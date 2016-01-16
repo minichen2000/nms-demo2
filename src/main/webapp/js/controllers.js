@@ -42,8 +42,8 @@ function LoginController($state, loginService) {
 angular
     .module('nmsdemoApp')
     .controller('TreeController', TreeController);
-TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', '$timeout'];
-function TreeController($state, statasticService, serverNotificationService, $location, $timeout) {
+TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', '$timeout', 'logger'];
+function TreeController($state, statasticService, serverNotificationService, $location, $timeout, logger) {
     var vm = this;
     vm.neTreeData = statasticService.getNETreeData();
     vm.mapTreeData = statasticService.getMapTreeData();
@@ -51,9 +51,13 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.trailTreeData = statasticService.getTrailTreeData();
     vm.pathTreeData = statasticService.getPathTreeData();
     vm.evcTreeData = statasticService.getEVCTreeData();
-    vm.alarmStatastic=statasticService.getAlarmSt();
+    vm.alarmStatastic = statasticService.getAlarmSt();
     vm.leftTreeChanged = { changed: true };
     vm.treeItemClicked = treeItemClicked;
+    vm.tmpMessage = statasticService.tmpMessage;
+    vm.activeAlarmCount=statasticService.activeAlarmCount
+    vm.neList=statasticService.getNEList();
+    
     
     
     
@@ -61,42 +65,137 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     
     
     ///////////////////////////////////////////////
-    vm.options={
-            chart: {
-              type: 'pieChart',
-              margin: {
-                top: 30,
+    vm.config = {
+        visible: true, // default: true
+        extended: false, // default: false
+        disabled: false, // default: false
+        refreshDataOnly: true, // default: true
+        deepWatchOptions: true, // default: true
+        deepWatchData: true, // default: true
+        deepWatchDataDepth: 2, // default: 2
+        debounce: 10, // default: 10
+        
+    };
+    
+    vm.alarm_panel_options = {
+        chart: {
+            type: 'pieChart',
+            margin: {
+                top: 0,
                 right: 0,
-                bottom: 30,
+                bottom: 0,
                 left: 0
-              },
-              x: function(d){return d.key;},
-              y: function(d){return d.y;},
-              showLabels: true,
-              labelSunbeamLayout: true,
-              donutLabelsOutside: true,
-              donutRatio: 0.3,
-              donut: true,
-              duration: 1000,
-              labelThreshold: 0.02,
-              showLegend: false,
-              height: 300
+            },
+            x: function (d) { return d.key + "  [" + d.y + "]" },
+            y: function (d) { return d.y; },
+            tooltip: {
+                valueFormatter: function (d, i) { return d.key }
+            },
+            showLabels: false,
+            labelSunbeamLayout: true,
+            labelsOutside: false,
+            donutRatio: 0.4,
+            donut: true,
+            duration: 1000,
+            labelThreshold: 0.02,
+            showLegend: false,
+            wdith: 100,
+            pie: {
+                dispatch: {
+                    elementClick: function (e) {
+                        logger.log('click');
+                    }
+                }
             }
-          };
-          
-          vm.config = {
-    visible: true, // default: true
-    extended: false, // default: false
-    disabled: false, // default: false
-    refreshDataOnly: true, // default: true
-    deepWatchOptions: true, // default: true
-    deepWatchData: true, // default: true
-    deepWatchDataDepth: 2, // default: 2
-    debounce: 1 // default: 10
-};
-          vm.data=statasticService.alarmStatasticChartData;
+        }/*,
+        title: {
+            enable: true,
+            text: "告警级别统计"
+        }*/
+    };
+    
+    vm.ne_panel_options = {
+        chart: {
+            type: 'pieChart',
+            margin: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+            },
+            x: function (d) { return d.key + "  [" + d.y + "]" },
+            y: function (d) { return d.y; },
+            tooltip: {
+                valueFormatter: function (d, i) { return d.key }
+            },
+            showLabels: false,
+            labelSunbeamLayout: true,
+            labelsOutside: false,
+            donutRatio: 0.4,
+            donut: false,
+            duration: 1000,
+            labelThreshold: 0.02,
+            showLegend: false,
+            wdith: 100,
+            pie: {
+                dispatch: {
+                    elementClick: function (e) {
+                        logger.log('click');
+                    }
+                }
+            }
+        }/*,
+        title: {
+            enable: true,
+            text: "告警级别统计"
+        }*/
+    };
+    
+    vm.conn_panel_options = {
+        chart: {
+            type: 'pieChart',
+            margin: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+            },
+            x: function (d) { return d.key + "  [" + d.y + "]" },
+            y: function (d) { return d.y; },
+            tooltip: {
+                valueFormatter: function (d, i) { return d.key }
+            },
+            showLabels: false,
+            labelSunbeamLayout: true,
+            labelsOutside: false,
+            donutRatio: 0.4,
+            donut: false,
+            duration: 1000,
+            labelThreshold: 0.02,
+            showLegend: false,
+            wdith: 100,
+            pie: {
+                dispatch: {
+                    elementClick: function (e) {
+                        logger.log('click');
+                    }
+                }
+            }
+        }/*,
+        title: {
+            enable: true,
+            text: "告警级别统计"
+        }*/
+    };
+
+    
+
+    vm.alarmStChartData = statasticService.alarmStChartData;
+    vm.neStChartData=statasticService.neStChartData;
+    vm.connStChartData=statasticService.alarmStChartData;
+    
     ///////////////////////////////////////////////
-    serverNotificationService.connect("ws://"+$location.host()+":"+$location.port()+"/echo", "5000");
+    serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + "/notification", "5000");
 
     function treeItemClicked(itemName) {
         $state.go('main.treeitem', { treeItemName: itemName });

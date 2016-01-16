@@ -9,20 +9,20 @@
         .module('nmsdemoApp')
         .factory('serverNotificationService', serverNotificationService);
 
-    serverNotificationService.$inject = ['logger', '$timeout', '$interval'];
+    serverNotificationService.$inject = ['logger', '$timeout', '$interval', '$rootScope'];
 
     /**
      * @namespace Logger
      * @desc Application wide logger
      * @memberOf Factories
      */
-    function serverNotificationService(logger, $timeout, $interval) {
-        
-        var ws_listeners=[];
+    function serverNotificationService(logger, $timeout, $interval, $rootScope) {
+
+        var ws_listeners = [];
         var ws;
         var ws_state = 0; //0: not connected, 1: connected, 2: trying to connect
-        var heartbeatLaunched=false;
-        
+        var heartbeatLaunched = false;
+
         return {
             addListener: addListener,
             removeListener: removeListener,
@@ -30,19 +30,19 @@
             sendJSON: sendJSON,
             sendMessage: sendMessage
         };
-        
 
-        
 
-        
-        
-        function addListener(fun){
+
+
+
+
+        function addListener(fun) {
             ws_listeners.push(fun);
         }
-        function removeListener(fun){
-            for(var i=0;i<ws_listeners.length;i++){
-                if(ws_listeners[i]==fun){
-                    ws_listeners.splice(i,1);
+        function removeListener(fun) {
+            for (var i = 0; i < ws_listeners.length; i++) {
+                if (ws_listeners[i] == fun) {
+                    ws_listeners.splice(i, 1);
                     return;
                 }
             }
@@ -100,19 +100,22 @@
 
                 ws.onmessage = function (event) {
                     logger.log("onmessage: " + event.data);
-                    for(var i=0;i<ws_listeners.length;i++){
-                        ws_listeners[i](event.data);
-                    }
+                    $rootScope.$apply(function () {
+                        for (var i = 0; i < ws_listeners.length; i++) {
+                            ws_listeners[i](event.data);
+                        }
+                    });
+
                 };
 
 
-                if(!heartbeatLaunched){
-                    heartbeatLaunched=true;
+                if (!heartbeatLaunched) {
+                    heartbeatLaunched = true;
                     $interval(function () {
-                    if (ws_state == 1) sendMessage("heartbeat: " + (new Date().toString()));
-                }, heartbeat);
+                        if (ws_state == 1) sendMessage("heartbeat: " + (new Date().toString()));
+                    }, heartbeat);
                 }
-                
+
                 return true;
             } catch (e) {
                 logger.error("Exception: " + e.message);

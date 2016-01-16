@@ -62,14 +62,14 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/server/login.json')
+        return $http.get('/login', {params: {username: username, password: password }})
             .then(loginOK)
             .catch(loginKO);
 
 
         function loginOK(rsp) {
             if (rsp.data.rlt.toLowerCase() == "ok") {
-                logger.log("loginOK: " + rsp.rlt);
+                logger.log("loginOK: " + rsp.data);
                 isLogined = true;
 
                 if (lpcb) {
@@ -96,14 +96,14 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/server/retrieve_nes.json')
+        return $http.get('/retrieve_nes')
             .then(OK)
             .catch(KO);
 
 
         function OK(rsp) {
             logger.log("retrieveNEsOK");
-            statasticService.setNEList(rsp.data.rlt);
+            statasticService.setNEList(rsp.data);
             if (lpcb) {
                 lpcb(true, progress, "获取网元列表成功");
             }
@@ -124,14 +124,14 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/server/retrieve_negroups.json')
+        return $http.get('/retrieve_negroups')
             .then(OK)
             .catch(KO);
 
 
         function OK(rsp) {
             logger.log("retrieveNEGroupsOK");
-            statasticService.setNEGroupList(rsp.data.rlt);
+            statasticService.setNEGroupList(rsp.data);
             if (lpcb) {
                 lpcb(true, progress, "获取网元组列表成功");
             }

@@ -5,17 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MDLUtil {
 
-	/*static public String gRLT(Object obj) {
-		try {
-			return "{\"rlt\":"+(new ObjectMapper()).writeValueAsString(obj)+"}";
-			
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+	static public String rlt_json(String value) {
+		return "{\"rlt\": \""+value+"\"}";
 
-	}*/
+	}
+	static public String rlt_json(int value) {
+		return "{\"rlt\": "+value+"}";
+
+	}
+	static public String rlt_json(boolean value) {
+		return "{\"rlt\": "+(value ? "true" : "false")+"}";
+
+	}
     static public String Object_WRAP(Object obj) {
         try {
             return (new ObjectMapper()).writeValueAsString(obj);

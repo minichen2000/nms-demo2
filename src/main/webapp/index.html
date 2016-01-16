@@ -3,6 +3,9 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>NMS demo</title>
 
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -18,6 +21,7 @@
     <script src="js/perfect-scrollbar.w.js"></script>
     <script src="js/app.js"></script>
     <script src="js/logger.service.js"></script>
+    <script src="js/commonUtil.service.js"></script>
     <script src="js/serverNotification.service.js"></script>
     <script src="js/statastic.service.js"></script>
     <script src="js/login.service.js"></script>
@@ -53,7 +57,7 @@
                                     </div>
 
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <a class="btn btn-lg btn-success btn-block" ng-click="vm.login()" ng-disabled="vm.loginInprogress">登录</a>
+                                    <button class="btn btn-lg btn-success btn-block" ng-click="vm.login()" ng-disabled="vm.loginInprogress || (!vm.username || !vm.password)">登录</button>
                                 </fieldset>
                             </form>
                             <div class="progress progress-striped loginprogressbar" ng-class="{'active': vm.loginInprogress}" ng-if="vm.loginProgress!=100">

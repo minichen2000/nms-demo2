@@ -21,9 +21,13 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
  
+
+
+
+  
   <servlet>
-    <servlet-name>Hello</servlet-name>
-    <servlet-class>org.nmsdemo.HelloServlet</servlet-class>
+    <servlet-name>notification</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.notification.NotificationServlet</servlet-class>
 	<init-param>
       <param-name>useFileMappedBuffer</param-name>
       <param-value>false</param-value>
@@ -31,8 +35,26 @@
   </servlet>
   
   <servlet>
-    <servlet-name>Echo</servlet-name>
-    <servlet-class>org.nmsdemo.MyEchoServlet</servlet-class>
+    <servlet-name>login</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.operation.LoginServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>retrieve_negroups</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.model.MDL_NEGroupServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>retrieve_nes</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.model.MDL_NEServlet</servlet-class>
 	<init-param>
       <param-name>useFileMappedBuffer</param-name>
       <param-value>false</param-value>
@@ -54,12 +76,20 @@
   
   
   <servlet-mapping>
-    <servlet-name>Hello</servlet-name>
-    <url-pattern>/hello/*</url-pattern>
+    <servlet-name>notification</servlet-name>
+    <url-pattern>/notification/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>Echo</servlet-name>
-    <url-pattern>/echo/*</url-pattern>
+    <servlet-name>login</servlet-name>
+    <url-pattern>/login/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>retrieve_negroups</servlet-name>
+    <url-pattern>/retrieve_negroups/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>retrieve_nes</servlet-name>
+    <url-pattern>/retrieve_nes/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>retrieve_alarm_statastic</servlet-name>
