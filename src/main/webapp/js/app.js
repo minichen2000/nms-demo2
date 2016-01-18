@@ -5,5 +5,7 @@
 angular.module('nmsdemoApp', [
     'perfect_scrollbar',
     'ui.router',
-    'nvd3'
+    'nvd3',
+    'mgcrea.ngStrap',
+    'ngTable'
 ]);

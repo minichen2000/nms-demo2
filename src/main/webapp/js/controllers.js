@@ -55,8 +55,8 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.leftTreeChanged = { changed: true };
     vm.treeItemClicked = treeItemClicked;
     vm.tmpMessage = statasticService.tmpMessage;
-    vm.activeAlarmCount=statasticService.activeAlarmCount
-    vm.neList=statasticService.getNEList();
+    vm.activeAlarmCount = statasticService.activeAlarmCount
+    vm.neList = statasticService.getNEList();
     
     
     
@@ -76,7 +76,7 @@ function TreeController($state, statasticService, serverNotificationService, $lo
         debounce: 10, // default: 10
         
     };
-    
+
     vm.alarm_panel_options = {
         chart: {
             type: 'pieChart',
@@ -113,7 +113,7 @@ function TreeController($state, statasticService, serverNotificationService, $lo
             text: "告警级别统计"
         }*/
     };
-    
+
     vm.ne_panel_options = {
         chart: {
             type: 'pieChart',
@@ -150,7 +150,7 @@ function TreeController($state, statasticService, serverNotificationService, $lo
             text: "告警级别统计"
         }*/
     };
-    
+
     vm.conn_panel_options = {
         chart: {
             type: 'pieChart',
@@ -188,11 +188,11 @@ function TreeController($state, statasticService, serverNotificationService, $lo
         }*/
     };
 
-    
+
 
     vm.alarmStChartData = statasticService.alarmStChartData;
-    vm.neStChartData=statasticService.neStChartData;
-    vm.connStChartData=statasticService.alarmStChartData;
+    vm.neStChartData = statasticService.neStChartData;
+    vm.connStChartData = statasticService.alarmStChartData;
     
     ///////////////////////////////////////////////
     serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + "/notification", "5000");
@@ -209,10 +209,17 @@ angular
     .module('nmsdemoApp')
     .controller('TreeItemDetailsMiddleController', TreeItemDetailsMiddleController);
 
-TreeItemDetailsMiddleController.$inject = ['$stateParams'];
-function TreeItemDetailsMiddleController($stateParams) {
+TreeItemDetailsMiddleController.$inject = ['$stateParams','NgTableParams', 'statasticService'];
+function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticService) {
     var vm = this;
     vm.message = $stateParams.treeItemName;
+    vm.data = statasticService.getNEList();
+    vm.tableParams = new NgTableParams(
+        {}, 
+        { 
+            dataset: vm.data 
+        }
+    );
 }
 
 

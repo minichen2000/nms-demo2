@@ -1,5 +1,25 @@
-<div class="row">
-    Middle Page:
-    <br>
-    {{vm.message}}
+<div class="col col-lg-12">
+    <table ng-table="vm.tableParams" class="table" show-filter="true">
+        <tr ng-repeat="item in vm.data">
+            <td title="'neGroupId'" filter="{ neGroupId: 'number'}" sortable="'neGroupId'">
+                {{item.neGroupType}}</td>
+            <td title="'neGroupType'" filter="{ neGroupType: 'text'}" sortable="'neGroupType'">
+                {{item.neGroupType}}</td>
+            <td title="'neId'" filter="{ neId: 'number'}" sortable="'neId'">
+                {{item.neId}}</td>
+            <td title="'name'" filter="{ name: 'text'}" sortable="'name'">
+                {{item.name}}</td>
+            <td title="'type'" filter="{ type: 'text'}" sortable="'type'">
+                {{item.type}}</td>
+            <td title="'subtype'" filter="{ subtype: 'text'}" sortable="'subtype'">
+                {{item.subtype}}</td>
+            <td title="'suppervisionState'" filter="{ suppervisionState: 'text'}" sortable="'suppervisionState'">
+                {{item.suppervisionState}}</td>
+            <td title="'communicationState'" filter="{ communicationState: 'text'}" sortable="'communicationState'">
+                {{item.communicationState}}</td>
+            <td title="'alarmState'" filter="{ alarmState: 'text'}" sortable="'alarmState'">
+                {{item.alarmState}}</td>
+            
+        </tr>
+    </table>
 </div>
