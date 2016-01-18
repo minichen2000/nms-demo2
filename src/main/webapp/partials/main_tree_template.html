@@ -1,8 +1,8 @@
-<div class="col col-lg-2">
-<div perfect-scrollbar role="navigation" style="height:580px;overflow:hidden;padding-left:2px;padding-right:2px;border-color: #E7E7E7;border-width:0px 1px 0px 0px"
-refresh-on-change-with-boolean="leftTreeChanged.changed">
-    <ul class="nav">
-        <li class="sidebar-search">
+<div>
+<div perfect-scrollbar role="navigation" class="col col-xs-2 col-sm-2 col-md-2 col-lg-2" style="height:580px;overflow:hidden;padding-left:2px;padding-right:2px;border-right: 1px solid #e7e7e7"
+refresh-on-change-with-boolean="leftTreeChanged.changed" suppress-scroll-x="true">
+    <ul class="nav" style="padding-bottom:20px">
+        <!--<li class="sidebar-search">
             <div class="input-group custom-search-form">
                 <input type="text" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
@@ -11,7 +11,7 @@ refresh-on-change-with-boolean="leftTreeChanged.changed">
                                 </button>
                             </span>
             </div>
-        </li>
+        </li>-->
 
         <treeitem tree-item-data="neTreeData" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
         <treeitem tree-item-data="mapTreeData" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
@@ -19,8 +19,6 @@ refresh-on-change-with-boolean="leftTreeChanged.changed">
         <treeitem tree-item-data="trailTreeData" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
         <treeitem tree-item-data="pathTreeData" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
         <treeitem tree-item-data="evcTreeData" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
-
-
     </ul>
 </div>
 </div>

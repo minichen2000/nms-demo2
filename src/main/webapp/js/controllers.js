@@ -195,7 +195,7 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.connStChartData = statasticService.alarmStChartData;
     
     ///////////////////////////////////////////////
-    serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + "/notification", "5000");
+    //serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + "/notification", "5000");
 
     function treeItemClicked(itemName) {
         $state.go('main.treeitem', { treeItemName: itemName });

@@ -1,5 +1,6 @@
-<div class="col col-lg-12">
-    <table ng-table="vm.tableParams" class="table" show-filter="true">
+<div class="row">
+<div  class="col col-lg-12" perfect-scrollbar style="height:580px;overflow:hidden">
+    <table ng-table="vm.tableParams" class="table" show-filter="true" style="border-color: #E7E7E7;border-width:1px 1px 1px 1px"">
         <tr ng-repeat="item in vm.data">
             <td title="'neGroupId'" filter="{ neGroupId: 'number'}" sortable="'neGroupId'">
                 {{item.neGroupType}}</td>
@@ -22,4 +23,5 @@
             
         </tr>
     </table>
+</div>
 </div>
