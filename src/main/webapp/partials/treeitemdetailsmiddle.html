@@ -1,27 +1,42 @@
 <div class="row">
-<div  class="col col-lg-12" perfect-scrollbar style="height:580px;overflow:hidden">
-    <table ng-table="vm.tableParams" class="table" show-filter="true" style="border-color: #E7E7E7;border-width:1px 1px 1px 1px"">
-        <tr ng-repeat="item in vm.data">
-            <td title="'neGroupId'" filter="{ neGroupId: 'number'}" sortable="'neGroupId'">
-                {{item.neGroupType}}</td>
-            <td title="'neGroupType'" filter="{ neGroupType: 'text'}" sortable="'neGroupType'">
-                {{item.neGroupType}}</td>
-            <td title="'neId'" filter="{ neId: 'number'}" sortable="'neId'">
-                {{item.neId}}</td>
-            <td title="'name'" filter="{ name: 'text'}" sortable="'name'">
-                {{item.name}}</td>
-            <td title="'type'" filter="{ type: 'text'}" sortable="'type'">
-                {{item.type}}</td>
-            <td title="'subtype'" filter="{ subtype: 'text'}" sortable="'subtype'">
-                {{item.subtype}}</td>
-            <td title="'suppervisionState'" filter="{ suppervisionState: 'text'}" sortable="'suppervisionState'">
-                {{item.suppervisionState}}</td>
-            <td title="'communicationState'" filter="{ communicationState: 'text'}" sortable="'communicationState'">
-                {{item.communicationState}}</td>
-            <td title="'alarmState'" filter="{ alarmState: 'text'}" sortable="'alarmState'">
-                {{item.alarmState}}</td>
-            
-        </tr>
-    </table>
-</div>
+    <div class="col col-lg-12" perfect-scrollbar style="height:550px;overflow:hidden">
+        <div class="row">
+            <div class="col col-lg-12" >
+                <div style="margin-bottom:10px"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-lg-12">
+                <table ng-table="vm.tableParams" class="table table-striped table-bordered table-hover table-condensed" show-filter="true"
+                >
+                    <tr ng-repeat="item in $data">
+                        <td title="'neGroupId'" filter="{ neGroupId: 'number'}" sortable="'neGroupId'">
+                            {{item.neGroupId}}</td>
+                        <td title="'neGroupType'" filter="{ neGroupType: 'text'}" sortable="'neGroupType'">
+                            {{item.neGroupType}}</td>
+                        <td title="'neId'" filter="{ neId: 'number'}" sortable="'neId'">
+                            {{item.neId}}</td>
+                        <td title="'name'" filter="{ name: 'text'}" sortable="'name'">
+                            {{item.name}}</td>
+                        <td title="'type'" filter="{ type: 'text'}" sortable="'type'">
+                            {{item.type}}</td>
+                        <td title="'subtype'" filter="{ subtype: 'text'}" sortable="'subtype'">
+                            {{item.subtype}}</td>
+                        <td title="'suppervisionState'" filter="{ suppervisionState: 'text'}" sortable="'suppervisionState'">
+                            {{item.suppervisionState}}</td>
+                        <td title="'communicationState'" filter="{ communicationState: 'text'}" sortable="'communicationState'">
+                            {{item.communicationState}}</td>
+                        <td title="'alarmState'" filter="{ alarmState: 'text'}" sortable="'alarmState'">
+                            {{item.alarmState}}</td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-lg-12">
+                <div style="margin-bottom:20px"></div>
+            </div>
+        </div>
+    </div>
 </div>
