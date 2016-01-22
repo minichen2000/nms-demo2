@@ -59,6 +59,9 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.neList = statasticService.getNEList();
     
     
+
+    
+    
     
     
     
@@ -195,7 +198,7 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.connStChartData = statasticService.alarmStChartData;
     
     ///////////////////////////////////////////////
-    //serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + "/notification", "5000");
+    serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + "/notification", "5000");
 
     function treeItemClicked(itemName) {
         $state.go('main.treeitem', { treeItemName: itemName });
@@ -209,29 +212,39 @@ angular
     .module('nmsdemoApp')
     .controller('TreeItemDetailsMiddleController', TreeItemDetailsMiddleController);
 
-TreeItemDetailsMiddleController.$inject = ['$stateParams','NgTableParams', 'statasticService'];
-function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticService) {
+TreeItemDetailsMiddleController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger'];
+function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticService, $scope, logger) {
     var vm = this;
     vm.message = $stateParams.treeItemName;
-    vm.data = statasticService.getNEList();
+    vm.data=statasticService.getNEList();
     
     vm.cols=[
-        { field: "name", title: "名称", sortable: "name", show: true },
-        { field: "type", title: "类型", sortable: "type", show: true },
-        { field: "subtype", title: "子类型", sortable: "subtype", show: true },
-        { field: "version", title: "版本", sortable: "version", show: true },
-        { field: "suppervisionState", title: "管理状态", sortable: "suppervisionState", show: true },
-        { field: "communicationState", title: "通讯状态", sortable: "communicationState", show: true },
-        { field: "alarmState", title: "告警级别", sortable: "alarmState", show: true },
-        { field: "neId", title: "ID", sortable: "neId", show: true },
-        { field: "neGroupId", title: "网元组", sortable: "neGroupId", show: true }
+        { field: "name", title: "名称", sortable: "name", filter: { name: "text" }, show: true },
+        { field: "type", title: "类型", sortable: "type", filter: { type: "select" }, show: true },
+        { field: "version", title: "版本", sortable: "version", filter: { version: "text" }, show: true },
+        { field: "suppervisionState", title: "管理状态", sortable: "suppervisionState", filter: { suppervisionState: "select" }, show: true },
+        { field: "communicationState", title: "通讯状态", sortable: "communicationState", filter: { communicationState: "select" }, 
+        filterData:[
+            {id: 'available', title: 'available                    '},
+            {id: 'unavailable', title: 'unavailable                     '}
+        ], 
+        show: true },
+        { field: "alarmState", title: "告警级别", sortable: "alarmState", filter: { alarmState: "select" }, show: true },
+        { field: "neId", title: "ID", sortable: "neId", filter: { neId: "number" }, show: true },
+        { field: "neGroupId", title: "网元组", sortable: "neGroupId", filter: { neGroupId: "number" }, show: true }
     ];
     vm.tableParams = new NgTableParams(
-        {}, 
-        { 
-            dataset: vm.data 
+        { count: 50}, 
+        { counts: [10, 20, 50],
+            dataset:  vm.data
         }
     );
+    
+    $scope.$watch(function(){return vm.data}, function(){
+        vm.tableParams.reload();
+    },true);
+   
+    
 }
 
 

@@ -99,7 +99,7 @@
 
 
                 ws.onmessage = function (event) {
-                    logger.log("onmessage: " + event.data);
+                    //logger.log("onmessage: " + event.data);
                     $rootScope.$apply(function () {
                         for (var i = 0; i < ws_listeners.length; i++) {
                             ws_listeners[i](event.data);
