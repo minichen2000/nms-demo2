@@ -214,6 +214,18 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
     var vm = this;
     vm.message = $stateParams.treeItemName;
     vm.data = statasticService.getNEList();
+    
+    vm.cols=[
+        { field: "name", title: "名称", sortable: "name", show: true },
+        { field: "type", title: "类型", sortable: "type", show: true },
+        { field: "subtype", title: "子类型", sortable: "subtype", show: true },
+        { field: "version", title: "版本", sortable: "version", show: true },
+        { field: "suppervisionState", title: "管理状态", sortable: "suppervisionState", show: true },
+        { field: "communicationState", title: "通讯状态", sortable: "communicationState", show: true },
+        { field: "alarmState", title: "告警级别", sortable: "alarmState", show: true },
+        { field: "neId", title: "ID", sortable: "neId", show: true },
+        { field: "neGroupId", title: "网元组", sortable: "neGroupId", show: true }
+    ];
     vm.tableParams = new NgTableParams(
         {}, 
         { 

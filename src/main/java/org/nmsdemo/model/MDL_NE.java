@@ -7,6 +7,7 @@ public class MDL_NE {
 	private String name;
 	private String type;
 	private String subtype;
+	private String version;
 	private String suppervisionState;
 	private String communicationState;
 	private String alarmState;
@@ -15,8 +16,9 @@ public class MDL_NE {
 		// TODO Auto-generated constructor stub
 	}
 	public MDL_NE(int neGroupId, String neGroupType, int neId, String name,
-			String type, String subtype, String suppervisionState,
-			String communicationState, String alarmState) {
+			String type, String subtype, String version,
+			String suppervisionState, String communicationState,
+			String alarmState) {
 		super();
 		this.neGroupId = neGroupId;
 		this.neGroupType = neGroupType;
@@ -24,6 +26,7 @@ public class MDL_NE {
 		this.name = name;
 		this.type = type;
 		this.subtype = subtype;
+		this.version = version;
 		this.suppervisionState = suppervisionState;
 		this.communicationState = communicationState;
 		this.alarmState = alarmState;
@@ -64,6 +67,12 @@ public class MDL_NE {
 	public void setSubtype(String subtype) {
 		this.subtype = subtype;
 	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
 	public String getSuppervisionState() {
 		return suppervisionState;
 	}
@@ -82,6 +91,7 @@ public class MDL_NE {
 	public void setAlarmState(String alarmState) {
 		this.alarmState = alarmState;
 	}
+	
 	
 
 }

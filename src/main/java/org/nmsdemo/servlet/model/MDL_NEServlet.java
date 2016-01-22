@@ -29,25 +29,25 @@ public class MDL_NEServlet extends HttpServlet
 	
 		
 		List<MDL_NE> nes=new ArrayList<MDL_NE>();
-		nes.add(new MDL_NE(100, "q3", 1, "node1", "1660sm", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(100, "q3", 2, "node2", "1660sm", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(100, "q3", 3, "node3", "1660sm", "", "unsuppervised", "available", "major"));
+		nes.add(new MDL_NE(100, "q3", 1, "node_DuJiangYan", "1660sm", "sm", "4.0", "suppervised", "available", "critical"));
+		nes.add(new MDL_NE(100, "q3", 2, "node2", "1660sm", "sm", "4.1", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(100, "q3", 3, "node3", "1660sm", "sm", "4.0", "unsuppervised", "available", "major"));
 		
-		nes.add(new MDL_NE(101, "dex", 1, "node4", "1678mc", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(101, "dex", 2, "node5", "1678mc", "", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(101, "dex", 1, "node4", "1678mc", "mc", "4.0", "suppervised", "available", "critical"));
+		nes.add(new MDL_NE(101, "dex", 2, "node5", "1678mc", "mc", "5.0", "suppervised", "available", "minor"));
 		
-		nes.add(new MDL_NE(102, "q3", 1, "node6", "1660sm", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(102, "q3", 2, "node7", "1660sm", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(102, "q3", 3, "node8", "1660sm", "", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(102, "q3", 1, "node6", "1660sm", "sm", "2.0", "suppervised", "available", "critical"));
+		nes.add(new MDL_NE(102, "q3", 2, "node7", "1660sm", "sm", "3.0", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(102, "q3", 3, "node8", "1660sm", "sm", "3.0", "suppervised", "available", "minor"));
 		
-		nes.add(new MDL_NE(103, "snmp", 1, "node9", "es16", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(103, "snmp", 2, "node10", "es16", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(103, "snmp", 3, "node11", "es16", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(103, "snmp", 4, "node12", "es16", "", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(103, "snmp", 1, "node9", "es16", "es", "4.1", "suppervised", "available", "cleared"));
+		nes.add(new MDL_NE(103, "snmp", 2, "node10", "es16", "es", "4.2", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(103, "snmp", 3, "node11", "es16", "es", "3.0", "suppervised", "available", "critical"));
+		nes.add(new MDL_NE(103, "snmp", 4, "node12", "es16", "es", "3.0", "suppervised", "available", "minor"));
 		
-		nes.add(new MDL_NE(104, "q3", 1, "node13", "1662smc", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(104, "q3", 2, "node14", "1662smc", "", "suppervised", "available", "minor"));
-		nes.add(new MDL_NE(104, "q3", 3, "node15", "1662smc", "", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(104, "q3", 1, "node13", "1662smc", "smc", "2.1", "suppervised", "available", "cleared"));
+		nes.add(new MDL_NE(104, "q3", 2, "node14", "1662smc", "smc", "3.0", "suppervised", "available", "minor"));
+		nes.add(new MDL_NE(104, "q3", 3, "node15", "1662smc", "smc", "3.1", "suppervised", "available", "minor"));
 		
 		
 		PrintWriter out = resp.getWriter();

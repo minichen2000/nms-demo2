@@ -50,7 +50,7 @@ public class NotificationWebSocket extends WebSocketAdapter
                             random.nextInt(10), 
                             random.nextInt(10)
                             ) ));
-                        remote.sendString(MDLUtil.Event_WRAP("neCreation", new MDL_NE(100, "q3", 4, "node3_3", "1660sm", "", "unsuppervised", "available", "major")));
+                        remote.sendString(MDLUtil.Event_WRAP("neCreation", new MDL_NE(100, "q3", 4, "node3_3", "1660sm", "sm", "4.0", "unsuppervised", "available", "major")));
                         
                         Thread.sleep( 3000 );
                         remote.sendString(MDLUtil.Event_WRAP( "alarmStatastic", new MDL_AlarmPSStatastic(
@@ -61,7 +61,7 @@ public class NotificationWebSocket extends WebSocketAdapter
                             random.nextInt(10), 
                             random.nextInt(10)
                             ) ));
-                        remote.sendString(MDLUtil.Event_WRAP("neDeletion", new MDL_NE(100, "q3", 4, "node3_3", "1660sm", "", "unsuppervised", "available", "major")));
+                        remote.sendString(MDLUtil.Event_WRAP("neDeletion", new MDL_NE(100, "q3", 4, "node3_3", "1660sm", "sm", "4.0", "unsuppervised", "available", "major")));
                         
                     }
                     catch (Exception e)
