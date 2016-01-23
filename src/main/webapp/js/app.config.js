@@ -9,7 +9,7 @@ angular
 
             $stateProvider
                 .state('main', {
-                    url: "/main",
+                    url: "main",
                     templateUrl: "./partials/main.html",
                     controller: 'TreeController',
                     controllerAs: 'vm',
@@ -21,7 +21,7 @@ angular
                     }
                 })
                 .state('main.treeitem', {
-                    url: "/treeitem:treeItemName",
+                    url: "treeitem:treeItemName",
                     views: {
                         "middleView": {
                             templateUrl: "./partials/treeitemdetailsmiddle.html",
