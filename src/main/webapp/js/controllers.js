@@ -42,8 +42,8 @@ function LoginController($state, loginService) {
 angular
     .module('nmsdemoApp')
     .controller('TreeController', TreeController);
-TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', '$timeout', 'logger'];
-function TreeController($state, statasticService, serverNotificationService, $location, $timeout, logger) {
+TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', '$timeout', 'logger','commonUtil'];
+function TreeController($state, statasticService, serverNotificationService, $location, $timeout, logger, commonUtil) {
     var vm = this;
     vm.neTreeData = statasticService.getNETreeData();
     vm.mapTreeData = statasticService.getMapTreeData();
@@ -198,7 +198,9 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.connStChartData = statasticService.alarmStChartData;
     
     ///////////////////////////////////////////////
-    serverNotificationService.connect("ws://" + $location.host() + ":" + $location.port() + $location.path().slice(0, $location.path().lastIndexOf('/'))+"/notification", "5000");
+    
+    serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
+    
 
     function treeItemClicked(itemName) {
         $state.go('main.treeitem', { treeItemName: itemName });
