@@ -16,7 +16,7 @@ angular
                     treeItemClicked: '='
                 },
                 // which markup this directive generates
-                templateUrl: 'partials/tree_item_template.html',
+                templateUrl: './partials/tree_item_template.html',
                 replace: true,
 
                 link: function (scope, iElement, iAttrs) {
@@ -68,7 +68,7 @@ angular
                     leftTreeChanged: '='
                 },
                 // which markup this directive generates
-                templateUrl: 'partials/main_tree_template.html',
+                templateUrl: './partials/main_tree_template.html',
                 replace: true
             };
         });

@@ -10,7 +10,7 @@ angular
             $stateProvider
                 .state('main', {
                     url: "/main",
-                    templateUrl: "partials/main.html",
+                    templateUrl: "./partials/main.html",
                     controller: 'TreeController',
                     controllerAs: 'vm',
                     resolve: {
@@ -24,12 +24,12 @@ angular
                     url: "/treeitem:treeItemName",
                     views: {
                         "middleView": {
-                            templateUrl: "partials/treeitemdetailsmiddle.html",
+                            templateUrl: "./partials/treeitemdetailsmiddle.html",
                             controller: 'TreeItemDetailsMiddleController',
                             controllerAs: 'vm'
                         },
                         "operationView": {
-                            templateUrl: "partials/treeitemdetailsoperation.html",
+                            templateUrl: "./partials/treeitemdetailsoperation.html",
                             controller: 'TreeItemDetailsOperationController',
                             controllerAs: 'vm'
                         }

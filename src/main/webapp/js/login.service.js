@@ -62,7 +62,7 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/login', {params: {username: username, password: password }})
+        return $http.get('./login', {params: {username: username, password: password }})
             .then(loginOK)
             .catch(loginKO);
 
@@ -96,7 +96,7 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/retrieve_nes')
+        return $http.get('./retrieve_nes')
             .then(OK)
             .catch(KO);
 
@@ -124,7 +124,7 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/retrieve_negroups')
+        return $http.get('./retrieve_negroups')
             .then(OK)
             .catch(KO);
 
@@ -152,7 +152,7 @@ function loginService($http, $q, $timeout, logger, statasticService) {
         }
 
 
-        return $http.get('/retrieve_alarm_statastic')
+        return $http.get('./retrieve_alarm_statastic')
             .then(OK)
             .catch(KO);
 
