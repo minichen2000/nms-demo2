@@ -1,7 +1,7 @@
 <div class="row">
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="#" uib-tooltip="NMS Demo v1.0" tooltip-placement="bottom">
 					NMS Demo v1.0
 				</a>
         </div>
@@ -9,7 +9,7 @@
 
         <ul class="nav navbar-top-links navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" uib-tooltip="NMS Demo v1.0">
                     <i class="fa fa-envelope fa-fw">
 						</i>
                     <i class="fa fa-caret-down">
@@ -67,80 +67,15 @@
 
 
 
-    <div class="col col-xs-9 col-sm-9 col-md-9 col-lg-9" style="background:#ffffff;height:580px">
+    <div class="col col-xs-10 col-sm-10 col-md-10 col-lg-10" style="background:#ffffff;height:580px">
 
 
         <div ui-view="middleView">
         </div>
+        <div ui-view="dashboardMiddleView">
+        </div>
 
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-8" style="padding-right:1px">
-                                <h3 class="panel-title">
-         告警统计
-      </h3></div>
-                            <div class="col-xs-4 text-right" style="padding-left:1px">
-                                <div>{{vm.activeAlarmCount.count}}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer" style="padding: 0px; margin:0px">
-                            <nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config"></nvd3>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-8" style="padding-right:1px">
-                                <h3 class="panel-title">
-         网元统计
-      </h3></div>
-                            <div class="col-xs-4 text-right" style="padding-left:1px">
-                                <div>{{vm.neList.length}}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer" style="padding: 0px; margin:0px">
-                            <nvd3 options="vm.ne_panel_options" data="vm.neStChartData" config="vm.config"></nvd3>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-8" style="padding-right:1px">
-                                <h3 class="panel-title">
-         业务统计
-      </h3></div>
-                            <div class="col-xs-4 text-right" style="padding-left:1px">
-                                <div>8920</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer" style="padding: 0px; margin:0px">
-                            <nvd3 options="vm.conn_panel_options" data="vm.connStChartData" config="vm.config"></nvd3>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col col-xs-1 col-sm-1 col-md-1 col-lg-1" style="height:580px;border-left: 1px solid #e7e7e7">
-        <div class="row">
-            <div ui-view="operationView">
-            </div>
-        </div>
+        
     </div>
 
 </div>

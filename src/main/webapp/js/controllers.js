@@ -214,26 +214,121 @@ angular
     .module('nmsdemoApp')
     .controller('TreeItemDetailsMiddleController', TreeItemDetailsMiddleController);
 
-TreeItemDetailsMiddleController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger'];
-function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticService, $scope, logger) {
+TreeItemDetailsMiddleController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state'];
+function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state) {
     var vm = this;
     vm.message = $stateParams.treeItemName;
     vm.data=statasticService.getNEList();
     
     vm.cols=[
-        { field: "name", title: "名称", sortable: "name", filter: { name: "text" }, show: true },
-        { field: "type", title: "类型", sortable: "type", filter: { type: "select" }, show: true },
-        { field: "version", title: "版本", sortable: "version", filter: { version: "text" }, show: true },
-        { field: "suppervisionState", title: "管理状态", sortable: "suppervisionState", filter: { suppervisionState: "select" }, show: true },
-        { field: "communicationState", title: "通讯状态", sortable: "communicationState", filter: { communicationState: "select" }, 
-        filterData:[
-            {id: 'available', title: 'available                    '},
-            {id: 'unavailable', title: 'unavailable                     '}
-        ], 
-        show: true },
-        { field: "alarmState", title: "告警级别", sortable: "alarmState", filter: { alarmState: "select" }, show: true },
-        { field: "neId", title: "ID", sortable: "neId", filter: { neId: "number" }, show: true },
-        { field: "neGroupId", title: "网元组", sortable: "neGroupId", filter: { neGroupId: "number" }, show: true }
+         {
+            field: "neId",
+            title: "ID",
+            sortable: "neId",
+            filter: { neId: "number" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "neGroupId",
+            title: "网元组",
+            sortable: "neGroupId",
+            filter: { neGroupId: "number" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "name",
+            title: "名称",
+            sortable: "name",
+            filter: { name: "text" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "type",
+            title: "类型",
+            sortable: "type",
+            filter: { type: "select" },
+            filterData: [
+                { id: '1660sm', title: '1660sm' },
+                { id: '1678mc', title: '1678mc' },
+                { id: 'es16', title: 'es16' },
+                { id: '1662smc', title: '1662smc' }
+            ],
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "subtype",
+            title: "子类型",
+            sortable: "subtype",
+            filter: { subtype: "text" },
+            getValue: htmlValue,
+            show: false
+        },
+        {
+            field: "version",
+            title: "版本",
+            sortable: "version",
+            filter: { version: "text" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "suppervisionState",
+            title: "管理状态",
+            sortable: "suppervisionState",
+            filter: { suppervisionState: "select" },
+            filterData: [
+                { id: 'suppervised', title: 'suppervised' },
+                { id: 'unsuppervised', title: 'unsuppervised' }
+            ],
+            getValue: htmlValue, 
+            show: true
+        },
+        {
+            field: "communicationState",
+            title: "通讯状态",
+            sortable: "communicationState",
+            filter: { communicationState: "select" },
+            filterData: [
+                { id: 'available', title: 'available' },
+                { id: 'unavailable', title: 'unavailable' }
+            ],
+            getValue: htmlValue, 
+            show: true
+        },
+        {
+            field: "alarmState",
+            title: "告警级别",
+            sortable: "alarmState",
+            filter: { alarmState: "select" },
+            filterData: [
+                { id: 'critical', title: 'critical' },
+                { id: 'major', title: 'major' },
+                { id: 'minor', title: 'minor' },
+                { id: 'warning', title: 'warning' },
+                { id: 'indeterminate', title: 'indeterminate' },
+                { id: 'cleared', title: 'cleared' },
+            ],
+            getValue: htmlValue, 
+            show: true
+        },
+       
+        {
+            field: "neGroupType",
+            title: "组类型",
+            sortable: "neGroupType",
+            filter: { neGroupType: "select" },
+            filterData: [
+                { id: 'q3', title: 'q3' },
+                { id: 'dex', title: 'dex' },
+                { id: 'snmp', title: 'snmp' }
+            ],
+            getValue: htmlValue,
+            show: false
+        }
     ];
     vm.tableParams = new NgTableParams(
         { count: 50}, 
@@ -241,6 +336,76 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
             dataset:  vm.data
         }
     );
+    vm.tableColsWidth=['10%', '10%', '23%', '10%', '9%', '14%', '12%', '12%'];
+    vm.tableClass="table table-striped table-bordered table-hover table-condensed";
+    vm.tableTrStyleFun=function(item){
+        var rlt={
+            
+        };
+        return rlt;
+    }
+    vm.tableTdStyleFun=function(item, col){
+        var rlt={
+            'overflow':'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis'
+        };
+        if(col.field=="suppervisionState"){
+            if(item[col.field]=="unsuppervised"){
+                rlt['background-color']='white';
+                rlt['color']='black';
+            }else{
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }else if(col.field=="communicationState"){
+            if(item[col.field]=="unavailable"){
+                rlt['background-color']='#d62728';
+                rlt['color']='white';
+            }else{
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }else if(col.field=="alarmState"){
+            if(item[col.field]=="critical"){
+                rlt['background-color']='#d62728';
+                rlt['color']='white';
+            }else if(item[col.field]=="major"){
+                rlt['background-color']='#ff7f0e';
+                rlt['color']='white';
+            }else if(item[col.field]=="minor"){
+                rlt['background-color']='#ffbb78';
+                rlt['color']='white';
+            }else if(item[col.field]=="warning"){
+                rlt['background-color']='#aec7e8';
+                rlt['color']='white';
+            }else if(item[col.field]=="indeterminate"){
+                rlt['background-color']='#98df8a';
+                rlt['color']='white';
+            }else if(item[col.field]=="cleared"){
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }
+        return rlt;
+    }
+    vm.tableItemClickFun=function(item, col){
+        logger.log("tableItemClickFun:"+col.field+":"+item[col.field]);
+        $state.go('main');
+    }
+    
+    function htmlValue($scope, row) {
+      var value = row[this.field];
+      var html=""+value;
+      if(this.field=="name"){
+          //html="<a href='#' uib-tooltip=\""+html+"\">"+html+"</a>";
+          html="<a href='#' uib-tooltip='"+html+"' tooltip-placement='top-left' ng-click=\"myNgTableItemClickFun(item, col)\">"+html+"</a>";
+      }else{
+          html="<span>"+html+"</span>";
+      }
+      //var rlt=$sce.trustAsHtml(html);
+      return html;
+    }
     
     $scope.$watch(function(){return vm.data}, function(){
         vm.tableParams.reload();
@@ -250,12 +415,3 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
 }
 
 
-angular
-    .module('nmsdemoApp')
-    .controller('TreeItemDetailsOperationController', TreeItemDetailsOperationController);
-
-TreeItemDetailsOperationController.$inject = ['$stateParams'];
-function TreeItemDetailsOperationController($stateParams) {
-    var vm = this;
-    vm.message = $stateParams.treeItemName;
-}

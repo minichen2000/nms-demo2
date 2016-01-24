@@ -28,9 +28,9 @@ angular
                             controller: 'TreeItemDetailsMiddleController',
                             controllerAs: 'vm'
                         },
-                        "operationView": {
-                            templateUrl: "./partials/treeitemdetailsoperation.html",
-                            controller: 'TreeItemDetailsOperationController',
+                        "dashboardMiddleView": {
+                            templateUrl: "./partials/dashboardmiddle.html",
+                            controller: 'TreeController',
                             controllerAs: 'vm'
                         }
                     }
