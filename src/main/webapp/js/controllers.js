@@ -108,7 +108,7 @@ function DashBoardController(statasticService, logger) {
             donut: true,
             duration: 1000,
             labelThreshold: 0.02,
-            showLegend: false,
+            showLegend: true,
             wdith: 100,
             pie: {
                 dispatch: {
@@ -145,7 +145,7 @@ function DashBoardController(statasticService, logger) {
             donut: false,
             duration: 1000,
             labelThreshold: 0.02,
-            showLegend: false,
+            showLegend: true,
             wdith: 100,
             pie: {
                 dispatch: {
@@ -182,7 +182,7 @@ function DashBoardController(statasticService, logger) {
             donut: false,
             duration: 1000,
             labelThreshold: 0.02,
-            showLegend: false,
+            showLegend: true,
             wdith: 100,
             pie: {
                 dispatch: {
