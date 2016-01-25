@@ -48,27 +48,33 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
     ];
     var neStChartData = [];
     var neTreeData = {
+        id: 'ne',
         name: '网元',
         type: 'ne-cate',
         children: []
     };
     var mapTreeData = {
+        id: 'map',
         name: '地图',
         type: 'map-cate'
     };
     var tlTreeData = {
+        id: 'physicalLink',
         name: '物理连接',
         type: 'tl-cate'
     };
     var trailTreelData = {
+        id: 'trail',
         name: '子网连接',
         type: 'trail-cate'
     };
     var pathTreeData = {
+        id: 'path',
         name: '端到端电路',
         type: 'path-cate'
     };
     var evcTreeData = {
+        id: 'evc',
         name: '以太网电路',
         type: 'evc-cate',
         children: [{

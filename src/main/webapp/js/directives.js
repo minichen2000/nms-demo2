@@ -34,7 +34,7 @@ angular
 
                         }
                         if (scope.treeItemClicked) {
-                            scope.treeItemClicked(scope.treeItemData.name);
+                            scope.treeItemClicked(scope.treeItemData.id);
                         }
 
 

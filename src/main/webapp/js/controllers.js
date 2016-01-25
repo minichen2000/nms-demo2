@@ -58,8 +58,8 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
     
 
-    function treeItemClicked(itemName) {
-        $state.go('main.treeitem', { treeItemName: itemName });
+    function treeItemClicked(itemId) {
+        $state.go('main.treeitem', { treeItemId: itemId });
     };
     ///////////////////////////////////////////////
 }
@@ -209,12 +209,12 @@ function DashBoardController(statasticService, logger) {
 
 angular
     .module('nmsdemoApp')
-    .controller('TreeItemDetailsMiddleController', TreeItemDetailsMiddleController);
+    .controller('MiddleNEController', MiddleNEController);
 
-TreeItemDetailsMiddleController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state'];
-function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state) {
+MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state'];
+function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state) {
     var vm = this;
-    vm.message = $stateParams.treeItemName;
+    vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
     
     vm.cols=[
@@ -429,7 +429,7 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
     }
     vm.tableItemClickFun=function(item, col){
         logger.log("tableItemClickFun:"+col.field+":"+item[col.field]);
-        $state.go('main');
+        $state.go('main.treeitem.secondlevel',{treeItemId: 'ne', neGroupId: item.neGroupId, neId: item.neId });
     }
     
     function htmlValue($scope, row) {
@@ -450,6 +450,69 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
     },true);
    
     
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleMapController', MiddleMapController);
+
+MiddleMapController.$inject = ['$stateParams'];
+function MiddleMapController($stateParams) {
+    var vm = this;
+    vm.message = $stateParams.treeItemId;
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddlePhysicalLinkController', MiddlePhysicalLinkController);
+
+MiddlePhysicalLinkController.$inject = ['$stateParams'];
+function MiddlePhysicalLinkController($stateParams) {
+    var vm = this;
+    vm.message = $stateParams.treeItemId;
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleTrailController', MiddleTrailController);
+
+MiddleTrailController.$inject = ['$stateParams'];
+function MiddleTrailController($stateParams) {
+    var vm = this;
+    vm.message = $stateParams.treeItemId;
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddlePathController', MiddlePathController);
+
+MiddlePathController.$inject = ['$stateParams'];
+function MiddlePathController($stateParams) {
+    var vm = this;
+    vm.message = $stateParams.treeItemId;
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleEVCController', MiddleEVCController);
+
+MiddleEVCController.$inject = ['$stateParams'];
+function MiddleEVCController($stateParams) {
+    var vm = this;
+    vm.message = $stateParams.treeItemId;
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleSingleNEController', MiddleSingleNEController);
+
+MiddleSingleNEController.$inject = ['$stateParams','$state'];
+function MiddleSingleNEController($stateParams,$state) {
+    var vm = this;
+    vm.message = $stateParams.neGroupId+"/"+$stateParams.neId;
+    vm.backToNeList=function(){
+        $state.go('main.treeitem',{treeItemId: 'ne'});
+    }
 }
 
 
