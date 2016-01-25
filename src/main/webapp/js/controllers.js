@@ -42,8 +42,8 @@ function LoginController($state, loginService) {
 angular
     .module('nmsdemoApp')
     .controller('TreeController', TreeController);
-TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', '$timeout', 'logger','commonUtil'];
-function TreeController($state, statasticService, serverNotificationService, $location, $timeout, logger, commonUtil) {
+TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', 'logger','commonUtil'];
+function TreeController($state, statasticService, serverNotificationService, $location, logger, commonUtil) {
     var vm = this;
     vm.neTreeData = statasticService.getNETreeData();
     vm.mapTreeData = statasticService.getMapTreeData();
@@ -51,22 +51,29 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.trailTreeData = statasticService.getTrailTreeData();
     vm.pathTreeData = statasticService.getPathTreeData();
     vm.evcTreeData = statasticService.getEVCTreeData();
-    vm.alarmStatastic = statasticService.getAlarmSt();
     vm.leftTreeChanged = { changed: true };
     vm.treeItemClicked = treeItemClicked;
-    vm.tmpMessage = statasticService.tmpMessage;
-    vm.activeAlarmCount = statasticService.activeAlarmCount
-    vm.neList = statasticService.getNEList();
     
+    
+    serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
     
 
-    
-    
-    
-    
-    
-    
-    
+    function treeItemClicked(itemName) {
+        $state.go('main.treeitem', { treeItemName: itemName });
+    };
+    ///////////////////////////////////////////////
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('DashBoardController', DashBoardController);
+DashBoardController.$inject = ['statasticService', 'logger'];
+function DashBoardController(statasticService, logger) {
+    var vm = this;
+    vm.alarmStatastic = statasticService.getAlarmSt();
+    vm.activeAlarmCount = statasticService.activeAlarmCount
+    vm.neList = statasticService.getNEList();
+
     ///////////////////////////////////////////////
     vm.config = {
         visible: true, // default: true
@@ -196,16 +203,6 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     vm.alarmStChartData = statasticService.alarmStChartData;
     vm.neStChartData = statasticService.neStChartData;
     vm.connStChartData = statasticService.alarmStChartData;
-    
-    ///////////////////////////////////////////////
-    
-    serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
-    
-
-    function treeItemClicked(itemName) {
-        $state.go('main.treeitem', { treeItemName: itemName });
-    };
-    ///////////////////////////////////////////////
 }
 
 
@@ -223,9 +220,9 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
     vm.cols=[
          {
             field: "neId",
-            title: "ID",
+            title: "网元ID",
             sortable: "neId",
-            filter: { neId: "number" },
+            filter: { neId: "text" },
             getValue: htmlValue,
             show: true
         },
@@ -233,7 +230,7 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
             field: "neGroupId",
             title: "网元组",
             sortable: "neGroupId",
-            filter: { neGroupId: "number" },
+            filter: { neGroupId: "text" },
             getValue: htmlValue,
             show: true
         },
@@ -244,6 +241,14 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
             filter: { name: "text" },
             getValue: htmlValue,
             show: true
+        },
+        {
+            field: "location",
+            title: "位置",
+            sortable: "location",
+            filter: { location: "text" },
+            getValue: htmlValue,
+            show: false
         },
         {
             field: "type",
@@ -265,13 +270,29 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
             sortable: "subtype",
             filter: { subtype: "text" },
             getValue: htmlValue,
-            show: false
+            show: true
         },
         {
             field: "version",
             title: "版本",
             sortable: "version",
             filter: { version: "text" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "creationDate",
+            title: "创建日期",
+            sortable: "creationDate",
+            filter: { creationDate: "text" },
+            getValue: htmlValue,
+            show: false
+        },
+        {
+            field: "protocolAddress",
+            title: "协议地址",
+            sortable: "protocolAddress",
+            filter: { protocolAddress: "text" },
             getValue: htmlValue,
             show: true
         },
@@ -328,16 +349,29 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
             ],
             getValue: htmlValue,
             show: false
-        }
+        },
+        {
+            field: "comments",
+            title: "备注",
+            sortable: "comments",
+            filter: { comments: "text" },
+            getValue: htmlValue,
+            show: false
+        },
     ];
     vm.tableParams = new NgTableParams(
-        { count: 50}, 
+        { 
+            count: 50
+        }, 
         { counts: [10, 20, 50],
             dataset:  vm.data
         }
     );
-    vm.tableColsWidth=['10%', '10%', '23%', '10%', '9%', '14%', '12%', '12%'];
-    vm.tableClass="table table-striped table-bordered table-hover table-condensed";
+    vm.tableColsWidth=['8%', '8%', '14%', '10%', '8%', '8%', '11%', '11%', '11%', '11%'];
+    vm.tableClassFun=function(){
+        return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
+        //return "table table-striped table-bordered table-hover table-condensed";
+    }
     vm.tableTrStyleFun=function(item){
         var rlt={
             
@@ -348,7 +382,11 @@ function TreeItemDetailsMiddleController($stateParams, NgTableParams, statasticS
         var rlt={
             'overflow':'hidden',
             'white-space': 'nowrap',
-            'text-overflow': 'ellipsis'
+            'text-overflow': 'ellipsis',
+            'padding-left': '4px',
+            'padding-right': '4px',
+            'padding-top': '2px',
+            'padding-bottom': '2px'
         };
         if(col.field=="suppervisionState"){
             if(item[col.field]=="unsuppervised"){

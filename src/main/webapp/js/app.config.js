@@ -27,11 +27,6 @@ angular
                             templateUrl: "./partials/treeitemdetailsmiddle.html",
                             controller: 'TreeItemDetailsMiddleController',
                             controllerAs: 'vm'
-                        },
-                        "dashboardMiddleView": {
-                            templateUrl: "./partials/dashboardmiddle.html",
-                            controller: 'TreeController',
-                            controllerAs: 'vm'
                         }
                     }
 

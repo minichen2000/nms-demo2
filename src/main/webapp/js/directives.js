@@ -115,7 +115,7 @@ angular
                     myNgTableParams: '=',
                     myNgTableCols: '=',
                     myNgTableColsWidth: '=',
-                    myNgTableClass: '=',
+                    myNgTableClassFun: '=',
                     myNgTableShowFilters: '=',
                     myNgTableTrStyleFun: '=',
                     myNgTableTdStyleFun: '=',

@@ -1,5 +1,5 @@
 <div>
-<table ng-table-dynamic="myNgTableParams with myNgTableCols" class="{{myNgTableClass}}"
+<table ng-table-dynamic="myNgTableParams with myNgTableCols" ng-class="myNgTableClassFun()"
 show-filter="myNgTableShowFilters" style="table-layout:fixed">
     <colgroup>
         <col ng-repeat="w in myNgTableColsWidth track by $index" width="{{w}}"/>
