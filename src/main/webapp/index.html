@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" ng-app="nmsdemoApp">
+<html lang="zh-CN" ng-app="nmsdemoApp" style="height:100%">
 
 <head>
     <meta charset="utf-8">
@@ -41,8 +41,11 @@
 
 
 </head>
-
-<body class="container-fluid">
+<!--perfect-scrollbar suppress-scroll-x="true" style="height:550px;overflow:hidden"
+style="height:100%;overflow:hidden;padding-left:2px;padding-right:2px;border-right: 1px solid #e7e7e7"
+refresh-on-change-with-boolean="leftTreeChanged.changed" suppress-scroll-x="true"
+-->
+<body class="container-fluid" style="height:100%">
     <div ui-view>
         <div class="row" ng-controller="LoginController as vm">
             <div class="col-md-4 col-md-offset-4">

@@ -24,7 +24,9 @@ angular
                     url: "main/treeitem/:treeItemId",
                     templateUrl: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='ne' && !$stateParams.neId){
+                        if($stateParams.treeItemId=='home'){
+                            return "./partials/middle_dashboard_template.html";
+                        }else if($stateParams.treeItemId=='ne' && !$stateParams.neId){
                             return "./partials/middle_ne_template.html";
                         }else if($stateParams.treeItemId=='physicalLink'){
                             return "./partials/middle_test_template.html";
@@ -41,7 +43,9 @@ angular
                     },
                     controllerProvider: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='ne' && !$stateParams.neId){
+                        if($stateParams.treeItemId=='home'){
+                            return "MiddleDashBoardController as vm";
+                        }else if($stateParams.treeItemId=='ne' && !$stateParams.neId){
                             return "MiddleNEController as vm";
                         }else if($stateParams.treeItemId=='physicalLink'){
                             return "MiddlePhysicalLinkController as vm";

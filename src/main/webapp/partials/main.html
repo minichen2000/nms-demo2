@@ -58,23 +58,26 @@
         <!-- /.navbar-static-side -->
     </nav>
 </div>
-<div class="row">
+<div class="row" style="height:100%">
 
 
-    <maintree ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData" trail-tree-data="vm.trailTreeData"
-    path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged" tree-item-clicked="vm.treeItemClicked">
+    <maintree home-tree-data="vm.homeTreeData" ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData"
+    trail-tree-data="vm.trailTreeData" path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged"
+    tree-item-clicked="vm.treeItemClicked">
     </maintree>
 
 
 
-    <div class="col col-xs-10 col-sm-10 col-md-10 col-lg-10" style="background:#ffffff;height:580px;padding-top:20px;padding-left:40px;padding-right:40px">
+    <div class="col col-xs-10 col-sm-10 col-md-10 col-lg-10" style="background:#ffffff;height:100%;padding-top:10px;padding-left:10px;padding-right:20px;padding-bottom:2px">
 
 
         <div ui-view>
-            <div ng-include="'./partials/dashboardmiddle.html'"></div>
+            <div ng-controller="MiddleDashBoardController as vm">
+                <div ng-include="'./partials/middle_dashboard_template.html'"></div>
+            </div>
         </div>
 
-        
+
     </div>
 
 </div>

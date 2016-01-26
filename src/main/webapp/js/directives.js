@@ -58,6 +58,7 @@ angular
                 // can be used as attribute or element
                 restrict: 'AE',
                 scope: {
+                    homeTreeData: '=',
                     neTreeData: '=',
                     mapTreeData: '=',
                     tlTreeData: '=',

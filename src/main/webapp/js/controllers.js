@@ -45,6 +45,7 @@ angular
 TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', 'logger','commonUtil'];
 function TreeController($state, statasticService, serverNotificationService, $location, logger, commonUtil) {
     var vm = this;
+    vm.homeTreeData = statasticService.getHomeTreeData();
     vm.neTreeData = statasticService.getNETreeData();
     vm.mapTreeData = statasticService.getMapTreeData();
     vm.tlTreeData = statasticService.getTLTreeData();
@@ -66,9 +67,9 @@ function TreeController($state, statasticService, serverNotificationService, $lo
 
 angular
     .module('nmsdemoApp')
-    .controller('DashBoardController', DashBoardController);
-DashBoardController.$inject = ['statasticService', 'logger'];
-function DashBoardController(statasticService, logger) {
+    .controller('MiddleDashBoardController', MiddleDashBoardController);
+MiddleDashBoardController.$inject = ['statasticService', 'logger'];
+function MiddleDashBoardController(statasticService, logger) {
     var vm = this;
     vm.alarmStatastic = statasticService.getAlarmSt();
     vm.activeAlarmCount = statasticService.activeAlarmCount
@@ -361,9 +362,9 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
     ];
     vm.tableParams = new NgTableParams(
         { 
-            count: 50
+            count: 15
         }, 
-        { counts: [10, 20, 50],
+        { counts: [15, 20, 50, 100],
             dataset:  vm.data
         }
     );

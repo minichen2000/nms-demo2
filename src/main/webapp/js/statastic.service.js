@@ -47,6 +47,12 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         }
     ];
     var neStChartData = [];
+    var homeTreeData = {
+        id: 'home',
+        name: '首页',
+        type: 'home-cate',
+        children: []
+    };
     var neTreeData = {
         id: 'ne',
         name: '网元',
@@ -77,14 +83,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         id: 'evc',
         name: '以太网电路',
         type: 'evc-cate',
-        children: [{
-            name: 'ETS电路',
-            type: 'evc-ets-cate'
-        }, {
-                name: 'ETB电路',
-                type: 'evc-etb-cate'
-            }
-        ]
+        children: []
     };
 
 
@@ -98,7 +97,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         getNEList: getNEList,
         setAlarmSt: setAlarmSt,
         getAlarmSt: getAlarmSt,
-        buildNETreeData: buildNETreeData,
+        getHomeTreeData: getHomeTreeData,
         getNETreeData: getNETreeData,
         getMapTreeData: getMapTreeData,
         getTLTreeData: getTLTreeData,
@@ -112,8 +111,8 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
 
 
     function eventListener(event) {
-        logger.log("eventListener: event:\n" + event);
-        event = JSON.parse(event);
+        //logger.log("eventListener: event:\n" + event);
+        //event = JSON.parse(event);
         if (event.eventType == "alarmStatastic") {
             setAlarmSt(event.event);
             logger.log("eventListener: alarmStatastic:\n" + JSON.stringify(alarmSt));
@@ -128,9 +127,10 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
 
     function addNE(ne) {
         neList.push(ne);
+        //logger.log("addNE:neList.length:"+neList.length);
         buildNeStatasticChartData();
 
-        for (var i = 0; i < neTreeData.children.length; i++) {
+        /*for (var i = 0; i < neTreeData.children.length; i++) {
             if (neTreeData.children[i].neGroupId == ne.neGroupId) {
                 neTreeData.children[i].children.push({
                     name: ne.name,
@@ -141,7 +141,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
                 });
                 return;
             }
-        }
+        }*/
     }
     function removeNE(ne) {
         for (var i = 0; i < neList.length; i++) {
@@ -150,10 +150,11 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
                 break;
             }
         }
+        //logger.log("removeNE: neList.length:"+neList.length);
         buildNeStatasticChartData();
 
 
-        for (var i = 0; i < neTreeData.children.length; i++) {
+        /*for (var i = 0; i < neTreeData.children.length; i++) {
             if (neTreeData.children[i].neGroupId == ne.neGroupId) {
 
                 for (var j = 0; j < neTreeData.children[i].children.length; j++) {
@@ -163,7 +164,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
                     }
                 }
             }
-        }
+        }*/
     }
     function updateNE(ne) {
         for (var i = 0; i < neList.length; i++) {
@@ -173,7 +174,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
             }
         }
 
-        for (var i = 0; i < neTreeData.children.length; i++) {
+        /*for (var i = 0; i < neTreeData.children.length; i++) {
             if (neTreeData.children[i].neGroupId == ne.neGroupId) {
 
                 for (var j = 0; j < neTreeData.children[i].children.length; j++) {
@@ -186,7 +187,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
                     }
                 }
             }
-        }
+        }*/
     }
 
     function setNEList(nes) {
@@ -195,7 +196,6 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
             neList.push(nes[i]);
         }
         buildNeStatasticChartData();
-        buildNETreeData();
     }
     function getNEList() {
         return neList;
@@ -255,7 +255,8 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
     function getAlarmSt() {
         return alarmSt;
     }
-    function buildNETreeData() {
+    
+    /*function buildNETreeData() {
         var neg_prefix = "网元组";
         neTreeData.children.splice(0, neTreeData.children.length);
         for (var i = 0; i < neGroupList.length; i++) {
@@ -280,7 +281,12 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
             }
             neTreeData.children.push(gData);
         }
+    }*/
+    
+    function getHomeTreeData() {
+        return homeTreeData;
     }
+    
     function getNETreeData() {
         return neTreeData;
     }
