@@ -9,26 +9,47 @@
         .module('nmsdemoApp')
         .factory('serverNotificationService', serverNotificationService);
 
-    serverNotificationService.$inject = ['logger', '$rootScope'];
+    serverNotificationService.$inject = ['logger', '$rootScope', '$window'];
 
     /**
      * @namespace Logger
      * @desc Application wide logger
      * @memberOf Factories
      */
-    function serverNotificationService(logger, $rootScope) {
+    function serverNotificationService(logger, $rootScope, $window) {
 
         var ws_listeners = [];
         var worker = new Worker("js/ws_worker.js");
+        var event_buffer = [];
+        var scrollBusy=false;
+        var lastScrollMS=0;
+        var scrollIdleFactorMS=500;
         logger.log("worker created.");
+
+
+        angular.element($window).bind("scroll", function () {
+            lastScrollMS=(new Date()).getTime();
+            scrollBusy=true;
+        });
         worker.onmessage = function (evt) {
             //logger.log(evt.data);
-            $rootScope.$apply(function () {
-                for (var i = 0; i < ws_listeners.length; i++) {
-                    ws_listeners[i](evt.data);
-                }
-            });
+            event_buffer.push(evt.data);
+            
         }
+
+        setInterval(function () {
+            if(scrollBusy && (new Date()).getTime()-lastScrollMS>scrollIdleFactorMS){
+                scrollBusy=false;
+            }
+            if (0 < event_buffer.length && !scrollBusy) {
+                $rootScope.$apply(function () {
+                    for (var i = 0; i < ws_listeners.length; i++) {
+                        ws_listeners[i](event_buffer.shift());
+                    }
+                });
+            }
+        }, 10);
+
         return {
             addListener: addListener,
             removeListener: removeListener,

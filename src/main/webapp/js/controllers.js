@@ -110,7 +110,7 @@ function MiddleDashBoardController(statasticService, logger) {
             duration: 1000,
             labelThreshold: 0.02,
             showLegend: true,
-            wdith: 100,
+            height:300,
             pie: {
                 dispatch: {
                     elementClick: function (e) {
@@ -147,7 +147,7 @@ function MiddleDashBoardController(statasticService, logger) {
             duration: 1000,
             labelThreshold: 0.02,
             showLegend: true,
-            wdith: 100,
+            height:300,
             pie: {
                 dispatch: {
                     elementClick: function (e) {
@@ -184,7 +184,7 @@ function MiddleDashBoardController(statasticService, logger) {
             duration: 1000,
             labelThreshold: 0.02,
             showLegend: true,
-            wdith: 100,
+            height:300,
             pie: {
                 dispatch: {
                     elementClick: function (e) {
@@ -212,8 +212,8 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state'];
-function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state) {
+MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel'];
+function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel) {
     var vm = this;
     vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
@@ -368,6 +368,13 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
             dataset:  vm.data
         }
     );
+    
+    /*ngTableEventsChannel.onAfterCreated(function(){logger.log("onAfterCreated")}, $scope, vm.tableParams);
+    ngTableEventsChannel.onAfterReloadData(function(){logger.log("onAfterReloadData")}, $scope, vm.tableParams);
+    ngTableEventsChannel.onDatasetChanged(function(){logger.log("onDatasetChanged")}, $scope, vm.tableParams);
+    ngTableEventsChannel.onPagesChanged(function(){logger.log("onPagesChanged")}, $scope, vm.tableParams);*/
+
+    
     vm.tableColsWidth=['8%', '8%', '14%', '10%', '8%', '8%', '11%', '11%', '11%', '11%'];
     vm.tableClassFun=function(){
         return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
@@ -446,9 +453,9 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
       return html;
     }
     
-    $scope.$watch(function(){return vm.data}, function(){
+    /*$scope.$watch(function(){return vm.data}, function(){
         vm.tableParams.reload();
-    },true);
+    },true);*/
    
     
 }

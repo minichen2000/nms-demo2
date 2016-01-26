@@ -1,6 +1,7 @@
 package org.nmsdemo.model;
 
 public class MDL_NE {
+	private String neKey;
 	private int neGroupId;
 	private String neGroupType;
 	private int neId;
@@ -40,7 +41,15 @@ public class MDL_NE {
         this.suppervisionState = suppervisionState;
         this.communicationState = communicationState;
         this.alarmState = alarmState;
+        this.neKey=""+neGroupId+"/"+neId;
     }
+    
+    public String getNeKey() {
+		return neKey;
+	}
+	public void setNeKey(String neKey) {
+		this.neKey = neKey;
+	}
     public int getNeGroupId()
     {
         return neGroupId;
