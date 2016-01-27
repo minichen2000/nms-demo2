@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.nmsdemo.model.MDLUtil;
 import org.nmsdemo.model.MDL_AlarmPSStatastic;
+import org.nmsdemo.model.MDL_GEN_SNC;
 import org.nmsdemo.model.MDL_NE;
 import org.nmsdemo.model.MDL_NEGroup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MDL_NEServlet extends HttpServlet {
+public class MDL_SNCServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		resp.setContentType("text/html;charset=utf-8");
@@ -26,28 +27,23 @@ public class MDL_NEServlet extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		// req.setCharacterEncoding("utf-8");
 
-		List<MDL_NE> nes = new ArrayList<MDL_NE>();
+		List<MDL_GEN_SNC> sncs = new ArrayList<MDL_GEN_SNC>();
 		int LL = 30000;
 
 		for (int i = 0; i < LL; i++) {
-            nes.add(new MDL_NE(100 + i / 100, 
-            (new Random()).nextInt(9) > 5 ? "q3" : "dex", 
-            i % 100, "node" + i, "ChengDu" + i, 
-            genNEType(),
-            (new Random()).nextInt(9) > 5 ? "sm" : "mc",
-            (new Random()).nextInt(9) > 5 ? "4.0" : "4.1",
-            (new Random()).nextInt(9) > 5 ? "2015-01-22 22:15:09" : "2015-01-25 13:39:22",
-            (new Random()).nextInt(9) > 5 ? "10.105.3.11" : "10.105.3.12",
-            "N/A", 
-            (new Random()).nextInt(9) > 5 ? "suppervised" : "unsuppervised",
-            (new Random()).nextInt(9) > 5 ? "available" : "unavailable", 
-            (new Random()).nextInt(9) > 5 ? "critical" : "major"));
-        }
+		    sncs.add(new MDL_GEN_SNC(""+(100 + i / 100), 
+		    ""+(100 + i / 100), 
+			"trail" + i, 
+			genSNCRate(),
+			genSNCState(),
+			(new Random()).nextInt(9) > 5 ? "protected" : "unprotected",
+			null,null));
+		}
 		
 
 		PrintWriter out = resp.getWriter();
 
-		String msg = MDLUtil.Object_WRAP(nes);
+		String msg = MDLUtil.Object_WRAP(sncs);
 		// System.out.println(msg);
 		out.println(msg);
 	}
@@ -58,19 +54,29 @@ public class MDL_NEServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(req, resp);
 	}
-	private String genNEType(){
-		switch((new Random()).nextInt(3)){
+	private String genSNCState(){
+		switch((new Random()).nextInt(2)){
 			case 0:
-				return "1660sm";
+				return "defined";
 			case 1:
-				return "1678mc";
+				return "allocated";
 			case 2:
-				return "es16";
-			case 3:
-				return "1662smc";
+				return "implemented";
 			default:
 				return "1660sm";
 		}
 	}
+	private String genSNCRate(){
+        switch((new Random()).nextInt(2)){
+            case 0:
+                return "MS";
+            case 1:
+                return "VC4";
+            case 2:
+                return "VC12";
+            default:
+                return "1660sm";
+        }
+    }
 
 }

@@ -10,6 +10,7 @@ angular
 statasticService.$inject = ['logger', 'serverNotificationService', '$rootScope', 'commonUtil'];
 function statasticService(logger, serverNotificationService, $rootScope, commonUtil) {
 
+    var dataChangeTrigger={triggered:false};
     var neList = [];
     var neSearchMap = null;
     var neTypeCounter = null;
@@ -108,7 +109,8 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         getEVCTreeData: getEVCTreeData,
         alarmStChartData: alarmStChartData,
         activeAlarmCount: activeAlarmCount,
-        neStChartData: neStChartData
+        neStChartData: neStChartData,
+        dataChangeTrigger:dataChangeTrigger
     }
 
 
@@ -132,6 +134,8 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         if (neSearchMap.add(ne)) {
             neTypeCounter.add(ne.type);
             updateNeStatasticChartData();
+            
+            dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
         }
         logger.log("addNE:endin:"+(new Date().getTime()));
     }
@@ -140,11 +144,13 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         if (neSearchMap.remove(ne.neKey)) {
             neTypeCounter.remove(ne.type);
             updateNeStatasticChartData();
+            dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
         }
         logger.log("removeNE:endin:"+(new Date().getTime()));
     }
     function updateNE(ne) {
         neSearchMap.add(ne);
+        dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
     }
 
     function setNEList(nes) {

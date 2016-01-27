@@ -62,6 +62,15 @@
   </servlet>
   
   <servlet>
+    <servlet-name>retrieve_sncs</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.model.MDL_SNCServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
     <servlet-name>retrieve_alarm_statastic</servlet-name>
     <servlet-class>org.nmsdemo.servlet.model.MDL_AlarmPSStatasticServlet</servlet-class>
 	<init-param>
@@ -90,6 +99,10 @@
   <servlet-mapping>
     <servlet-name>retrieve_nes</servlet-name>
     <url-pattern>/retrieve_nes/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>retrieve_sncs</servlet-name>
+    <url-pattern>/retrieve_sncs/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>retrieve_alarm_statastic</servlet-name>

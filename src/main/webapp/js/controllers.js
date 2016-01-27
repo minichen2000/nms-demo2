@@ -110,7 +110,7 @@ function MiddleDashBoardController(statasticService, logger) {
             duration: 1000,
             labelThreshold: 0.02,
             showLegend: true,
-            height:300,
+            height:200,
             pie: {
                 dispatch: {
                     elementClick: function (e) {
@@ -147,7 +147,7 @@ function MiddleDashBoardController(statasticService, logger) {
             duration: 1000,
             labelThreshold: 0.02,
             showLegend: true,
-            height:300,
+            height:200,
             pie: {
                 dispatch: {
                     elementClick: function (e) {
@@ -184,7 +184,7 @@ function MiddleDashBoardController(statasticService, logger) {
             duration: 1000,
             labelThreshold: 0.02,
             showLegend: true,
-            height:300,
+            height:200,
             pie: {
                 dispatch: {
                     elementClick: function (e) {
@@ -217,6 +217,7 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
     var vm = this;
     vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
+    vm.dataChangeTrigger=statasticService.dataChangeTrigger;
     
     vm.cols=[
          {
@@ -453,9 +454,11 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
       return html;
     }
     
-    /*$scope.$watch(function(){return vm.data}, function(){
+    
+    $scope.$watch(function(){return vm.dataChangeTrigger.triggered}, function(){
+        logger.log("watch vm.data");
         vm.tableParams.reload();
-    },true);*/
+    });
    
     
 }
