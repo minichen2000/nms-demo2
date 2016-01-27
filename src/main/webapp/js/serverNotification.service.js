@@ -32,7 +32,6 @@
             scrollBusy=true;
         });
         worker.onmessage = function (evt) {
-            //logger.log(evt.data);
             event_buffer.push(evt.data);
             
         }
@@ -43,8 +42,9 @@
             }
             if (0 < event_buffer.length && !scrollBusy) {
                 $rootScope.$apply(function () {
+                    var ev=event_buffer.shift();
                     for (var i = 0; i < ws_listeners.length; i++) {
-                        ws_listeners[i](event_buffer.shift());
+                        ws_listeners[i](ev);
                     }
                 });
             }
@@ -60,11 +60,13 @@
 
         function addListener(fun) {
             ws_listeners.push(fun);
+            logger.log("addListener, ws_listeners.length: "+ws_listeners.length);
         }
         function removeListener(fun) {
             for (var i = 0; i < ws_listeners.length; i++) {
                 if (ws_listeners[i] == fun) {
                     ws_listeners.splice(i, 1);
+                    logger.log("removeListener, ws_listeners.length: "+ws_listeners.length);
                     return;
                 }
             }

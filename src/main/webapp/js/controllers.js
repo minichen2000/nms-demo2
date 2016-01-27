@@ -1,3 +1,4 @@
+/* global eventType */
 'use strict';
 
 /* Controllers */
@@ -42,8 +43,8 @@ function LoginController($state, loginService) {
 angular
     .module('nmsdemoApp')
     .controller('TreeController', TreeController);
-TreeController.$inject = ['$state', 'statasticService', 'serverNotificationService', '$location', 'logger','commonUtil'];
-function TreeController($state, statasticService, serverNotificationService, $location, logger, commonUtil) {
+TreeController.$inject = ['$state', 'dataService', 'statasticService', 'serverNotificationService', '$location', 'logger','commonUtil','$timeout'];
+function TreeController($state, dataService, statasticService, serverNotificationService, $location, logger, commonUtil, $timeout) {
     var vm = this;
     vm.homeTreeData = statasticService.getHomeTreeData();
     vm.neTreeData = statasticService.getNETreeData();
@@ -59,8 +60,24 @@ function TreeController($state, statasticService, serverNotificationService, $lo
     serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
     
 
+
+    function retrieveSNCs_failedCB(msg){
+        $state.go('main.treeitem', { treeItemId: "loadingFailed" });
+    }
     function treeItemClicked(itemId) {
-        $state.go('main.treeitem', { treeItemId: itemId });
+        switch(itemId){
+            case 'trail':
+                $state.go('main.treeitem', { treeItemId: "loading" });
+                dataService.setRetrieveSNCs_failedCB(retrieveSNCs_failedCB);
+                break;
+            default:
+                break;
+                
+        }
+        $timeout(function(){
+            $state.go('main.treeitem', { treeItemId: itemId });
+        }, 200);
+        
     };
     ///////////////////////////////////////////////
 }
@@ -487,10 +504,171 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleTrailController', MiddleTrailController);
 
-MiddleTrailController.$inject = ['$stateParams'];
-function MiddleTrailController($stateParams) {
+MiddleTrailController.$inject = ['$stateParams','retrievedSNCs','NgTableParams', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService'];
+function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logger, $state, $scope, commonUtil, serverNotificationService) {
     var vm = this;
-    vm.message = $stateParams.treeItemId;
+    vm.data=retrievedSNCs;
+    vm.dataChangeTrigger={triggered: false};
+    
+    
+    var sncSearchMap = new commonUtil.KeyIndexMap(vm.data, 'sncKey');
+    function addSNC(snc) {
+        if (sncSearchMap.add(snc)) {
+            vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
+        }
+    }
+    function removeSNC(snc) {
+        if (sncSearchMap.remove(snc.sncKey)) {
+            vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
+        }
+    }
+    function updateSNC(snc) {
+        sncSearchMap.add(snc);
+        vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
+    }
+    function eventListener(event) {
+        //logger.log("sncEvent:"+JSON.stringify(event));
+        if (event.eventType == "sncCreation") {
+            addSNC(event.event);
+            //logger.log("eventListener: sncCreation:\n" + JSON.stringify(event.event));
+        } else if (event.eventType == "sncDeletion") {
+            removeSNC(event.event);
+            //logger.log("eventListener: sncDeletion:\n" + JSON.stringify(event.event));
+        }
+    }
+    serverNotificationService.addListener(eventListener);
+    $scope.$on("$destroy", function(){
+        logger.log("MiddleTrailController,$destroy");
+        serverNotificationService.removeListener(eventListener);
+    });
+    
+    
+    vm.cols=[
+         {
+            field: "sncId",
+            title: "子网连接ID",
+            sortable: "sncId",
+            filter: { sncId: "text" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "name",
+            title: "名称",
+            sortable: "name",
+            filter: { name: "text" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "rate",
+            title: "层次",
+            sortable: "rate",
+            filter: { rate: "text" },
+            getValue: htmlValue,
+            show: true
+        },
+        {
+            field: "sncState",
+            title: "实施状态",
+            sortable: "sncState",
+            filter: { sncState: "select" },
+            filterData: [
+                { id: 'defined', title: 'defined' },
+                { id: 'allocated', title: 'allocated' },
+                { id: 'implemented', title: 'implemented' }
+            ],
+            getValue: htmlValue,
+            show: true
+        },
+        
+        {
+            field: "protectedType",
+            title: "保护",
+            sortable: "protectedType",
+            filter: { protectedType: "select" },
+            filterData: [
+                { id: 'protected', title: 'protected' },
+                { id: 'unprotected', title: 'unprotected' }
+            ],
+            getValue: htmlValue, 
+            show: true
+        }
+    ];
+    vm.tableParams = new NgTableParams(
+        { 
+            count: 15
+        }, 
+        { counts: [15, 20, 50, 100],
+            dataset:  vm.data
+        }
+    );
+    
+    vm.tableColsWidth=['20%', '20%', '20%', '20%', '20%'];
+    vm.tableClassFun=function(){
+        return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
+    }
+    vm.tableTrStyleFun=function(item){
+        var rlt={
+            
+        };
+        return rlt;
+    }
+    vm.tableTdStyleFun=function(item, col){
+        var rlt={
+            'overflow':'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis',
+            'padding-left': '4px',
+            'padding-right': '4px',
+            'padding-top': '2px',
+            'padding-bottom': '2px'
+        };
+        if(col.field=="sncState"){
+            if(item[col.field]=="defined"){
+                rlt['background-color']='white';
+                rlt['color']='black';
+            }else if(item[col.field]=="allocated"){
+                rlt['background-color']='#ff7f0e';
+                rlt['color']='white';
+            }else if(item[col.field]=="implemented"){
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }else if(col.field=="protectedType"){
+            if(item[col.field]=="unprotected"){
+                rlt['background-color']='white';
+                rlt['color']='black';
+            }else{
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }
+        return rlt;
+    }
+    vm.tableItemClickFun=function(item, col){
+        logger.log("tableItemClickFun:"+col.field+":"+item[col.field]);
+        $state.go('main.treeitem.secondlevel',{treeItemId: 'trail', sncId: item.sncId});
+    }
+    
+    function htmlValue($scope, row) {
+      var value = row[this.field];
+      var html=""+value;
+      if(this.field=="name"){
+          //html="<a href='#' uib-tooltip=\""+html+"\">"+html+"</a>";
+          html="<a href='#' uib-tooltip='"+html+"' tooltip-placement='top-left' ng-click=\"myNgTableItemClickFun(item, col)\">"+html+"</a>";
+      }else{
+          html="<span>"+html+"</span>";
+      }
+      //var rlt=$sce.trustAsHtml(html);
+      return html;
+    }
+    
+    
+    $scope.$watch(function(){return vm.dataChangeTrigger.triggered}, function(){
+        logger.log("watch vm.data");
+        vm.tableParams.reload();
+    });
 }
 
 angular
@@ -524,6 +702,40 @@ function MiddleSingleNEController($stateParams,$state) {
     vm.backToNeList=function(){
         $state.go('main.treeitem',{treeItemId: 'ne'});
     }
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleSingleTrailController', MiddleSingleTrailController);
+
+MiddleSingleTrailController.$inject = ['$stateParams','$state'];
+function MiddleSingleTrailController($stateParams,$state) {
+    var vm = this;
+    vm.message = ""+$stateParams.sncId;
+    vm.backToTrailList=function(){
+        $state.go('main.treeitem',{treeItemId: 'trail'});
+    }
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleLoadingController', MiddleLoadingController);
+
+MiddleLoadingController.$inject = ['$stateParams'];
+function MiddleLoadingController($stateParams) {
+    var vm = this;
+    
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleLoadingFailedController', MiddleLoadingFailedController);
+
+MiddleLoadingFailedController.$inject = ['$stateParams'];
+function MiddleLoadingFailedController($stateParams) {
+    var vm = this;
+    vm.errorMsg="";
+    
 }
 
 

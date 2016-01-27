@@ -119,34 +119,30 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         //event = JSON.parse(event);
         if (event.eventType == "alarmStatastic") {
             setAlarmSt(event.event);
-            logger.log("eventListener: alarmStatastic:\n" + JSON.stringify(alarmSt));
+            //logger.log("eventListener: alarmStatastic:\n" + JSON.stringify(alarmSt));
         } else if (event.eventType == "neCreation") {
             addNE(event.event);
-            logger.log("eventListener: neCreation:\n" + JSON.stringify(event.event));
+            //logger.log("eventListener: neCreation:\n" + JSON.stringify(event.event));
         } else if (event.eventType == "neDeletion") {
             removeNE(event.event);
-            logger.log("eventListener: neDeletion:\n" + JSON.stringify(event.event));
+            //logger.log("eventListener: neDeletion:\n" + JSON.stringify(event.event));
         }
     }
 
     function addNE(ne) {
-        logger.log("addNE:begin:"+(new Date().getTime()));
         if (neSearchMap.add(ne)) {
             neTypeCounter.add(ne.type);
             updateNeStatasticChartData();
             
             dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
         }
-        logger.log("addNE:endin:"+(new Date().getTime()));
     }
     function removeNE(ne) {
-        logger.log("removeNE:begin:"+(new Date().getTime()));
         if (neSearchMap.remove(ne.neKey)) {
             neTypeCounter.remove(ne.type);
             updateNeStatasticChartData();
             dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
         }
-        logger.log("removeNE:endin:"+(new Date().getTime()));
     }
     function updateNE(ne) {
         neSearchMap.add(ne);

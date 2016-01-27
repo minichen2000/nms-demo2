@@ -22,18 +22,33 @@ angular
                 })
                 .state('main.treeitem', {
                     url: "main/treeitem/:treeItemId",
+                    resolve: {
+                        retrievedSNCs: ['dataService', '$stateParams', 'logger',
+                            function(dataService, $stateParams, logger){
+                                if($stateParams.treeItemId!='trail'){
+                                    return;
+                                }else{
+                                    return dataService.retrieveSNCs();
+                                }
+                                
+                        }]
+                    },
                     templateUrl: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='home'){
+                        if($stateParams.treeItemId=='loading'){
+                            return "./partials/middle_loading_template.html";
+                        }else if($stateParams.treeItemId=='loadingFailed'){
+                            return "./partials/middle_loading_failed_template.html";
+                        }else if($stateParams.treeItemId=='home'){
                             return "./partials/middle_dashboard_template.html";
-                        }else if($stateParams.treeItemId=='ne' && !$stateParams.neId){
+                        }else if($stateParams.treeItemId=='ne'){
                             return "./partials/middle_ne_template.html";
                         }else if($stateParams.treeItemId=='physicalLink'){
                             return "./partials/middle_test_template.html";
                         }else if($stateParams.treeItemId=='map'){
                             return "./partials/middle_test_template.html";
                         }else if($stateParams.treeItemId=='trail'){
-                            return "./partials/middle_test_template.html";
+                            return "./partials/middle_trail_template.html";
                         }else if($stateParams.treeItemId=='path'){
                             return "./partials/middle_test_template.html";
                         }else if($stateParams.treeItemId=='evc'){
@@ -43,9 +58,13 @@ angular
                     },
                     controllerProvider: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='home'){
+                        if($stateParams.treeItemId=='loading'){
+                            return "MiddleLoadingController as vm";
+                        }else if($stateParams.treeItemId=='loadingFailed'){
+                            return "MiddleLoadingFailedController as vm";
+                        }else if($stateParams.treeItemId=='home'){
                             return "MiddleDashBoardController as vm";
-                        }else if($stateParams.treeItemId=='ne' && !$stateParams.neId){
+                        }else if($stateParams.treeItemId=='ne'){
                             return "MiddleNEController as vm";
                         }else if($stateParams.treeItemId=='physicalLink'){
                             return "MiddlePhysicalLinkController as vm";
@@ -63,11 +82,13 @@ angular
 
                 })
                 .state('main.treeitem.secondlevel', {
-                    url: "main/treeitem/secondlevel/:treeItemId/:neGroupId/:neId",
+                    url: "main/treeitem/secondlevel/:treeItemId/:neGroupId/:neId:/:sncId",
                     templateUrl: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
                         if($stateParams.treeItemId=='ne' && $stateParams.neGroupId && $stateParams.neId){
                             return "./partials/single_ne_template.html";
+                        }else if($stateParams.treeItemId=='trail' && $stateParams.sncId){
+                            return "./partials/single_trail_template.html";
                         }
                         
                     },
@@ -75,6 +96,8 @@ angular
                         console.log("$stateParams:"+JSON.stringify($stateParams));
                         if($stateParams.treeItemId=='ne' && $stateParams.neGroupId && $stateParams.neId){
                             return "MiddleSingleNEController as vm";
+                        }else if($stateParams.treeItemId=='trail' && $stateParams.sncId){
+                            return "MiddleSingleTrailController as vm";
                         }
                         
                     }

@@ -16,6 +16,7 @@ import org.nmsdemo.model.MDL_AlarmPSStatastic;
 import org.nmsdemo.model.MDL_GEN_SNC;
 import org.nmsdemo.model.MDL_NE;
 import org.nmsdemo.model.MDL_NEGroup;
+import org.nmsdemo.model.MDL_TPRef;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,13 +32,20 @@ public class MDL_SNCServlet extends HttpServlet {
 		int LL = 30000;
 
 		for (int i = 0; i < LL; i++) {
-		    sncs.add(new MDL_GEN_SNC(""+(100 + i / 100), 
-		    ""+(100 + i / 100), 
+			List<MDL_TPRef> aEnds=new ArrayList<MDL_TPRef>();
+			aEnds.add(new MDL_TPRef("100/1", 1, 100, "node"+i, "trail"+i+"_aEndTP", "trail"+i+"_aEndTP"));
+			
+			List<MDL_TPRef> zEnds=new ArrayList<MDL_TPRef>();
+			zEnds.add(new MDL_TPRef("100/1", 1, 100, "node"+(i+1), "trail"+i+"_zEndTP", "trail"+i+"_zEndTP"));
+			
+		    sncs.add(new MDL_GEN_SNC(""+(100 + i), 
+		    ""+(100 + i), 
 			"trail" + i, 
 			genSNCRate(),
 			genSNCState(),
 			(new Random()).nextInt(9) > 5 ? "protected" : "unprotected",
-			null,null));
+			aEnds,
+			zEnds));
 		}
 		
 
