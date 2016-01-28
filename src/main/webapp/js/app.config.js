@@ -34,7 +34,6 @@ angular
                         }]
                     },
                     templateUrl: function ($stateParams) {
-                        console.log("$stateParams:"+JSON.stringify($stateParams));
                         if($stateParams.treeItemId=='loading'){
                             return "./partials/middle_loading_template.html";
                         }else if($stateParams.treeItemId=='loadingFailed'){

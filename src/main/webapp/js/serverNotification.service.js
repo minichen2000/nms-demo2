@@ -33,6 +33,7 @@
         });
         worker.onmessage = function (evt) {
             event_buffer.push(evt.data);
+            //logger.log((new Date()).toString()+" event_buffer.length: "+event_buffer.length);
             
         }
 

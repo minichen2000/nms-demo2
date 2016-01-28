@@ -229,8 +229,8 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel'];
-function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel) {
+MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil'];
+function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil) {
     var vm = this;
     vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
@@ -472,8 +472,8 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
     }
     
     
-    $scope.$watch(function(){return vm.dataChangeTrigger.triggered}, function(){
-        logger.log("watch vm.data");
+    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 1000, function(){
+        //logger.log((new Date()).toString()+" watch vm.data - ne");
         vm.tableParams.reload();
     });
    
@@ -665,8 +665,8 @@ function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logge
     }
     
     
-    $scope.$watch(function(){return vm.dataChangeTrigger.triggered}, function(){
-        logger.log("watch vm.data");
+    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 1000, function(){
+        //logger.log((new Date()).toString()+" watch vm.data - snc");
         vm.tableParams.reload();
     });
 }
