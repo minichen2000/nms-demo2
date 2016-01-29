@@ -55,6 +55,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
     vm.evcTreeData = statasticService.getEVCTreeData();
     vm.leftTreeChanged = { changed: true };
     vm.treeItemClicked = treeItemClicked;
+    vm.bannerClicked = bannerClicked;
     
     
     serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
@@ -79,6 +80,10 @@ function TreeController($state, dataService, statasticService, serverNotificatio
         }, 200);
         
     };
+    
+    function bannerClicked(){
+        $state.go('main.treeitem', { treeItemId: 'creation_snc' });
+    }
     ///////////////////////////////////////////////
 }
 

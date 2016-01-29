@@ -52,6 +52,8 @@ angular
                             return "./partials/middle_test_template.html";
                         }else if($stateParams.treeItemId=='evc'){
                             return "./partials/middle_test_template.html";
+                        }else if($stateParams.treeItemId=='creation_snc'){
+                            return "./partials/creation_snc_template.html";
                         }
                         
                     },
@@ -75,6 +77,8 @@ angular
                             return "MiddlePathController as vm";
                         }else if($stateParams.treeItemId=='evc'){
                             return "MiddleEVCController as vm";
+                        }else if($stateParams.treeItemId=='creation_snc'){
+                            return "MiddleCreationSNCController as vm";
                         }
                         
                     }
