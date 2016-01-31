@@ -15,6 +15,7 @@
     function commonUtil(logger, $location) {
         var service = {
             indexInArray: indexInArray,
+            ObjectArrayKeyIndexManager: ObjectArrayKeyIndexManager,
             KeyIndexMap: KeyIndexMap,
             AttrValueCounter: AttrValueCounter,
             generateWSUrl: generateWSUrl,
@@ -63,7 +64,7 @@
 
 
 
-        function KeyIndexMap(_arr, _keyName) {
+        function ObjectArrayKeyIndexManager(_arr, _keyName) {
             var self = this;
             this.hashMap = new HashMap();
             var arr = _arr;
@@ -72,33 +73,83 @@
 
 
 
-
+            this.getArray=function(){
+                return arr;
+            }
+            this.has=function(keyValue){
+                return self.hashMap.has(keyValue);
+            }
+            this.get=function(keyValue){
+                if(self.has(keyValue)){
+                    return self.hashMap.get(keyValue);
+                }else{
+                    return undefined;
+                }
+            }
             this.add = function (arrItem) {
+                var idx=-1;
                 var hasItem = self.hashMap.has(arrItem[keyName]);
                 if (!hasItem) {
                     arr.push(arrItem);
-                    self.hashMap.set(arrItem[keyName], arr.length - 1);
-                    return true;
+                    idx=arr.length-1;
+                    self.hashMap.set(arrItem[keyName], idx);
                 } else {
-                    arr[self.hashMap.get(arrItem[keyName])] = arrItem;
-                    return false;
+                    idx=self.hashMap.get(arrItem[keyName]);
+                    arr[idx] = arrItem;
                 }
+                return idx;
             }
             this.remove = function (keyValue) {
                 var hasItem = self.hashMap.has(keyValue);
                 if (hasItem) {
                     var idx = self.hashMap.get(keyValue);
-                    delete self.hashMap.remove(keyValue);
+                    self.hashMap.remove(keyValue);
                     arr.splice(idx, 1);
-                    return true;
+                    return idx;
                 } else {
-                    return false;
+                    return -1;
                 }
             }
 
 
             for (var i = 0; i < arr.length; i++) {
                 self.hashMap.set(arr[i][keyName], i);
+            }
+
+            return this;
+        }
+        
+        function KeyIndexMap(_arr, _keyName) {
+            var self = this;
+            this.hashMap = new HashMap();
+            var keyName = _keyName;
+
+            this.has=function(keyValue){
+                return self.hashMap.has(keyValue);
+            }
+            this.get=function(keyValue){
+                if(self.hashMap.has(keyValue)){
+                    return self.hashMap.get(keyValue);
+                }else{
+                    return undefined;
+                }
+            }
+            this.add = function (keyValue, index) {
+                self.hashMap.set(keyValue, index);
+            }
+            this.remove = function (keyValue) {
+                var hasItem = self.hashMap.has(keyValue);
+                if (hasItem) {
+                    self.hashMap.remove(keyValue);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+            for (var i = 0; i < _arr.length; i++) {
+                self.hashMap.set(_arr[i][keyName], i);
             }
 
             return this;

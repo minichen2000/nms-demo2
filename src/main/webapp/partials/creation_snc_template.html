@@ -1,3 +1,11 @@
+<script type="text/ng-template" id="sncRateSelectCustomTemplate.html">
+    <a>
+        <i class="fa {{match.model.flag}}"></i>
+        <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+
 <div class="row">
     <div class="col col-lg-12">
         <pre>创建SNC</pre>
@@ -5,49 +13,50 @@
 </div>
 <div class="row">
     <div class="col col-lg-6">
-        <div class="input-group-btn">
-            <button type="button" class="btn btn-default 
-                     dropdown-toggle" data-toggle="dropdown">
-                VC4
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu pull-right">
-                <li><a href="#">VC4</a></li>
-                <li><a href="#">VC3</a></li>
-                <li><a href="#">VC12</a></li>
-            </ul>
+        <div class="input-group">
+            <span class="input-group-addon">子网连接速率</span>
+            <input type="text" placeholder="子网连接速率" ng-model="vm.SNCRateSelected" uib-typeahead="sncRate as sncRate.name for sncRate in vm.SNCRateWithFlags | filter:{name:$viewValue}"
+            class="form-control" typeahead-show-hint="true" typeahead-min-length="0" typeahead-template-url="sncRateSelectCustomTemplate.html">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
         </div>
         <br>
         <br>
         <div class="input-group">
             <span class="input-group-addon">A End 网元名</span>
-            <input type="text" class="form-control" placeholder="A End 网元名">
+            <input type="text" placeholder="A End 网元名" ng-model="vm.AEndNESelected" uib-typeahead="aEndNE as aEndNE.name for aEndNE in vm.neList | filter:{name:$viewValue}"
+            class="form-control" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.validateSNCRateSelected()">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}"></i></span>
         </div>
         <br>
         <div class="input-group">
             <span class="input-group-addon">A End 端口名</span>
-            <input type="text" class="form-control" placeholder="A End 端口名">
+            <input type="text" class="form-control" placeholder="A End 端口名" ng-disabled="!vm.validateAEndNESelected()">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
         </div>
         <br>
         <div class="input-group">
             <span class="input-group-addon">A End 时隙</span>
             <input type="text" class="form-control" placeholder="A End 时隙">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
         </div>
         <br>
         <br>
         <div class="input-group">
             <span class="input-group-addon">Z End 网元名</span>
             <input type="text" class="form-control" placeholder="Z End 网元名">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
         </div>
         <br>
         <div class="input-group">
             <span class="input-group-addon">Z End 端口名</span>
             <input type="text" class="form-control" placeholder="Z End 端口名">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
         </div>
         <br>
         <div class="input-group">
             <span class="input-group-addon">Z End 时隙</span>
             <input type="text" class="form-control" placeholder="Z End 时隙">
+            <span class="input-group-addon"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
         </div>
     </div>
 </div>

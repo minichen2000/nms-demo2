@@ -11,8 +11,8 @@ statasticService.$inject = ['logger', 'serverNotificationService', '$rootScope',
 function statasticService(logger, serverNotificationService, $rootScope, commonUtil) {
 
     var dataChangeTrigger={triggered:false};
-    var neList = [];
     var neSearchMap = null;
+    var neNameSearchMap = null;
     var neTypeCounter = null;
     var neGroupList = [];
     var alarmSt = {};
@@ -98,6 +98,8 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         getNEGroupList: getNEGroupList,
         setNEList: setNEList,
         getNEList: getNEList,
+        getNeSearchMap: getNeSearchMap,
+        getNeNameSearchMap: getNeNameSearchMap,
         setAlarmSt: setAlarmSt,
         getAlarmSt: getAlarmSt,
         getHomeTreeData: getHomeTreeData,
@@ -128,9 +130,21 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
             //logger.log("eventListener: neDeletion:\n" + JSON.stringify(event.event));
         }
     }
+    
+    /*var neSearchMap = null;
+    var neNameSearchMap = null;*/
+    function getNeSearchMap(){
+        return neSearchMap;
+    }
+    
+    function getNeNameSearchMap(){
+        return neNameSearchMap;
+    }
 
     function addNE(ne) {
-        if (neSearchMap.add(ne)) {
+        if (!neSearchMap.has(ne.neKey)) {
+            var idx=neSearchMap.add(ne);
+            neNameSearchMap.add(ne.name, idx);
             neTypeCounter.add(ne.type);
             updateNeStatasticChartData();
             
@@ -138,33 +152,42 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
         }
     }
     function removeNE(ne) {
-        if (neSearchMap.remove(ne.neKey)) {
+        if (neSearchMap.has(ne.neKey)) {
+            neSearchMap.remove(ne.neKey);
+            neNameSearchMap.remove(ne.name);
             neTypeCounter.remove(ne.type);
             updateNeStatasticChartData();
             dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
         }
     }
     function updateNE(ne) {
-        neSearchMap.add(ne);
+        if(neSearchMap.has(ne.neKey)){
+            var idx=neSearchMap.get(ne.neKey);
+            var oldName=getNEList()[idx].name;
+            neNameSearchMap.remove(oldName);
+            idx=neSearchMap.add(ne);
+            neNameSearchMap.add(ne.name, idx);
+        }else{
+            idx=neSearchMap.add(ne);
+            neNameSearchMap.add(ne.name, idx);
+        }
+        
         dataChangeTrigger.triggered=!dataChangeTrigger.triggered;
     }
 
     function setNEList(nes) {
-        neList.splice(0, neList.length);
-        for (var i = 0; i < nes.length; i++) {
-            neList.push(nes[i]);
-        }
-        buildNeSearchMap();
+        buildNeSearchMap(nes);
         buildNeTypeCounter();
         updateNeStatasticChartData();
     }
 
-    function buildNeSearchMap() {
-        neSearchMap = new commonUtil.KeyIndexMap(neList, 'neKey');
+    function buildNeSearchMap(nes) {
+        neSearchMap = new commonUtil.ObjectArrayKeyIndexManager(nes, 'neKey');
+        neNameSearchMap=new commonUtil.KeyIndexMap(neSearchMap.getArray(), 'name');
     }
 
     function buildNeTypeCounter() {
-        neTypeCounter = new commonUtil.AttrValueCounter(neList, 'type');
+        neTypeCounter = new commonUtil.AttrValueCounter(neSearchMap.getArray(), 'type');
     }
     function updateNeStatasticChartData() {
         neStChartData.splice(0, neStChartData.length);
@@ -178,7 +201,7 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
 
     }
     function getNEList() {
-        return neList;
+        return neSearchMap.getArray();
     }
     function setNEGroupList(negs) {
         neGroupList.splice(0, neGroupList.length);

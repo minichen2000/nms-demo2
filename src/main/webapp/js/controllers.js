@@ -512,11 +512,10 @@ angular
 MiddleTrailController.$inject = ['$stateParams','retrievedSNCs','NgTableParams', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService'];
 function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logger, $state, $scope, commonUtil, serverNotificationService) {
     var vm = this;
-    vm.data=retrievedSNCs;
+    var sncSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, 'sncKey');
+    vm.data=sncSearchMap.getArray();
     vm.dataChangeTrigger={triggered: false};
     
-    
-    var sncSearchMap = new commonUtil.KeyIndexMap(vm.data, 'sncKey');
     function addSNC(snc) {
         if (sncSearchMap.add(snc)) {
             vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
@@ -740,6 +739,38 @@ MiddleLoadingFailedController.$inject = ['$stateParams'];
 function MiddleLoadingFailedController($stateParams) {
     var vm = this;
     vm.errorMsg="";
+    
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleCreationSNCController', MiddleCreationSNCController);
+
+MiddleCreationSNCController.$inject = ['$stateParams','statasticService','commonUtil','logger'];
+function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger) {
+    var vm = this;
+    vm.checkBoxClass=function(fun){
+        return fun() ? "fa-check-square-o" : "fa-square-o";
+    }
+    vm.SNCRateSelected=undefined;
+    
+    vm.SNCRateWithFlags=[{name:'VC4', flag: 'fa-circle-o'},
+    {name:'VC3', flag: 'fa-dot-circle-o'},
+    {name:'VC12', flag: 'fa-square-o'}];
+    
+    var sncRateMap=new commonUtil.KeyIndexMap(vm.SNCRateWithFlags, 'name');
+    vm.validateSNCRateSelected=function(){
+        return vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
+    }
+    
+    
+    vm.AEndNESelected=undefined;
+    vm.neList=statasticService.getNEList();
+    vm.validateAEndNESelected=function(){
+        return vm.AEndNESelected!=undefined && 
+        vm.validateSNCRateSelected() && 
+        (statasticService.getNeNameSearchMap().has(vm.AEndNESelected.name) || statasticService.getNeNameSearchMap().has(vm.AEndNESelected));
+    }
     
 }
 
