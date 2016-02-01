@@ -1,5 +1,5 @@
-<div class="row">
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+    <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#" ng-click="vm.bannerClicked()">
 			 NMS Demo v1.0
@@ -9,7 +9,7 @@
 
         <ul class="nav navbar-top-links navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope fa-fw">
 						</i>
                     <i class="fa fa-caret-down">
@@ -56,28 +56,29 @@
         2-->
 
         <!-- /.navbar-static-side -->
-    </nav>
-</div>
-<div class="row" style="height:100%">
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
 
-
-    <maintree home-tree-data="vm.homeTreeData" ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData"
-    trail-tree-data="vm.trailTreeData" path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged"
-    tree-item-clicked="vm.treeItemClicked">
-    </maintree>
-
-
-
-    <div class="col col-xs-10 col-sm-10 col-md-10 col-lg-10" style="background:#ffffff;height:100%;padding-top:10px;padding-left:10px;padding-right:20px;padding-bottom:2px">
-
-
-        <div ui-view>
-            <div ng-controller="MiddleDashBoardController as vm">
-                <div ng-include="'./partials/middle_dashboard_template.html'"></div>
-            </div>
+        <div role="navigation" class="col col-xs-2 col-sm-2 col-md-2 col-lg-2" style="height:100%;overflow-x:hidden;overflow-y:scroll;padding-top:20px;top:51px">
+            
+            <maintree home-tree-data="vm.homeTreeData" ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData"
+            trail-tree-data="vm.trailTreeData" path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged"
+            tree-item-clicked="vm.treeItemClicked">
+            </maintree>
         </div>
 
 
-    </div>
+        <div class="col col-xs-10 col-sm-10 col-md-10 col-lg-10" style="background:#ffffff;height:100%;overflow-x:hidden;overflow-y:scroll;padding-top:20px;padding-right:10px;top:51px">
 
+
+            <div ui-view>
+                    <div ng-include="'./partials/middle_dashboard_template.html'" ng-controller="MiddleDashBoardController as vm"></div>
+            </div>
+
+
+        </div>
+
+    </div>
 </div>

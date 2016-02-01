@@ -750,7 +750,7 @@ MiddleCreationSNCController.$inject = ['$stateParams','statasticService','common
 function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger) {
     var vm = this;
     vm.checkBoxClass=function(fun){
-        return fun() ? "fa-check-square-o" : "fa-square-o";
+        return fun() ? "fa-check checkbox-validated" : "fa-circle-o checkbox-not-validated";
     }
     vm.SNCRateSelected=undefined;
     

@@ -70,7 +70,7 @@ angular
                 },
                 // which markup this directive generates
                 templateUrl: './partials/main_tree_template.html',
-                replace: true
+                replace: false
             };
         });
 
