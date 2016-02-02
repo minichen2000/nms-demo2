@@ -14,11 +14,13 @@
 
     function commonUtil(logger, $location) {
         var service = {
+            itemInArray: itemInArray,
             indexInArray: indexInArray,
             ObjectArrayKeyIndexManager: ObjectArrayKeyIndexManager,
             KeyIndexMap: KeyIndexMap,
             AttrValueCounter: AttrValueCounter,
             generateWSUrl: generateWSUrl,
+            DelayScopeApply: DelayScopeApply,
             WatchDelayReload: WatchDelayReload
         };
         return service;
@@ -41,6 +43,9 @@
             }
             return -1;
         }
+        function itemInArray(item, arr){
+            return arr.indexOf(item)>=0 ? true : false;
+        }
 
         function WatchDelayReload($scope, triggerObj, _minInterval, _reloadFun) {
             var self = this;
@@ -55,6 +60,25 @@
                 }
 
             });
+            return this;
+        }
+        
+        function DelayScopeApply(_scope, _interval, _fun) {
+            var self = this;
+            this.lastApplyTime = 0;
+            this.theInterval = _interval;
+            this.theFun = _fun;
+            this.theScope=_scope;
+            this.fun=function(param){
+                if (null!=self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
+                    self.theScope.$apply(function(){
+                        self.theFun(param);
+                    });
+                    self.lastApplyTime = (new Date()).getTime();
+                }else{
+                    self.theFun(param);
+                }
+            }
             return this;
         }
 

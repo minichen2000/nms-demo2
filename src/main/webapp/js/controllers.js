@@ -66,9 +66,9 @@ function TreeController($state, dataService, statasticService, serverNotificatio
         $state.go('main.treeitem', { treeItemId: "loadingFailed" });
     }
     function treeItemClicked(itemId) {
+        $state.go('main.treeitem', { treeItemId: "loading" });
         switch(itemId){
             case 'trail':
-                $state.go('main.treeitem', { treeItemId: "loading" });
                 dataService.setRetrieveSNCs_failedCB(retrieveSNCs_failedCB);
                 break;
             default:
@@ -77,21 +77,25 @@ function TreeController($state, dataService, statasticService, serverNotificatio
         }
         $timeout(function(){
             $state.go('main.treeitem', { treeItemId: itemId });
-        }, 200);
+        }, 10);
         
     };
     
     function bannerClicked(){
         $state.go('main.treeitem', { treeItemId: 'creation_snc' });
     }
+    
+    $timeout(function(){
+        $state.go('main.treeitem', { treeItemId: 'home' });
+    },200);
     ///////////////////////////////////////////////
 }
 
 angular
     .module('nmsdemoApp')
     .controller('MiddleDashBoardController', MiddleDashBoardController);
-MiddleDashBoardController.$inject = ['statasticService', 'logger'];
-function MiddleDashBoardController(statasticService, logger) {
+MiddleDashBoardController.$inject = ['statasticService', 'logger', '$scope', 'serverNotificationService', 'commonUtil'];
+function MiddleDashBoardController(statasticService, logger, $scope, serverNotificationService, commonUtil) {
     var vm = this;
     vm.alarmStatastic = statasticService.getAlarmSt();
     vm.activeAlarmCount = statasticService.activeAlarmCount
@@ -226,6 +230,19 @@ function MiddleDashBoardController(statasticService, logger) {
     vm.alarmStChartData = statasticService.alarmStChartData;
     vm.neStChartData = statasticService.neStChartData;
     vm.connStChartData = statasticService.alarmStChartData;
+    
+    
+    var filterFun=function(event){
+        return commonUtil.itemInArray(event.eventType, ["alarmStatastic", "neCreation", "neDeletion"]);
+    }
+    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, function(event){})).fun;
+    var listener={name: 'MiddleDashBoardController', filter:filterFun, fun:listenerFun};
+    serverNotificationService.addListener(listener);
+    
+    $scope.$on("$destroy", function(){
+        logger.log("MiddleDashBoardController,$destroy");
+        serverNotificationService.removeListener(listener);
+    });
 }
 
 
@@ -234,8 +251,8 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil'];
-function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil) {
+MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil', 'serverNotificationService'];
+function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil, serverNotificationService) {
     var vm = this;
     vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
@@ -477,8 +494,22 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
     }
     
     
-    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 1000, function(){
-        //logger.log((new Date()).toString()+" watch vm.data - ne");
+    
+    var filterFun=function(event){
+        return commonUtil.itemInArray(event.eventType, ["neCreation", "neDeletion"]);
+    }
+    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, function(event){})).fun;
+    var listener={name:'MiddleNEController', filter:filterFun, fun:listenerFun};
+    serverNotificationService.addListener(listener);
+    
+    $scope.$on("$destroy", function(){
+        logger.log("MiddleNEController,$destroy");
+        serverNotificationService.removeListener(listener);
+    });
+    
+    
+    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
+        //logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
         vm.tableParams.reload();
     });
    
@@ -539,11 +570,19 @@ function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logge
             removeSNC(event.event);
             //logger.log("eventListener: sncDeletion:\n" + JSON.stringify(event.event));
         }
+
+        
     }
-    serverNotificationService.addListener(eventListener);
+    var filterFun=function(event){
+        return commonUtil.itemInArray(event.eventType, ["sncCreation", "sncDeletion"]);
+    }
+    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, eventListener)).fun;
+    var listener={name: 'MiddleTrailController', filter:filterFun, fun:listenerFun};
+    serverNotificationService.addListener(listener);
+    
     $scope.$on("$destroy", function(){
         logger.log("MiddleTrailController,$destroy");
-        serverNotificationService.removeListener(eventListener);
+        serverNotificationService.removeListener(listener);
     });
     
     
@@ -669,7 +708,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logge
     }
     
     
-    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 1000, function(){
+    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
         //logger.log((new Date()).toString()+" watch vm.data - snc");
         vm.tableParams.reload();
     });
@@ -760,6 +799,7 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
     
     var sncRateMap=new commonUtil.KeyIndexMap(vm.SNCRateWithFlags, 'name');
     vm.validateSNCRateSelected=function(){
+        logger.log("validateSNCRateSelected");
         return vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
     }
     

@@ -38,7 +38,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 				RemoteEndpoint remote = getRemote();
 				for (;;) {
 					try {
-						Thread.sleep(200);
+						Thread.sleep(1000);
 						Random random = new Random();
 						remote.sendString(MDLUtil.Event_WRAP("alarmStatastic",
 								new MDL_AlarmPSStatastic(random.nextInt(10),
@@ -70,7 +70,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										aEnds,
 										zEnds)));
 
-						Thread.sleep(200);
+						Thread.sleep(1000);
 						remote.sendString(MDLUtil.Event_WRAP("alarmStatastic",
 								new MDL_AlarmPSStatastic(random.nextInt(10),
 										random.nextInt(10), random.nextInt(10),

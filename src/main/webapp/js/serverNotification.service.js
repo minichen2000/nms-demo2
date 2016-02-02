@@ -9,15 +9,18 @@
         .module('nmsdemoApp')
         .factory('serverNotificationService', serverNotificationService);
 
-    serverNotificationService.$inject = ['logger', '$rootScope', '$window','$interval'];
+    serverNotificationService.$inject = ['logger', '$rootScope', '$window', '$interval', 'commonUtil'];
 
     /**
      * @namespace Logger
      * @desc Application wide logger
      * @memberOf Factories
      */
-    function serverNotificationService(logger, $rootScope, $window, $interval) {
+    function serverNotificationService(logger, $rootScope, $window, $interval, commonUtil) {
 
+        /*
+        listener: {filter:function(),fun:function()}
+        */
         var ws_listeners = [];
         var worker = new Worker("js/ws_worker.js");
         var event_buffer = [];
@@ -37,30 +40,19 @@
             
         }
 
-        /*setInterval(function () {
-            if(scrollBusy && (new Date()).getTime()-lastScrollMS>scrollIdleFactorMS){
-                scrollBusy=false;
-            }
-            if (0 < event_buffer.length && !scrollBusy) {
-                $rootScope.$apply(function () {
-                    var ev=event_buffer.shift();
-                    for (var i = 0; i < ws_listeners.length; i++) {
-                        ws_listeners[i](ev);
-                    }
-                });
-            }
-        }, 10);*/
-        $interval(function () {
+        setInterval(function () {
             if (scrollBusy && (new Date()).getTime() - lastScrollMS > scrollIdleFactorMS) {
                 scrollBusy = false;
             }
-            if (0 < event_buffer.length && !scrollBusy) {
-
+            if (!scrollBusy && 0 < event_buffer.length) {
                 var ev = event_buffer.shift();
                 for (var i = 0; i < ws_listeners.length; i++) {
-                    ws_listeners[i](ev);
-                }
+                    var listener = ws_listeners[i];
+                    if (null == listener.filter || listener.filter(ev)) {
+                        listener.fun(ev);
+                    }
 
+                }
             }
         }, 10);
 
@@ -72,15 +64,15 @@
             sendMessage: sendMessage
         };
 
-        function addListener(fun) {
-            ws_listeners.push(fun);
-            logger.log("addListener, ws_listeners.length: " + ws_listeners.length);
+        function addListener(listener) {
+            ws_listeners.push(listener);
+            logger.log("After addListener: "+listener.name+", ws_listeners.length: " + ws_listeners.length);
         }
-        function removeListener(fun) {
+        function removeListener(listener) {
             for (var i = 0; i < ws_listeners.length; i++) {
-                if (ws_listeners[i] == fun) {
+                if (ws_listeners[i] == listener) {
                     ws_listeners.splice(i, 1);
-                    logger.log("removeListener, ws_listeners.length: " + ws_listeners.length);
+                    logger.log("After removeListener: "+listener.name+", ws_listeners.length: " + ws_listeners.length);
                     return;
                 }
             }

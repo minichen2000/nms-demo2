@@ -90,7 +90,11 @@ function statasticService(logger, serverNotificationService, $rootScope, commonU
     };
 
 
-    serverNotificationService.addListener(eventListener);
+    var filterFun=function(event){
+        return commonUtil.itemInArray(event.eventType, ["alarmStatastic", "neCreation", "neDeletion"]);
+    }
+    var listenerFun=(new commonUtil.DelayScopeApply(null, 200, eventListener)).fun;
+    serverNotificationService.addListener({name: 'statasticService', filter:filterFun, fun:listenerFun});
 
 
     return {

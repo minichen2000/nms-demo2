@@ -1,84 +1,44 @@
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="#" ng-click="vm.bannerClicked()">
-			 NMS Demo v1.0
+			 NMS Demo v0.1
 			</a>
         </div>
-        <!-- /.navbar-header -->
-
-        <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope fa-fw">
-						</i>
-                    <i class="fa fa-caret-down">
-						</i>
-                </a>
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-tasks fa-fw">
-						</i>
-                    <i class="fa fa-caret-down">
-						</i>
-                </a>
-
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw">
-						</i>
-                    <i class="fa fa-caret-down">
-						</i>
-                </a>
-
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw">
-						</i>
-                    <i class="fa fa-caret-down">
-						</i>
-                </a>
-            </li>
-            <!-- /.dropdown -->
-        </ul>
-        <!-- /.navbar-top-links -->
-
-
-        <!--1
-        {{neData}}
-        {{vm.neTreeData.name}}
-        2-->
-
-        <!-- /.navbar-static-side -->
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
     </div>
 </nav>
+
+
 <div class="container-fluid">
     <div class="row">
-
-        <div role="navigation" class="col col-xs-2 col-sm-2 col-md-2 col-lg-2" style="height:100%;overflow-x:hidden;overflow-y:scroll;padding-top:20px;top:51px">
-            
+        <div class="col-sm-2 col-md-2 sidebar">
             <maintree home-tree-data="vm.homeTreeData" ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData"
             trail-tree-data="vm.trailTreeData" path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged"
             tree-item-clicked="vm.treeItemClicked">
             </maintree>
         </div>
-
-
-        <div class="col col-xs-10 col-sm-10 col-md-10 col-lg-10" style="background:#ffffff;height:100%;overflow-x:hidden;overflow-y:scroll;padding-top:20px;padding-right:10px;top:51px">
-
-
+        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
             <div ui-view>
-                    <div ng-include="'./partials/middle_dashboard_template.html'" ng-controller="MiddleDashBoardController as vm"></div>
+                <!--<div ng-include="'./partials/middle_dashboard_template.html'" ng-controller="MiddleDashBoardController as vm"></div>-->
             </div>
-
-
         </div>
-
     </div>
 </div>
