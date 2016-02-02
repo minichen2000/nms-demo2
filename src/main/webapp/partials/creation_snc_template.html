@@ -28,12 +28,12 @@
                     class="form-control" typeahead-show-hint="true" typeahead-min-length="0" typeahead-template-url="sncRateSelectCustomTemplate.html">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
                 </div>
-                <div class="input-group form-inputgroup">
+                <!--<div class="input-group form-inputgroup">
                     <span class="input-group-addon">名称</span>
                     <input type="text" placeholder="子网连接名称"
                     class="form-control">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -47,10 +47,10 @@
                 <div class="input-group  form-inputgroup">
                     <span class="input-group-addon">网元</span>
                     <input type="text" placeholder="网元名称" ng-model="vm.AEndNESelected" uib-typeahead="aEndNE as aEndNE.name for aEndNE in vm.neList | filter:{name:$viewValue}"
-                    class="form-control" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.validateSNCRateSelected()">
+                    class="form-control" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isSNCRateSelected">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}"></i></span>
                 </div>
-                <div class="input-group form-inputgroup">
+                <!--<div class="input-group form-inputgroup">
                     <span class="input-group-addon">端口</span>
                     <input type="text" class="form-control" placeholder="端口名称" ng-disabled="!vm.validateAEndNESelected()">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
@@ -59,11 +59,11 @@
                     <span class="input-group-addon">时隙</span>
                     <input type="text" class="form-control" placeholder="时隙">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
-                </div>
+                </div>-->
             </div>
         </div>
 
-        <div class="panel panel-green">
+        <!--<div class="panel panel-green">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     Z端点
@@ -86,7 +86,7 @@
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
                 </div>
             </div>
-        </div>
+        </div>-->
 
 
     </div>

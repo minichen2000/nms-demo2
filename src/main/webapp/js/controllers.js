@@ -789,8 +789,11 @@ MiddleCreationSNCController.$inject = ['$stateParams','statasticService','common
 function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger) {
     var vm = this;
     vm.checkBoxClass=function(fun){
+        logger.log("checkBoxClass");
         return fun() ? "fa-check checkbox-validated" : "fa-circle-o checkbox-not-validated";
     }
+    
+    //SNC rate
     vm.SNCRateSelected=undefined;
     
     vm.SNCRateWithFlags=[{name:'VC4', flag: 'fa-circle-o'},
@@ -798,18 +801,34 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
     {name:'VC12', flag: 'fa-square-o'}];
     
     var sncRateMap=new commonUtil.KeyIndexMap(vm.SNCRateWithFlags, 'name');
+    vm.isSNCRateSelected=false;
     vm.validateSNCRateSelected=function(){
         logger.log("validateSNCRateSelected");
-        return vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
+        vm.isSNCRateSelected=vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
+        return vm.isSNCRateSelected;
     }
     
+    //SNC userlabel
+    /*vm.SNCUserlabelSelected=undefined;
     
+    var sncRateMap=new commonUtil.KeyIndexMap(vm.SNCRateWithFlags, 'name');
+    vm.isSNCRateSelected=false;
+    vm.validateSNCRateSelected=function(){
+        logger.log("validateSNCRateSelected");
+        vm.isSNCRateSelected=vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
+        return vm.isSNCRateSelected;
+    }*/
+    
+    //AEndNEName
     vm.AEndNESelected=undefined;
     vm.neList=statasticService.getNEList();
+    
+    vm.isAEndNESelected=false;
     vm.validateAEndNESelected=function(){
-        return vm.AEndNESelected!=undefined && 
-        vm.validateSNCRateSelected() && 
+        logger.log("validateAEndNESelected");
+        vm.isAEndNESelected=vm.isSNCRateSelected && vm.AEndNESelected!=undefined &&
         (statasticService.getNeNameSearchMap().has(vm.AEndNESelected.name) || statasticService.getNeNameSearchMap().has(vm.AEndNESelected));
+        return vm.isAEndNESelected;
     }
     
 }

@@ -10,7 +10,7 @@ angular
             $stateProvider
                 .state('main', {
                     url: "main",
-                    templateUrl: "./partials/main.html",
+                    templateUrl: "./partials/main.html?dummy",
                     controller: 'TreeController',
                     controllerAs: 'vm',
                     resolve: {
@@ -35,25 +35,25 @@ angular
                     },
                     templateUrl: function ($stateParams) {
                         if($stateParams.treeItemId=='loading'){
-                            return "./partials/middle_loading_template.html";
+                            return "./partials/middle_loading_template.html?dummy";
                         }else if($stateParams.treeItemId=='loadingFailed'){
-                            return "./partials/middle_loading_failed_template.html";
+                            return "./partials/middle_loading_failed_template.html?dummy";
                         }else if($stateParams.treeItemId=='home'){
-                            return "./partials/middle_dashboard_template.html";
+                            return "./partials/middle_dashboard_template.html?dummy";
                         }else if($stateParams.treeItemId=='ne'){
-                            return "./partials/middle_ne_template.html";
+                            return "./partials/middle_ne_template.html?dummy";
                         }else if($stateParams.treeItemId=='physicalLink'){
-                            return "./partials/middle_test_template.html";
+                            return "./partials/middle_test_template.html?dummy";
                         }else if($stateParams.treeItemId=='map'){
-                            return "./partials/middle_test_template.html";
+                            return "./partials/middle_test_template.html?dummy";
                         }else if($stateParams.treeItemId=='trail'){
-                            return "./partials/middle_trail_template.html";
+                            return "./partials/middle_trail_template.html?dummy";
                         }else if($stateParams.treeItemId=='path'){
-                            return "./partials/middle_test_template.html";
+                            return "./partials/middle_test_template.html?dummy";
                         }else if($stateParams.treeItemId=='evc'){
-                            return "./partials/middle_test_template.html";
+                            return "./partials/middle_test_template.html?dummy";
                         }else if($stateParams.treeItemId=='creation_snc'){
-                            return "./partials/creation_snc_template.html";
+                            return "./partials/creation_snc_template.html?dummy";
                         }
                         
                     },
@@ -89,9 +89,9 @@ angular
                     templateUrl: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
                         if($stateParams.treeItemId=='ne' && $stateParams.neGroupId && $stateParams.neId){
-                            return "./partials/single_ne_template.html";
+                            return "./partials/single_ne_template.html?dummy";
                         }else if($stateParams.treeItemId=='trail' && $stateParams.sncId){
-                            return "./partials/single_trail_template.html";
+                            return "./partials/single_trail_template.html?dummy";
                         }
                         
                     },
