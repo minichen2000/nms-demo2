@@ -52,7 +52,7 @@
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">端口</span>
-                    <input type="text" placeholder="端口名称" ng-model="vm.AEndPortSelected" uib-typeahead="aEndPort for aEndPort in vm.getAEndPortNameList()" 
+                    <input type="text" placeholder="端口名称" ng-model="vm.AEndPortSelected" uib-typeahead="aEndPort as aEndPort.name for aEndPort in vm.getAEndPortNameList($viewValue)" 
                     class="form-control" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndNESelected">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndPortSelected)}}"></i></span>
                 </div>

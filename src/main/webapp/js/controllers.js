@@ -785,8 +785,8 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleCreationSNCController', MiddleCreationSNCController);
 
-MiddleCreationSNCController.$inject = ['$stateParams','statasticService','commonUtil','logger', 'dataService'];
-function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger, dataService) {
+MiddleCreationSNCController.$inject = ['$stateParams','statasticService','commonUtil','logger', 'dataService', '$filter'];
+function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger, dataService, $filter) {
     var vm = this;
     vm.checkBoxClass=function(fun){
         logger.log("checkBoxClass");
@@ -864,29 +864,37 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
     }
     
     
-    vm.getAEndPortNameList=function(){
+    vm.getAEndPortNameList=function(nameFilter){
         logger.log("getAEndPortNameList");
         if (vm.isAEndNESelected){
-            var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
-            var neGroupId=ne.neGroupId;
-            var neId=ne.neId;
-            
-            dataService.retrievePorts(neGroupId, neId)
-            .then(function(data){
-                logger.log("data:\n"+JSON.stringify(data));
-                vm.AEndPortNameManager.neName=getName(vm.AEndNESelected);
-                vm.AEndPortNameManager.portMgr= new commonUtil.ObjectArrayKeyIndexManager(data, 'name');
-                var rarr=vm.AEndPortNameManager.portMgr.getArray().map(function(item){
-                    return item.name;
-                });
-                logger.log("rarr:\n"+JSON.stringify(rarr));
-                return rarr;
+            if(getName(vm.AEndNESelected)==vm.AEndPortNameManager.neName && undefined!=vm.AEndPortNameManager.portMgr){
+                
+                return $filter('filter')(vm.AEndPortNameManager.portMgr.getArray(),{name:nameFilter});
+            }else{
+                var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
+                var neGroupId=ne.neGroupId;
+                var neId=ne.neId;
+                logger.log("getAEndPortNameList:http");
+                return dataService.retrievePorts(neGroupId, neId)
+                .then(function(data){
+                    //logger.log("data:\n"+JSON.stringify(data));
+                    vm.AEndPortNameManager.neName=getName(vm.AEndNESelected);
+                    vm.AEndPortNameManager.portMgr= new commonUtil.ObjectArrayKeyIndexManager(data, 'name');
+                    var arr=$filter('filter')(vm.AEndPortNameManager.portMgr.getArray(),{name:nameFilter});
+                    //logger.log("arr:\n"+JSON.stringify(arr));
+                    return arr;
             })
             .catch(function(data){
                 vm.AEndPortNameManager.neName=undefined;
                 vm.AEndPortNameManager.portMgr=undefined;
                 return [];
             });
+            }
+           
+        }else{
+            vm.AEndPortNameManager.neName=undefined;
+                vm.AEndPortNameManager.portMgr=undefined;
+                return [];
         }
     }
     
