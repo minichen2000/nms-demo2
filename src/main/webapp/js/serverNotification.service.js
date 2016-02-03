@@ -36,16 +36,16 @@
         });
         worker.onmessage = function (evt) {
             event_buffer.push(evt.data);
-            //logger.log((new Date()).toString()+" event_buffer.length: "+event_buffer.length);
-            
+            //logger.log((new Date()).toString()+" push: event_buffer.length: "+event_buffer.length); 
         }
 
         setInterval(function () {
             if (scrollBusy && (new Date()).getTime() - lastScrollMS > scrollIdleFactorMS) {
                 scrollBusy = false;
             }
-            if (!scrollBusy && 0 < event_buffer.length) {
+            while (!scrollBusy && 0 < event_buffer.length) {
                 var ev = event_buffer.shift();
+                //logger.log((new Date()).toString() + " shift: event_buffer.length: " + event_buffer.length);
                 for (var i = 0; i < ws_listeners.length; i++) {
                     var listener = ws_listeners[i];
                     if (null == listener.filter || listener.filter(ev)) {
@@ -54,7 +54,7 @@
 
                 }
             }
-        }, 10);
+        }, 200);
 
         return {
             addListener: addListener,
@@ -66,13 +66,13 @@
 
         function addListener(listener) {
             ws_listeners.push(listener);
-            logger.log("After addListener: "+listener.name+", ws_listeners.length: " + ws_listeners.length);
+            logger.log("After addListener: " + listener.name + ", ws_listeners.length: " + ws_listeners.length);
         }
         function removeListener(listener) {
             for (var i = 0; i < ws_listeners.length; i++) {
                 if (ws_listeners[i] == listener) {
                     ws_listeners.splice(i, 1);
-                    logger.log("After removeListener: "+listener.name+", ws_listeners.length: " + ws_listeners.length);
+                    logger.log("After removeListener: " + listener.name + ", ws_listeners.length: " + ws_listeners.length);
                     return;
                 }
             }

@@ -29,19 +29,23 @@ public class MDL_NEServlet extends HttpServlet {
 		List<MDL_NE> nes = new ArrayList<MDL_NE>();
 		int LL = 22;
 
+		Random random = new Random();
 		for (int i = 0; i < LL; i++) {
-            nes.add(new MDL_NE(100 + i / 100, 
-            (new Random()).nextInt(9) > 5 ? "q3" : "dex", 
-            i % 100, "node" + i, "ChengDu" + i, 
-            genNEType(),
-            (new Random()).nextInt(9) > 5 ? "sm" : "mc",
-            (new Random()).nextInt(9) > 5 ? "4.0" : "4.1",
-            (new Random()).nextInt(9) > 5 ? "2015-01-22 22:15:09" : "2015-01-25 13:39:22",
-            (new Random()).nextInt(9) > 5 ? "10.105.3.11" : "10.105.3.12",
+		    int neGroupId=100 + i / 100;
+		    int neId=i % 100;
+		    String neName="node_"+neGroupId+"/"+neId;
+            nes.add(new MDL_NE(neGroupId, 
+                random.nextInt(9) > 5 ? "q3" : "dex", 
+                        neId, neName, "ChengDu" + i, 
+            genNEType(random),
+            random.nextInt(9) > 5 ? "sm" : "mc",
+                    random.nextInt(9) > 5 ? "4.0" : "4.1",
+                            random.nextInt(9) > 5 ? "2015-01-22 22:15:09" : "2015-01-25 13:39:22",
+                                    random.nextInt(9) > 5 ? "10.105.3.11" : "10.105.3.12",
             "N/A", 
-            (new Random()).nextInt(9) > 5 ? "suppervised" : "unsuppervised",
-            (new Random()).nextInt(9) > 5 ? "available" : "unavailable", 
-            (new Random()).nextInt(9) > 5 ? "critical" : "major"));
+            random.nextInt(9) > 5 ? "suppervised" : "unsuppervised",
+                    random.nextInt(9) > 5 ? "available" : "unavailable", 
+                            random.nextInt(9) > 5 ? "critical" : "major"));
         }
 		
 
@@ -58,8 +62,8 @@ public class MDL_NEServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(req, resp);
 	}
-	private String genNEType(){
-		switch((new Random()).nextInt(3)){
+	private String genNEType(Random r){
+		switch(r.nextInt(3)){
 			case 0:
 				return "1660sm";
 			case 1:

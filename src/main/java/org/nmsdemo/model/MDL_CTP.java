@@ -1,44 +1,35 @@
 package org.nmsdemo.model;
 
-public class MDL_Port
+public class MDL_CTP
 {
     private String tpKey;
     private String tpId;
     private String name;
-    private String neName;
     private int neGroupId;
     private int neId;
+    private String parentTPKey;
     private String rate;
     private boolean connected;
-    private String plKey;
-    public MDL_Port()
+    private String connectedObjKey;
+    public MDL_CTP()
     {
         super();
         // TODO Auto-generated constructor stub
     }
-    public MDL_Port( String tpKey, String tpId, String name, String neName, int neGroupId,
-            int neId, String rate, boolean connected, String plKey )
+    public MDL_CTP( String tpKey, String tpId, String name, int neGroupId,
+            int neId, String parentTPKey, String rate, boolean connected,
+            String connectedObjKey )
     {
         super();
         this.tpKey = tpKey;
         this.tpId = tpId;
         this.name = name;
-        this.neName=neName;
         this.neGroupId = neGroupId;
         this.neId = neId;
+        this.parentTPKey = parentTPKey;
         this.rate = rate;
         this.connected = connected;
-        this.plKey = plKey;
-    }
-    
-    
-    public String getNeName()
-    {
-        return neName;
-    }
-    public void setNeName( String neName )
-    {
-        this.neName = neName;
+        this.connectedObjKey = connectedObjKey;
     }
     public String getTpKey()
     {
@@ -80,6 +71,14 @@ public class MDL_Port
     {
         this.neId = neId;
     }
+    public String getParentTPKey()
+    {
+        return parentTPKey;
+    }
+    public void setParentTPKey( String parentTPKey )
+    {
+        this.parentTPKey = parentTPKey;
+    }
     public String getRate()
     {
         return rate;
@@ -96,14 +95,15 @@ public class MDL_Port
     {
         this.connected = connected;
     }
-    public String getPlKey()
+    public String getConnectedObjKey()
     {
-        return plKey;
+        return connectedObjKey;
     }
-    public void setPlKey( String plKey )
+    public void setConnectedObjKey( String connectedObjKey )
     {
-        this.plKey = plKey;
+        this.connectedObjKey = connectedObjKey;
     }
     
     
+      
 }

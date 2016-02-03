@@ -50,12 +50,13 @@
                     class="form-control" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isSNCRateSelected">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}"></i></span>
                 </div>
-                <!--<div class="input-group form-inputgroup">
-                    <span class="input-group-addon">端口</span>
-                    <input type="text" class="form-control" placeholder="端口名称" ng-disabled="!vm.validateAEndNESelected()">
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
-                </div>
                 <div class="input-group form-inputgroup">
+                    <span class="input-group-addon">端口</span>
+                    <input type="text" placeholder="端口名称" ng-model="vm.AEndPortSelected" uib-typeahead="aEndPort for aEndPort in vm.getAEndPortNameList()" 
+                    class="form-control" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndNESelected">
+                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndPortSelected)}}"></i></span>
+                </div>
+                <!--<div class="input-group form-inputgroup">
                     <span class="input-group-addon">时隙</span>
                     <input type="text" class="form-control" placeholder="时隙">
                     <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>

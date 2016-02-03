@@ -785,12 +785,23 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleCreationSNCController', MiddleCreationSNCController);
 
-MiddleCreationSNCController.$inject = ['$stateParams','statasticService','commonUtil','logger'];
-function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger) {
+MiddleCreationSNCController.$inject = ['$stateParams','statasticService','commonUtil','logger', 'dataService'];
+function MiddleCreationSNCController($stateParams,statasticService, commonUtil, logger, dataService) {
     var vm = this;
     vm.checkBoxClass=function(fun){
         logger.log("checkBoxClass");
         return fun() ? "fa-check checkbox-validated" : "fa-circle-o checkbox-not-validated";
+    }
+    
+    function getName(selected){
+        if(undefined!=selected){
+            if(undefined!=selected.name){
+                return selected.name;
+            }else{
+                return selected;
+            }
+        }
+        return undefined;
     }
     
     //SNC rate
@@ -804,7 +815,8 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
     vm.isSNCRateSelected=false;
     vm.validateSNCRateSelected=function(){
         logger.log("validateSNCRateSelected");
-        vm.isSNCRateSelected=vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
+        var name=getName(vm.SNCRateSelected);
+        vm.isSNCRateSelected= undefined!=name && (sncRateMap.has(name));
         return vm.isSNCRateSelected;
     }
     
@@ -826,9 +838,56 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
     vm.isAEndNESelected=false;
     vm.validateAEndNESelected=function(){
         logger.log("validateAEndNESelected");
-        vm.isAEndNESelected=vm.isSNCRateSelected && vm.AEndNESelected!=undefined &&
-        (statasticService.getNeNameSearchMap().has(vm.AEndNESelected.name) || statasticService.getNeNameSearchMap().has(vm.AEndNESelected));
+        var name=getName(vm.AEndNESelected);
+        vm.isAEndNESelected=vm.isSNCRateSelected && 
+        undefined!=name &&
+        statasticService.getNeNameSearchMap().has(name);
         return vm.isAEndNESelected;
+    }
+    
+    //AEndPortName
+    vm.AEndPortSelected=undefined;
+    vm.isAEndPortSelected=false;
+    
+    vm.AEndPortNameManager={neName: getName(vm.AEndNESelected), 
+    portMgr: undefined};
+    
+    
+    vm.validateAEndPortSelected=function(){
+        logger.log("validateAEndPortSelected");
+        var name=getName(vm.AEndPortSelected);
+        vm.isAEndPortSelected=vm.isAEndNESelected && 
+        undefined!=name && 
+        getName(vm.AEndNESelected)==vm.AEndPortNameManager.neName &&
+        vm.AEndPortNameManager.portMgr.has(name);
+        return vm.isAEndPortSelected;
+    }
+    
+    
+    vm.getAEndPortNameList=function(){
+        logger.log("getAEndPortNameList");
+        if (vm.isAEndNESelected){
+            var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
+            var neGroupId=ne.neGroupId;
+            var neId=ne.neId;
+            
+            dataService.retrievePorts(neGroupId, neId)
+            .then(function(data){
+                logger.log("data:\n"+JSON.stringify(data));
+                vm.AEndPortNameManager.neName=getName(vm.AEndNESelected);
+                vm.AEndPortNameManager.portMgr= new commonUtil.ObjectArrayKeyIndexManager(data, 'name');
+                var rarr=vm.AEndPortNameManager.portMgr.getArray().map(function(item){
+                    return item.name;
+                });
+                logger.log("rarr:\n"+JSON.stringify(rarr));
+                return rarr;
+            })
+            .catch(function(data){
+                vm.AEndPortNameManager.neName=undefined;
+                vm.AEndPortNameManager.portMgr=undefined;
+                return [];
+            });
+        }
     }
     
 }

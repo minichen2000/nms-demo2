@@ -30,6 +30,7 @@ public class MDL_SNCServlet extends HttpServlet {
 
 		List<MDL_GEN_SNC> sncs = new ArrayList<MDL_GEN_SNC>();
 		int LL = 30000;
+		Random random = new Random();
 
 		for (int i = 0; i < LL; i++) {
 			List<MDL_TPRef> aEnds=new ArrayList<MDL_TPRef>();
@@ -41,9 +42,9 @@ public class MDL_SNCServlet extends HttpServlet {
 		    sncs.add(new MDL_GEN_SNC(""+(100 + i), 
 		    ""+(100 + i), 
 			"trail" + i, 
-			genSNCRate(),
-			genSNCState(),
-			(new Random()).nextInt(9) > 5 ? "protected" : "unprotected",
+			genSNCRate(random),
+			genSNCState(random),
+			random.nextInt(9) > 5 ? "protected" : "unprotected",
 			aEnds,
 			zEnds));
 		}
@@ -62,8 +63,8 @@ public class MDL_SNCServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(req, resp);
 	}
-	private String genSNCState(){
-		switch((new Random()).nextInt(2)){
+	private String genSNCState(Random r){
+		switch(r.nextInt(2)){
 			case 0:
 				return "defined";
 			case 1:
@@ -74,8 +75,8 @@ public class MDL_SNCServlet extends HttpServlet {
 				return "1660sm";
 		}
 	}
-	private String genSNCRate(){
-        switch((new Random()).nextInt(2)){
+	private String genSNCRate(Random r){
+        switch(r.nextInt(2)){
             case 0:
                 return "MS";
             case 1:
