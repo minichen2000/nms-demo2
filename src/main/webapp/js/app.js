@@ -7,5 +7,6 @@ angular.module('nmsdemoApp', [
     'ui.router',
     'nvd3',
     'ui.bootstrap',
-    'ngTable'
+    'ngTable',
+    'ui.grid'
 ]);
