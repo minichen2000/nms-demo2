@@ -821,15 +821,37 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
     }
     
     //SNC userlabel
-    /*vm.SNCUserlabelSelected=undefined;
+    vm.SNCUserlabelSelected=undefined;
+    vm.isSNCUserlabelSelected=false;
+    vm.SNCUserlabelManager=undefined;
+    vm.validateSNCUserlabelSelected=function(){
+        logger.log("validateSNCUserlabelSelected");
+        var name=getName(vm.SNCUserlabelSelected);
+        vm.isSNCUserlabelSelected = undefined!=vm.SNCUserlabelManager && undefined!=name && 0<name.length && !vm.SNCUserlabelManager.has(name);
+        return vm.isSNCUserlabelSelected;
+    }
     
-    var sncRateMap=new commonUtil.KeyIndexMap(vm.SNCRateWithFlags, 'name');
-    vm.isSNCRateSelected=false;
-    vm.validateSNCRateSelected=function(){
-        logger.log("validateSNCRateSelected");
-        vm.isSNCRateSelected=vm.SNCRateSelected!=undefined && (sncRateMap.has(vm.SNCRateSelected.name) || sncRateMap.has(vm.SNCRateSelected));
-        return vm.isSNCRateSelected;
-    }*/
+    vm.getSNCUserlabelList=function(){
+        logger.log("getSNCUserlabelList");
+        if(undefined!=vm.SNCUserlabelManager){
+                return [];
+        }else{
+                logger.log("getSNCUserlabelList:http");
+                dataService.retrieveSNCs()
+                .then(function(data){
+                    //logger.log("data:\n"+JSON.stringify(data));
+                    vm.SNCUserlabelManager= new commonUtil.ObjectArrayKeyIndexManager(data, 'name');
+                    //var arr=vm.SNCUserlabelManager.getArray();
+                    //logger.log("arr:\n"+JSON.stringify(arr));
+                    //return arr;
+                })
+                .catch(function(data){
+                    vm.SNCUserlabelManager=undefined;
+                    //return [];
+                });
+                return [];
+        }
+    }
     
     //AEndNEName
     vm.AEndNESelected=undefined;
@@ -894,6 +916,61 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
         }else{
             vm.AEndPortNameManager.neName=undefined;
                 vm.AEndPortNameManager.portMgr=undefined;
+                return [];
+        }
+    }
+    
+    
+    //AEndCTPName
+    vm.AEndCTPSelected=undefined;
+    vm.isAEndCTPSelected=false;
+    
+    vm.AEndCTPNameManager={portName: getName(vm.AEndPortSelected), 
+    ctpMgr: undefined};
+    
+    
+    vm.validateAEndCTPSelected=function(){
+        logger.log("validateAEndCTPSelected");
+        var name=getName(vm.AEndCTPSelected);
+        vm.isAEndCTPSelected=vm.isAEndPortSelected && 
+        undefined!=name && 
+        getName(vm.AEndPortSelected)==vm.AEndCTPNameManager.portName &&
+        vm.AEndCTPNameManager.ctpMgr.has(name);
+        return vm.isAEndCTPSelected;
+    }
+    
+    
+    vm.getAEndCTPNameList=function(nameFilter){
+        logger.log("getAEndCTPNameList");
+        if (vm.isAEndPortSelected){
+            if(getName(vm.AEndPortSelected)==vm.AEndCTPNameManager.portName && undefined!=vm.AEndCTPNameManager.ctpMgr){
+                
+                return $filter('filter')(vm.AEndCTPNameManager.ctpMgr.getArray(),{name:nameFilter});
+            }else{
+                var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
+                var neGroupId=ne.neGroupId;
+                var neId=ne.neId;
+                var portKey=getName(vm.AEndPortSelected);
+                logger.log("getAEndCTPNameList:http");
+                return dataService.retrieveCTPs(neGroupId, neId, portKey)
+                .then(function(data){
+                    //logger.log("data:\n"+JSON.stringify(data));
+                    vm.AEndCTPNameManager.portName=getName(vm.AEndPortSelected);
+                    vm.AEndCTPNameManager.ctpMgr= new commonUtil.ObjectArrayKeyIndexManager(data, 'name');
+                    var arr=$filter('filter')(vm.AEndCTPNameManager.ctpMgr.getArray(),{name:nameFilter});
+                    //logger.log("arr:\n"+JSON.stringify(arr));
+                    return arr;
+            })
+            .catch(function(data){
+                vm.AEndCTPNameManager.portName=undefined;
+                vm.AEndCTPNameManager.ctpMgr=undefined;
+                return [];
+            });
+            }
+           
+        }else{
+            vm.AEndCTPNameManager.portName=undefined;
+                vm.AEndCTPNameManager.ctpMgr=undefined;
                 return [];
         }
     }

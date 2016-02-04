@@ -62,7 +62,7 @@ function dataService(logger, $q, $http, commonUtil, $timeout) {
     }
     
     function retrieveCTPs(neGroupId, neId, portKey) {
-        return $http.get("./retrieve_ports"+"?neGroupId="+neGroupId+"&neId="+neId+"&portKey="+portKey)
+        return $http.get("./retrieve_ctps"+"?neGroupId="+neGroupId+"&neId="+neId+"&portKey="+portKey)
             .then(OK)
             .catch(KO);
         function OK(rsp) {
