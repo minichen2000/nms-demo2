@@ -8,5 +8,8 @@ angular.module('nmsdemoApp', [
     'nvd3',
     'ui.bootstrap',
     'ngTable',
-    'ui.grid'
+    'ui.grid',
+    'ui.grid.resizeColumns',
+    'ui.grid.pagination',
+    'ui.grid.pinning'
 ]);

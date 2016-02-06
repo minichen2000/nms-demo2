@@ -58,7 +58,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
     vm.bannerClicked = bannerClicked;
     
     
-    serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
+    //serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
     
 
 
@@ -251,8 +251,299 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil', 'serverNotificationService'];
-function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil, serverNotificationService) {
+MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil', 'serverNotificationService', 'uiGridConstants'];
+function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil, serverNotificationService, uiGridConstants) {
+    var vm = this;
+    vm.message = $stateParams.treeItemId;
+    vm.data=statasticService.getNEList();
+    vm.dataChangeTrigger=statasticService.dataChangeTrigger;
+    
+    vm.gridOptions={};
+    vm.gridOptions.appScopeProvider = vm;
+    vm.gridOptions.data=vm.data;
+    vm.gridOptions.enableFiltering=true;
+    vm.gridOptions.enableGridMenu=true;
+    vm.gridOptions.enableColumnResizing=true;
+    vm.gridOptions.flatEntityAccess=true;
+    vm.gridOptions.showGridFooter=true;
+    vm.gridOptions.paginationPageSizes=[20, 50, 100];
+    vm.gridOptions.paginationPageSize=20;
+    vm.gridOptions.onRegisterApi=function(gridApi){
+        vm.gridApi=gridApi;
+    }
+    vm.gridOptions.columnDefs=[
+        {
+            field: "name",
+            displayName: "名称",
+            enableColumnMenu:false,
+            pinnedLeft:true,
+            minWidth: "120",
+            headerCellClass: 'my-grid-text-center',
+            cellTemplate: '<div class="ui-grid-cell-contents"><a href="#" ng-click="grid.appScope.tableItemClickFun(grid, row)">{{COL_FIELD}}</a></div>'
+        },
+         {
+            field: "neId",
+            displayName: "网元ID",
+            enableColumnMenu:false,
+            minWidth: "95",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "neGroupId",
+            displayName: "网元组",
+            enableColumnMenu:false,
+            minWidth: "90",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "location",
+            displayName: "位置",
+            enableColumnMenu:false,
+            minWidth: "100",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "type",
+            displayName: "类型",
+            enableColumnMenu:false,
+            minWidth: "120",
+            filter: { 
+                type: uiGridConstants.filter.SELECT,
+                selectOptions:[
+                    {value: '1660sm', label: '1660sm'},
+                    {value: '1678mc', label: '1678mc'},
+                    {value: 'es16', label: 'es16'}
+                ] 
+            },
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "subtype",
+            displayName: "子类型",
+            enableColumnMenu:false,
+            minWidth: "90",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "version",
+            displayName: "版本",
+            enableColumnMenu:false,
+            minWidth: "80",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "suppervisionState",
+            displayName: "管理状态",
+            enableColumnMenu:false,
+            minWidth: "160",
+            filter: { 
+                type: uiGridConstants.filter.SELECT,
+                selectOptions:[
+                    {value: 'suppervised', label: 'suppervised'},
+                    {value: 'unsuppervised', label: 'unsuppervised'}
+                ] 
+            },
+            cellClass:function(grid, row, col, rowRenderIndex, colRenderIndex){
+                if(grid.getCellValue(row,col)==='suppervised'){
+                    return 'ne-suppervised';
+                }else if(grid.getCellValue(row,col)==='unsuppervised'){
+                    return 'ne-unsuppervised';
+                }
+            },
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "communicationState",
+            displayName: "通讯状态",
+            enableColumnMenu:false,
+             minWidth: "150",
+            filter: { 
+                type: uiGridConstants.filter.SELECT,
+                selectOptions:[
+                    {value: 'available', label: 'available'},
+                    {value: 'unavailable', label: 'unavailable'}
+                ] 
+            },
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "alarmState",
+            displayName: "告警级别",
+            enableColumnMenu:false,
+             minWidth: "160",
+            filter: { 
+                type: uiGridConstants.filter.SELECT,
+                selectOptions:[
+                    {value: 'critical', label: 'critical'},
+                    {value: 'major', label: 'major'},
+                    {value: 'minor', label: 'minor'},
+                    {value: 'warning', label: 'warning'},
+                    {value: 'indeterminate', label: 'indeterminate'},
+                    {value: 'cleared', label: 'cleared'}
+                ] 
+            },
+            headerCellClass: 'my-grid-text-center'
+        },
+       
+        {
+            field: "neGroupType",
+            displayName: "组类型",
+            enableColumnMenu:false,
+             minWidth: "90",
+            filter: { 
+                type: uiGridConstants.filter.SELECT,
+                selectOptions:[
+                    {value: 'q3', label: 'q3'},
+                    {value: 'dex', label: 'dex'},
+                    {value: 'snmp', label: 'snmp'}
+                ] 
+            },
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "creationDate",
+            displayName: "创建日期",
+            enableColumnMenu:false,
+            minWidth: "160",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "protocolAddress",
+            displayName: "协议地址",
+            enableColumnMenu:false,
+            minWidth: "120",
+            headerCellClass: 'my-grid-text-center'
+        },
+        {
+            field: "comments",
+            displayName: "备注",
+            enableColumnMenu:false,
+            minWidth: "120",
+            headerCellClass: 'my-grid-text-center'
+        },
+    ];
+    vm.tableParams = new NgTableParams(
+        { 
+            count: 15
+        }, 
+        { counts: [15, 20, 50, 100],
+            dataset:  vm.data
+        }
+    );
+    
+    /*ngTableEventsChannel.onAfterCreated(function(){logger.log("onAfterCreated")}, $scope, vm.tableParams);
+    ngTableEventsChannel.onAfterReloadData(function(){logger.log("onAfterReloadData")}, $scope, vm.tableParams);
+    ngTableEventsChannel.onDatasetChanged(function(){logger.log("onDatasetChanged")}, $scope, vm.tableParams);
+    ngTableEventsChannel.onPagesChanged(function(){logger.log("onPagesChanged")}, $scope, vm.tableParams);*/
+
+    
+    vm.tableColsWidth=['8%', '8%', '14%', '10%', '8%', '8%', '11%', '11%', '11%', '11%'];
+    vm.tableClassFun=function(){
+        return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
+        //return "table table-striped table-bordered table-hover table-condensed";
+    }
+    vm.tableTrStyleFun=function(item){
+        var rlt={
+            
+        };
+        return rlt;
+    }
+    vm.tableTdStyleFun=function(item, col){
+        var rlt={
+            'overflow':'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis',
+            'padding-left': '4px',
+            'padding-right': '4px',
+            'padding-top': '2px',
+            'padding-bottom': '2px'
+        };
+        if(col.field=="suppervisionState"){
+            if(item[col.field]=="unsuppervised"){
+                rlt['background-color']='white';
+                rlt['color']='black';
+            }else{
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }else if(col.field=="communicationState"){
+            if(item[col.field]=="unavailable"){
+                rlt['background-color']='#d62728';
+                rlt['color']='white';
+            }else{
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }else if(col.field=="alarmState"){
+            if(item[col.field]=="critical"){
+                rlt['background-color']='#d62728';
+                rlt['color']='white';
+            }else if(item[col.field]=="major"){
+                rlt['background-color']='#ff7f0e';
+                rlt['color']='white';
+            }else if(item[col.field]=="minor"){
+                rlt['background-color']='#ffbb78';
+                rlt['color']='white';
+            }else if(item[col.field]=="warning"){
+                rlt['background-color']='#aec7e8';
+                rlt['color']='white';
+            }else if(item[col.field]=="indeterminate"){
+                rlt['background-color']='#98df8a';
+                rlt['color']='white';
+            }else if(item[col.field]=="cleared"){
+                rlt['background-color']='#2ca02c';
+                rlt['color']='white';
+            }
+        }
+        return rlt;
+    }
+    vm.tableItemClickFun=function(grid, row){
+        logger.log("tableItemClickFun:"+row.entity.name);
+        $state.go('main.treeitem.secondlevel',{treeItemId: 'ne', neGroupId: row.entity.neGroupId, neId: row.entity.neId });
+    }
+    
+    function htmlValue($scope, row) {
+      var value = row[this.field];
+      var html=""+value;
+      if(this.field=="name"){
+          //html="<a href='#' uib-tooltip=\""+html+"\">"+html+"</a>";
+          html="<a href='#' uib-tooltip='"+html+"' tooltip-placement='top-left' ng-click=\"myNgTableItemClickFun(item, col)\">"+html+"</a>";
+      }else{
+          html="<span>"+html+"</span>";
+      }
+      //var rlt=$sce.trustAsHtml(html);
+      return html;
+    }
+    
+    
+    
+    var filterFun=function(event){
+        return commonUtil.itemInArray(event.eventType, ["neCreation", "neDeletion"]);
+    }
+    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, function(event){})).fun;
+    var listener={name:'MiddleNEController', filter:filterFun, fun:listenerFun};
+    serverNotificationService.addListener(listener);
+    
+    $scope.$on("$destroy", function(){
+        logger.log("MiddleNEController,$destroy");
+        serverNotificationService.removeListener(listener);
+    });
+    
+    
+    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
+        //logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
+        //vm.tableParams.reload();
+    });
+   
+    
+}
+
+angular
+    .module('nmsdemoApp')
+    .controller('MiddleNE_bak_Controller', MiddleNE_bak_Controller);
+
+MiddleNE_bak_Controller.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil', 'serverNotificationService'];
+function MiddleNE_bak_Controller($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil, serverNotificationService) {
     var vm = this;
     vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();

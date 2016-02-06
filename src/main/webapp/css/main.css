@@ -142,3 +142,21 @@ div.form-inputgroup{
     padding-top: 4px;
     padding-bottom: 4px;
 }
+
+.myGrid{
+    width: 1100px;
+    height: 680px;
+}
+.my-grid-text-center{
+    text-align:center;
+}
+.ne-suppervised{
+    text-align:center;
+    background-color: #2ca02c !important;
+    color: white;
+}
+.ne-unsuppervised{
+    text-align:center;
+    background-color: white !important;
+    color: black;
+}
