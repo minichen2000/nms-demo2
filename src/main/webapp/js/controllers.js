@@ -58,7 +58,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
     vm.bannerClicked = bannerClicked;
     
     
-    //serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
+    serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
     
 
 
@@ -251,15 +251,15 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil', 'serverNotificationService', 'uiGridConstants'];
-function MiddleNEController($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil, serverNotificationService, uiGridConstants) {
+MiddleNEController.$inject = ['$stateParams', 'statasticService','$scope','logger','$state', 'commonUtil', 'serverNotificationService'];
+function MiddleNEController($stateParams, statasticService, $scope, logger, $state, commonUtil, serverNotificationService) {
     var vm = this;
     vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
     vm.dataChangeTrigger=statasticService.dataChangeTrigger;
     
-    vm.gridOptions={};
-    vm.gridOptions.appScopeProvider = vm;
+    
+    /*vm.gridOptions.appScopeProvider = vm;
     vm.gridOptions.data=vm.data;
     vm.gridOptions.enableFiltering=true;
     vm.gridOptions.enableGridMenu=true;
@@ -270,79 +270,85 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
     vm.gridOptions.paginationPageSize=20;
     vm.gridOptions.onRegisterApi=function(gridApi){
         vm.gridApi=gridApi;
-    }
-    vm.gridOptions.columnDefs=[
+    }*/
+    var columnDefs=[
+        {
+            headerName: "#", 
+            colId: "rowNum", 
+            valueGetter: "node.id", 
+            suppressSorting: true, 
+            suppressMenu: true, 
+            width: 40, 
+            minWidth: 120, 
+            pinned: 'left'
+        },
         {
             field: "name",
-            displayName: "名称",
-            enableColumnMenu:false,
-            pinnedLeft:true,
-            minWidth: "120",
-            headerCellClass: 'my-grid-text-center',
-            cellTemplate: '<div class="ui-grid-cell-contents"><a href="#" ng-click="grid.appScope.tableItemClickFun(grid, row)">{{COL_FIELD}}</a></div>'
+            headerName: "名称",
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'},
+            pinned: 'left'
+            /*headerCellClass: 'my-grid-text-center',
+            cellTemplate: '<div class="ui-grid-cell-contents"><a href="#" ng-click="grid.appScope.tableItemClickFun(grid, row)">{{COL_FIELD}}</a></div>'*/
         },
          {
             field: "neId",
-            displayName: "网元ID",
-            enableColumnMenu:false,
-            minWidth: "95",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "网元ID",
+            width: 95,
+            minWidth: 95,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "neGroupId",
-            displayName: "网元组",
-            enableColumnMenu:false,
-            minWidth: "90",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "网元组",
+            width: 90,
+            minWidth: 90,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "location",
-            displayName: "位置",
-            enableColumnMenu:false,
-            minWidth: "100",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "位置",
+            width: 100,
+            minWidth: 100,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "type",
-            displayName: "类型",
+            headerName: "类型",
             enableColumnMenu:false,
-            minWidth: "120",
-            filter: { 
-                type: uiGridConstants.filter.SELECT,
-                selectOptions:[
-                    {value: '1660sm', label: '1660sm'},
-                    {value: '1678mc', label: '1678mc'},
-                    {value: 'es16', label: 'es16'}
-                ] 
-            },
-            headerCellClass: 'my-grid-text-center'
+            width: 120,
+            minWidth: 120,
+            filter: 'set',
+            filterParams: {values: ['1660sm', '1678mc', 'es16'], newRowsAction: 'keep'}
         },
         {
             field: "subtype",
-            displayName: "子类型",
-            enableColumnMenu:false,
-            minWidth: "90",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "子类型",
+            width: 90,
+            minWidth: 90,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "version",
-            displayName: "版本",
-            enableColumnMenu:false,
-            minWidth: "80",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "版本",
+            width: 80,
+            minWidth: 80,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "suppervisionState",
-            displayName: "管理状态",
-            enableColumnMenu:false,
-            minWidth: "160",
-            filter: { 
-                type: uiGridConstants.filter.SELECT,
-                selectOptions:[
-                    {value: 'suppervised', label: 'suppervised'},
-                    {value: 'unsuppervised', label: 'unsuppervised'}
-                ] 
-            },
+            headerName: "管理状态",
+            width: 160,
+            minWidth: 160,
+            filter: 'set',
+            filterParams: {values: ['suppervised', 'unsuppervised'], newRowsAction: 'keep'}/*,
             cellClass:function(grid, row, col, rowRenderIndex, colRenderIndex){
                 if(grid.getCellValue(row,col)==='suppervised'){
                     return 'ne-suppervised';
@@ -350,104 +356,152 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
                     return 'ne-unsuppervised';
                 }
             },
-            headerCellClass: 'my-grid-text-center'
+            headerCellClass: 'my-grid-text-center'*/
         },
         {
             field: "communicationState",
-            displayName: "通讯状态",
-            enableColumnMenu:false,
-             minWidth: "150",
-            filter: { 
-                type: uiGridConstants.filter.SELECT,
-                selectOptions:[
-                    {value: 'available', label: 'available'},
-                    {value: 'unavailable', label: 'unavailable'}
-                ] 
-            },
-            headerCellClass: 'my-grid-text-center'
+            headerName: "通讯状态",
+            width: 150,
+            minWidth: 150,
+            filter: 'set',
+            filterParams: {values: ['available', 'unavailable'], newRowsAction: 'keep'}
         },
         {
             field: "alarmState",
-            displayName: "告警级别",
-            enableColumnMenu:false,
-             minWidth: "160",
-            filter: { 
-                type: uiGridConstants.filter.SELECT,
-                selectOptions:[
-                    {value: 'critical', label: 'critical'},
-                    {value: 'major', label: 'major'},
-                    {value: 'minor', label: 'minor'},
-                    {value: 'warning', label: 'warning'},
-                    {value: 'indeterminate', label: 'indeterminate'},
-                    {value: 'cleared', label: 'cleared'}
-                ] 
-            },
-            headerCellClass: 'my-grid-text-center'
+            headerName: "告警级别",
+            width: 160,
+            minWidth: 160,
+            filter: 'set',
+            filterParams: {values: ['critical', 'major','minor','warning', 'indeterminate','cleared'], newRowsAction: 'keep'}
         },
        
         {
             field: "neGroupType",
-            displayName: "组类型",
-            enableColumnMenu:false,
-             minWidth: "90",
-            filter: { 
-                type: uiGridConstants.filter.SELECT,
-                selectOptions:[
-                    {value: 'q3', label: 'q3'},
-                    {value: 'dex', label: 'dex'},
-                    {value: 'snmp', label: 'snmp'}
-                ] 
-            },
-            headerCellClass: 'my-grid-text-center'
+            headerName: "组类型",
+            width: 90,
+            minWidth: 90,
+            filter: 'set',
+            filterParams: {values: ['q3', 'snmp', 'dex'], newRowsAction: 'keep'}
         },
         {
             field: "creationDate",
-            displayName: "创建日期",
-            enableColumnMenu:false,
-            minWidth: "160",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "创建日期",
+            width: 160,
+            minWidth: 160,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "protocolAddress",
-            displayName: "协议地址",
-            enableColumnMenu:false,
-            minWidth: "120",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "协议地址",
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "comments",
-            displayName: "备注",
-            enableColumnMenu:false,
-            minWidth: "120",
-            headerCellClass: 'my-grid-text-center'
+            headerName: "备注",
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
         },
     ];
-    vm.tableParams = new NgTableParams(
-        { 
-            count: 15
-        }, 
-        { counts: [15, 20, 50, 100],
-            dataset:  vm.data
-        }
-    );
     
-    /*ngTableEventsChannel.onAfterCreated(function(){logger.log("onAfterCreated")}, $scope, vm.tableParams);
-    ngTableEventsChannel.onAfterReloadData(function(){logger.log("onAfterReloadData")}, $scope, vm.tableParams);
-    ngTableEventsChannel.onDatasetChanged(function(){logger.log("onDatasetChanged")}, $scope, vm.tableParams);
-    ngTableEventsChannel.onPagesChanged(function(){logger.log("onPagesChanged")}, $scope, vm.tableParams);*/
+    
+    function sortAndFilter(sortModel, filterModel) {
+        return sortData(sortModel, filterData(filterModel, vm.data));
+    }
+
+    function sortData(sortModel, data) {
+        var sortPresent = sortModel && sortModel.length > 0;
+        if (!sortPresent) {
+            return data;
+        }
+        // do an in memory sort of the data, across all the fields
+        var resultOfSort = data.slice();
+        resultOfSort.sort(function(a,b) {
+            for (var k = 0; k<sortModel.length; k++) {
+                var sortColModel = sortModel[k];
+                var valueA = a[sortColModel.colId];
+                var valueB = b[sortColModel.colId];
+                // this filter didn't find a difference, move onto the next one
+                if (valueA==valueB) {
+                    continue;
+                }
+                var sortDirection = sortColModel.sort === 'asc' ? 1 : -1;
+                if (valueA > valueB) {
+                    return sortDirection;
+                } else {
+                    return sortDirection * -1;
+                }
+            }
+            // no filters found a difference
+            return 0;
+        });
+        return resultOfSort;
+    }
+    
+    function filterData(filterModel, data) {
+        var filterPresent = filterModel && Object.keys(filterModel).length > 0;
+        if (!filterPresent) {
+            return data;
+        }
+
+        var resultOfFilter = [];
+        for (var i = 0; i<data.length; i++) {
+            var item = data[i];
+
+            if(commonUtil.agGridFilter(filterModel, item)){
+                resultOfFilter.push(item);
+            }else{
+                continue;
+            }
+        }
+
+        return resultOfFilter;
+    }
+
 
     
-    vm.tableColsWidth=['8%', '8%', '14%', '10%', '8%', '8%', '11%', '11%', '11%', '11%'];
-    vm.tableClassFun=function(){
-        return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
-        //return "table table-striped table-bordered table-hover table-condensed";
-    }
-    vm.tableTrStyleFun=function(item){
-        var rlt={
-            
-        };
-        return rlt;
-    }
+    var dataSource = {
+        //rowCount: vm.data.length, //???, - not setting the row count, infinite paging will be used
+        pageSize: 100, // changing to number, as scope keeps it as a string
+        getRows: function (params) {
+            // this code should contact the server for rows. however for the purposes of the demo,
+            // the data is generated locally, a timer is used to give the experience of
+            // an asynchronous call
+            console.log('asking for ' + params.startRow + ' to ' + params.endRow);
+            console.log("params:"+JSON.stringify(params));
+            // take a chunk of the array, matching the start and finish times
+            var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel);
+                
+                var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
+                // see if we have come to the last page. if we have, set lastRow to
+                // the very last row of the last page. if you are getting data from
+                // a server, lastRow could be returned separately if the lastRow
+                // is not in the current page.
+                var lastRow = dataAfterSortingAndFiltering.length;
+                
+                if (dataAfterSortingAndFiltering.length <= params.endRow) {
+                    lastRow = dataAfterSortingAndFiltering.length;
+                }
+                console.log('lastRow: ' + lastRow);
+                params.successCallback(rowsThisPage, lastRow);
+        }
+    };
+    vm.gridOptions={
+        columnDefs: columnDefs,
+        datasource:dataSource,
+        enableSorting: true,
+        enableFilter: true,
+        enableColResize: true,
+        enableServerSideSorting: true,
+        enableServerSideFilter: true,
+    };
+
+    
     vm.tableTdStyleFun=function(item, col){
         var rlt={
             'overflow':'hidden',
@@ -530,10 +584,11 @@ function MiddleNEController($stateParams, NgTableParams, statasticService, $scop
     });
     
     
-    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
-        //logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
-        //vm.tableParams.reload();
-    });
+    /*new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
+        logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
+        //vm.gridOptions.api.refreshView();
+        //vm.gridOptions.api.setDatasource(dataSource);
+    });*/
    
     
 }

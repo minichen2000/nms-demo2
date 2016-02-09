@@ -16,6 +16,9 @@
         var service = {
             itemInArray: itemInArray,
             indexInArray: indexInArray,
+            agGridTextFilter: agGridTextFilter,
+            agGridSelectFilter: agGridSelectFilter,
+            agGridFilter:agGridFilter,
             ObjectArrayKeyIndexManager: ObjectArrayKeyIndexManager,
             KeyIndexMap: KeyIndexMap,
             AttrValueCounter: AttrValueCounter,
@@ -46,6 +49,76 @@
         function itemInArray(item, arr){
             return arr.indexOf(item)>=0 ? true : false;
         }
+        
+        
+        function agGridTextFilter(filterModel, field, item){
+            if(filterModel[field]){
+                if(filterModel[field].type==1){//contains
+                    if(item[field].toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())<0){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else if(filterModel[field].type==2){//equals
+                    if(item[field].toString().toLowerCase()!==filterModel[field].filter.toLowerCase()){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else if(filterModel[field].type==3){//startWith
+                    if(item[field].toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())!=0){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else{//endWith
+                    var idx=item[field].toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase());
+                    if(item[field].toString().length-idx!=filterModel[field].filter.length){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+            }else{
+                return true;
+            }
+        }
+        
+        function agGridSelectFilter(filterModel, field, item){
+            if(filterModel[field]){
+                if(filterModel[field].indexOf(item[field].toString())<0){
+                    return false;
+                }else{
+                    return true;
+                }
+            }else{
+                return true;
+            }
+        }
+        
+        function agGridFilter(filterModel, item){
+            for(var param in filterModel){
+                if(typeof(filterModel[param])!="function"){
+                    if(Object.prototype.toString.call(filterModel[param]) === '[object Array]'){//array
+                        if(!agGridSelectFilter(filterModel, param, item)){
+                            return false;
+                        }else{
+                            continue;
+                        }
+                    }else{//object
+                        if(!agGridTextFilter(filterModel, param, item)){
+                            return false;
+                        }else{
+                            continue;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+            
+        
+        
 
         function WatchDelayReload($scope, triggerObj, _minInterval, _reloadFun) {
             var self = this;

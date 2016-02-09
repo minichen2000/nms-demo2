@@ -1,7 +1,7 @@
 'use strict';
 
 /* App Module Creation*/
-
+agGrid.initialiseAgGridWithAngular1(angular);
 angular.module('nmsdemoApp', [
     'perfect_scrollbar',
     'ui.router',
@@ -11,5 +11,6 @@ angular.module('nmsdemoApp', [
     'ui.grid',
     'ui.grid.resizeColumns',
     'ui.grid.pagination',
-    'ui.grid.pinning'
+    'ui.grid.pinning',
+    'agGrid'
 ]);
