@@ -147,16 +147,73 @@ div.form-inputgroup{
     width: 1100px;
     height: 680px;
 }
-.my-grid-text-center{
-    text-align:center;
+.table-name-field{
+    color: #337AB7;
+    cursor: pointer;
 }
-.ne-suppervised{
+.table-name-field:hover{
+    color: #337AB7;
+    cursor: pointer;
+    background-color: #EEE
+}
+.table-suppervised{
     text-align:center;
-    background-color: #2ca02c !important;
+    background-color: #2ca02c;
     color: white;
+    margin:2px;
 }
-.ne-unsuppervised{
+.table-unsuppervised{
     text-align:center;
-    background-color: white !important;
+    background-color: #EEE;
     color: black;
+    margin:2px;
 }
+.table-available{
+    text-align:center;
+    background-color: #2ca02c;
+    color: white;
+    margin:2px;
+}
+.table-unavailable{
+    text-align:center;
+    background-color: #EEE;
+    color: black;
+    margin:2px;
+}
+.table-alarm-critical{
+    text-align:center;
+    background-color: #d62728;
+    color: white;
+    margin:2px;
+}
+.table-alarm-major{
+    text-align:center;
+    background-color: #ff7f0e;
+    color: white;
+    margin:2px;
+}
+.table-alarm-minor{
+    text-align:center;
+    background-color: #ffbb78;
+    color: white;
+    margin:2px;
+}
+.table-alarm-warning{
+    text-align:center;
+    background-color: #aec7e8;
+    color: white;
+    margin:2px;
+}
+.table-alarm-indeterminate{
+    text-align:center;
+    background-color: #98df8a;
+    color: white;
+    margin:2px;
+}
+.table-alarm-cleared{
+    text-align:center;
+    background-color: #2ca02c;
+    color: white;
+    margin:2px;
+}
+

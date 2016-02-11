@@ -271,6 +271,7 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
     vm.gridOptions.onRegisterApi=function(gridApi){
         vm.gridApi=gridApi;
     }*/
+    
     var columnDefs=[
         {
             headerName: "#", 
@@ -279,7 +280,7 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
             suppressSorting: true, 
             suppressMenu: true, 
             width: 40, 
-            minWidth: 120, 
+            minWidth: 40, 
             pinned: 'left'
         },
         {
@@ -289,9 +290,9 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
             minWidth: 120,
             filter: 'text',
             filterParams: {newRowsAction: 'keep'},
-            pinned: 'left'
-            /*headerCellClass: 'my-grid-text-center',
-            cellTemplate: '<div class="ui-grid-cell-contents"><a href="#" ng-click="grid.appScope.tableItemClickFun(grid, row)">{{COL_FIELD}}</a></div>'*/
+            pinned: 'left',
+            onCellClicked: cellClicked,
+            cellClass: 'table-name-field'
         },
          {
             field: "neId",
@@ -321,8 +322,8 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
             field: "type",
             headerName: "类型",
             enableColumnMenu:false,
-            width: 120,
-            minWidth: 120,
+            width: 70,
+            minWidth: 70,
             filter: 'set',
             filterParams: {values: ['1660sm', '1678mc', 'es16'], newRowsAction: 'keep'}
         },
@@ -345,34 +346,38 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
         {
             field: "suppervisionState",
             headerName: "管理状态",
-            width: 160,
-            minWidth: 160,
+            width: 120,
+            minWidth: 120,
             filter: 'set',
-            filterParams: {values: ['suppervised', 'unsuppervised'], newRowsAction: 'keep'}/*,
-            cellClass:function(grid, row, col, rowRenderIndex, colRenderIndex){
-                if(grid.getCellValue(row,col)==='suppervised'){
-                    return 'ne-suppervised';
-                }else if(grid.getCellValue(row,col)==='unsuppervised'){
-                    return 'ne-unsuppervised';
-                }
-            },
-            headerCellClass: 'my-grid-text-center'*/
+            filterParams: {values: ['suppervised', 'unsuppervised'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls=(params.value==='suppervised'?'table-suppervised':'table-unsuppervised');
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
         },
         {
             field: "communicationState",
             headerName: "通讯状态",
-            width: 150,
-            minWidth: 150,
+            width: 110,
+            minWidth: 110,
             filter: 'set',
-            filterParams: {values: ['available', 'unavailable'], newRowsAction: 'keep'}
+            filterParams: {values: ['available', 'unavailable'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls=(params.value==='available'?'table-available':'table-unavailable');
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
         },
         {
             field: "alarmState",
             headerName: "告警级别",
-            width: 160,
-            minWidth: 160,
+            width: 110,
+            minWidth: 110,
             filter: 'set',
-            filterParams: {values: ['critical', 'major','minor','warning', 'indeterminate','cleared'], newRowsAction: 'keep'}
+            filterParams: {values: ['critical', 'major','minor','warning', 'indeterminate','cleared'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls='table-alarm-'+params.value;
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
         },
        
         {
@@ -394,8 +399,8 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
         {
             field: "protocolAddress",
             headerName: "协议地址",
-            width: 120,
-            minWidth: 120,
+            width: 110,
+            minWidth: 110,
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
@@ -466,28 +471,12 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
 
     
     var dataSource = {
-        //rowCount: vm.data.length, //???, - not setting the row count, infinite paging will be used
-        pageSize: 100, // changing to number, as scope keeps it as a string
+        pageSize: 200, 
         getRows: function (params) {
-            // this code should contact the server for rows. however for the purposes of the demo,
-            // the data is generated locally, a timer is used to give the experience of
-            // an asynchronous call
-            console.log('asking for ' + params.startRow + ' to ' + params.endRow);
-            console.log("params:"+JSON.stringify(params));
-            // take a chunk of the array, matching the start and finish times
             var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel);
                 
                 var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
-                // see if we have come to the last page. if we have, set lastRow to
-                // the very last row of the last page. if you are getting data from
-                // a server, lastRow could be returned separately if the lastRow
-                // is not in the current page.
                 var lastRow = dataAfterSortingAndFiltering.length;
-                
-                if (dataAfterSortingAndFiltering.length <= params.endRow) {
-                    lastRow = dataAfterSortingAndFiltering.length;
-                }
-                console.log('lastRow: ' + lastRow);
                 params.successCallback(rowsThisPage, lastRow);
         }
     };
@@ -499,7 +488,17 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
         enableColResize: true,
         enableServerSideSorting: true,
         enableServerSideFilter: true,
+        angularCompileRows: false
+        
     };
+    
+    function cellClicked(params){
+        $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId });
+    }
+    
+    function nameCellRendererFunc(params){
+        return '<a href="#">'+params.data.name+'</a>';
+    }
 
     
     vm.tableTdStyleFun=function(item, col){
@@ -551,10 +550,7 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
         }
         return rlt;
     }
-    vm.tableItemClickFun=function(grid, row){
-        logger.log("tableItemClickFun:"+row.entity.name);
-        $state.go('main.treeitem.secondlevel',{treeItemId: 'ne', neGroupId: row.entity.neGroupId, neId: row.entity.neId });
-    }
+
     
     function htmlValue($scope, row) {
       var value = row[this.field];
@@ -584,11 +580,14 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
     });
     
     
-    /*new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
+    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
         logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
-        //vm.gridOptions.api.refreshView();
-        //vm.gridOptions.api.setDatasource(dataSource);
-    });*/
+        var scrollIdleFactorMS=1000;
+        logger.log("vm.gridOptions.api.getLastScrollMS()="+vm.gridOptions.api.getLastScrollMS());
+        if((new Date()).getTime() - vm.gridOptions.api.getLastScrollMS() > scrollIdleFactorMS){
+            vm.gridOptions.api.refreshCurrentDatasource();
+        }
+    });
    
     
 }
@@ -1037,7 +1036,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logge
     }
     vm.tableItemClickFun=function(item, col){
         logger.log("tableItemClickFun:"+col.field+":"+item[col.field]);
-        $state.go('main.treeitem.secondlevel',{treeItemId: 'trail', sncId: item.sncId});
+        $state.go('main.treeitem_secondlevel',{treeItemId: 'trail', sncId: item.sncId});
     }
     
     function htmlValue($scope, row) {

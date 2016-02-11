@@ -84,8 +84,8 @@ angular
                     }
 
                 })
-                .state('main.treeitem.secondlevel', {
-                    url: "main/treeitem/secondlevel/:treeItemId/:neGroupId/:neId:/:sncId",
+                .state('main.treeitem_secondlevel', {
+                    url: "main/treeitem_secondlevel/:treeItemId/:neGroupId/:neId:/:sncId",
                     templateUrl: function ($stateParams) {
                         console.log("$stateParams:"+JSON.stringify($stateParams));
                         if($stateParams.treeItemId=='ne' && $stateParams.neGroupId && $stateParams.neId){
