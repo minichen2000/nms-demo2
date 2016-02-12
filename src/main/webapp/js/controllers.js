@@ -265,6 +265,32 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
             pinned: 'left'
         },
         {
+            headerName: "*",
+            colId: "operation",
+            suppressSorting: true,
+            suppressMenu: true,
+            width: 65,
+            minWidth:65,
+            pinned: 'left',
+            cellRenderer: function(params){
+                var rlt= '<div class="btn-group">'+
+	'<button type="button" class="btn btn-default btn-xs"><i class="fa fa-info-circle fa-fw"></i></button>'+
+   '<button type="button" class="btn btn-default btn-xs dropdown-toggle"  data-toggle="dropdown">'+
+      '<span class="caret"></span>'+
+   '</button>'+
+   '<ul class="dropdown-menu" role="menu" style="z-index: 1000;">'+
+      '<li><a href="#">功能('+params.data.name+')</a></li>'+
+      '<li><a href="#">另一个功能</a></li>'+
+      '<li><a href="#">其他</a></li>'+
+      '<li class="divider"></li>'+
+      '<li><a href="#">分离的链接</a></li>'+
+   '</ul>'+
+'</div>';
+logger.log("rlt:"+rlt);
+return rlt;
+            }
+        },
+        {
             field: "name",
             headerName: "名称",
             width: 120,
@@ -398,7 +424,7 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
     ];
     
    
-    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null);
+    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null, null);
             
     var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["neCreation", "neDeletion", "neChange"], null, 200, 'MiddleNEController');
     serverNotificationService.addListener(listener);
@@ -537,7 +563,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
             }
         }, 
         {
-            field: "aEndPorts[0].neName",
+            field: "aEndNE",
             headerName: "A端网元",
             valueGetter: function(params){
                 return params.data.aEndPorts[0].neName;
@@ -590,7 +616,21 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
         }
     ];
     
-    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null);
+    function _fieldValueGetterFun(item, field){
+        if(field==='aEndNE'){
+            return item.aEndPorts[0].neName;
+        }else if(field==='aEndTP'){
+            return item.aEndPorts[0].tpName;
+        }else if(field==='zEndNE'){
+            return item.zEndPorts[0].neName;
+        }else if(field==='zEndTP'){
+            return item.zEndPorts[0].tpName;
+        }else{
+            return item[field];
+        }
+    }
+    
+    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, _fieldValueGetterFun, null);
     var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["sncCreation", "sncDeletion"], eventListener, 200, 'MiddleTrailController');
     serverNotificationService.addListener(listener);
     

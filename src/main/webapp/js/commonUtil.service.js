@@ -242,29 +242,30 @@
         
         
         
-        function agGridTextFilter(filterModel, field, item){
+        function agGridTextFilter(filterModel, field, item, fieldValueGetterFun){
             if(filterModel[field]){
+                var fieldValue= (fieldValueGetterFun ? fieldValueGetterFun(item, field) : item[field]);
                 if(filterModel[field].type==1){//contains
-                    if(item[field].toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())<0){
+                    if(fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())<0){
                         return false;
                     }else{
                         return true;
                     }
                 }else if(filterModel[field].type==2){//equals
-                    if(item[field].toString().toLowerCase()!==filterModel[field].filter.toLowerCase()){
+                    if(fieldValue.toString().toLowerCase()!==filterModel[field].filter.toLowerCase()){
                         return false;
                     }else{
                         return true;
                     }
                 }else if(filterModel[field].type==3){//startWith
-                    if(item[field].toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())!=0){
+                    if(fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())!=0){
                         return false;
                     }else{
                         return true;
                     }
                 }else{//endWith
-                    var idx=item[field].toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase());
-                    if(item[field].toString().length-idx!=filterModel[field].filter.length){
+                    var idx=fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase());
+                    if(fieldValue.toString().length-idx!=filterModel[field].filter.length){
                         return false;
                     }else{
                         return true;
@@ -275,7 +276,7 @@
             }
         }
         
-        function agGridSelectFilter(filterModel, field, item){
+        function agGridSelectFilter(filterModel, field, item, fieldValueGetterFun){
             if(filterModel[field]){
                 if(filterModel[field].indexOf(item[field].toString())<0){
                     return false;
@@ -287,17 +288,17 @@
             }
         }
         
-        function agGridFilter(filterModel, item){
+        function agGridFilter(filterModel, item, fieldValueGetterFun){
             for(var param in filterModel){
                 if(typeof(filterModel[param])!="function"){
                     if(Object.prototype.toString.call(filterModel[param]) === '[object Array]'){//array
-                        if(!agGridSelectFilter(filterModel, param, item)){
+                        if(!agGridSelectFilter(filterModel, param, item, fieldValueGetterFun)){
                             return false;
                         }else{
                             continue;
                         }
                     }else{//object
-                        if(!agGridTextFilter(filterModel, param, item)){
+                        if(!agGridTextFilter(filterModel, param, item, fieldValueGetterFun)){
                             return false;
                         }else{
                             continue;
@@ -310,9 +311,10 @@
         
         
         
-        function genAgGridOptions(_columnDefs, _data, _getRows){
+        function genAgGridOptions(_columnDefs, _data, _fieldValueGetterFun, _getRows){
+            var fieldValueGetterFun=_fieldValueGetterFun;
             var defaultGetRows=function(params){
-                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel);     
+                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel, fieldValueGetterFun);     
                 var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
                 var lastRow = dataAfterSortingAndFiltering.length;
                 params.successCallback(rowsThisPage, lastRow);
@@ -323,6 +325,7 @@
             };
             
             return {
+                rowHeight: 27,
                 columnDefs: _columnDefs,
                 datasource: dataSource,
                 enableSorting: true,
@@ -333,11 +336,11 @@
                 angularCompileRows: false
             }
             
-            function sortAndFilter(sortModel, filterModel) {
-                return sortData(sortModel, filterData(filterModel, _data));
+            function sortAndFilter(sortModel, filterModel, fieldValueGetterFun) {
+                return sortData(sortModel, filterData(filterModel, _data, fieldValueGetterFun), fieldValueGetterFun);
             }
 
-            function sortData(sortModel, data) {
+            function sortData(sortModel, data, fieldValueGetterFun) {
                 var sortPresent = sortModel && sortModel.length > 0;
                 if (!sortPresent) {
                     return data;
@@ -347,8 +350,8 @@
                 resultOfSort.sort(function(a,b) {
                     for (var k = 0; k<sortModel.length; k++) {
                         var sortColModel = sortModel[k];
-                        var valueA = a[sortColModel.colId];
-                        var valueB = b[sortColModel.colId];
+                        var valueA = (fieldValueGetterFun ? fieldValueGetterFun(a, sortColModel.colId) : a[sortColModel.colId]);
+                        var valueB = (fieldValueGetterFun ? fieldValueGetterFun(b, sortColModel.colId) : b[sortColModel.colId]);
                         // this filter didn't find a difference, move onto the next one
                         if (valueA==valueB) {
                             continue;
@@ -366,7 +369,7 @@
                 return resultOfSort;
             }
             
-            function filterData(filterModel, data) {
+            function filterData(filterModel, data, fieldValueGetterFun) {
                 var filterPresent = filterModel && Object.keys(filterModel).length > 0;
                 if (!filterPresent) {
                     return data;
@@ -376,7 +379,7 @@
                 for (var i = 0; i<data.length; i++) {
                     var item = data[i];
 
-                    if(agGridFilter(filterModel, item)){
+                    if(agGridFilter(filterModel, item, fieldValueGetterFun)){
                         resultOfFilter.push(item);
                     }else{
                         continue;
