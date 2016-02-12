@@ -2489,7 +2489,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    PaginationController.prototype.setTotalLabels = function () {
 	        if (this.foundMaxRow) {
-                console.log("totalPages: "+this.totalPages+" rowCount:"+this.rowCount);
+                //console.log("totalPages: "+this.totalPages+" rowCount:"+this.rowCount);
 	            this.lbTotal.innerHTML = this.myToLocaleString(this.totalPages);
 	            this.lbRecordCount.innerHTML = this.myToLocaleString(this.rowCount);
 	        }
@@ -2503,7 +2503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.totalPages = Math.floor((this.rowCount - 1) / this.pageSize) + 1;
 	    };
 	    PaginationController.prototype.pageLoaded = function (rows, lastRowIndex) {
-            console.log("PaginationController.prototype.pageLoaded");
+            //console.log("PaginationController.prototype.pageLoaded");
 	        var firstId = this.currentPage * this.pageSize;
 	        this.angularGrid.setRowData(rows, firstId);
 	        // see if we hit the last row

@@ -39,4 +39,8 @@ public class MDLUtil {
         }
 
     }
+	static public String Event_WRAP(String eventType, String eventBody) {
+		return "{\"eventType\": \""+eventType+"\", \"event\": "+eventBody+"}";
+
+    }
 }

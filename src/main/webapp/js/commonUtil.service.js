@@ -19,12 +19,17 @@
             agGridTextFilter: agGridTextFilter,
             agGridSelectFilter: agGridSelectFilter,
             agGridFilter:agGridFilter,
+            genAgGridOptions: genAgGridOptions,
+            genAgGridWatchDelayReloader: genAgGridWatchDelayReloader,
+            copyAttrs: copyAttrs,
             ObjectArrayKeyIndexManager: ObjectArrayKeyIndexManager,
             KeyIndexMap: KeyIndexMap,
             AttrValueCounter: AttrValueCounter,
             generateWSUrl: generateWSUrl,
             DelayScopeApply: DelayScopeApply,
-            WatchDelayReload: WatchDelayReload
+            watchDelayReload: watchDelayReload,
+            WatchTrigger: WatchTrigger,
+            genDelayScopeApplyEventListener: genDelayScopeApplyEventListener
         };
         return service;
 
@@ -49,6 +54,192 @@
         function itemInArray(item, arr){
             return arr.indexOf(item)>=0 ? true : false;
         }
+        
+        function copyAttrs(source, target){
+            for( var param in source){
+                if(typeof(source[param])!="function"){
+                    target[param]=source[param];
+                }
+            }
+        }
+
+        function WatchTrigger(){
+            var self = this;
+            this.triggered=0;
+            this.trigger=function(){
+                self.triggered>=1000 ? self.triggered=0 : self.triggered++;
+            }
+            //return this;
+        }
+        
+
+        function watchDelayReload($scope, triggerObj, _minInterval, _reloadFun) {
+            var lastReloadTime = 0;
+            var minInterval = _minInterval;
+            var reloadFun = _reloadFun;
+
+            $scope.$watch(function () { return triggerObj.triggered }, function () {
+                if ((new Date()).getTime() - lastReloadTime > minInterval) {
+                    reloadFun();
+                    lastReloadTime = (new Date()).getTime();
+                }
+
+            });
+            //return this;
+        }
+        
+        function DelayScopeApply(_scope, _interval, _fun) {
+            var self = this;
+            this.lastApplyTime = 0;
+            this.theInterval = _interval;
+            this.theFun = _fun;
+            this.theScope=_scope;
+            this.fun=function(param){
+                if (null!=self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
+                    self.theScope.$apply(function(){
+                        self.theFun(param);
+                    });
+                    self.lastApplyTime = (new Date()).getTime();
+                }else{
+                    self.theFun(param);
+                }
+            }
+            //return this;
+        }
+        
+        function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName){
+            var filterFun=function(event){
+                return itemInArray(event.eventType, _eventTypeArr);
+            }
+            var listenerFun=(new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function(event){})).fun;
+            return {name:listenerName, filter: _filterFun ? _filterFun : filterFun, fun:listenerFun};
+        }
+
+
+
+
+
+
+
+        function ObjectArrayKeyIndexManager(_arr, _keyName) {
+            var self = this;
+            this.hashMap = new HashMap();
+            var arr = _arr;
+            var keyName = _keyName;
+
+
+
+
+            this.getArray=function(){
+                return arr;
+            }
+            this.has=function(keyValue){
+                return self.hashMap.has(keyValue);
+            }
+            this.get=function(keyValue){
+                if(self.has(keyValue)){
+                    return self.hashMap.get(keyValue);
+                }else{
+                    return undefined;
+                }
+            }
+            this.add = function (arrItem) {
+                var idx=-1;
+                var hasItem = self.hashMap.has(arrItem[keyName]);
+                if (!hasItem) {
+                    arr.push(arrItem);
+                    idx=arr.length-1;
+                    self.hashMap.set(arrItem[keyName], idx);
+                } else {
+                    idx=self.hashMap.get(arrItem[keyName]);
+                    arr[idx] = arrItem;
+                }
+                return idx;
+            }
+            this.remove = function (keyValue) {
+                var hasItem = self.hashMap.has(keyValue);
+                if (hasItem) {
+                    var idx = self.hashMap.get(keyValue);
+                    self.hashMap.remove(keyValue);
+                    arr.splice(idx, 1);
+                    return idx;
+                } else {
+                    return -1;
+                }
+            }
+
+
+            for (var i = 0; i < arr.length; i++) {
+                self.hashMap.set(arr[i][keyName], i);
+            }
+
+            //return this;
+        }
+        
+        function KeyIndexMap(_arr, _keyName) {
+            var self = this;
+            this.hashMap = new HashMap();
+            var keyName = _keyName;
+
+            this.has=function(keyValue){
+                return self.hashMap.has(keyValue);
+            }
+            this.get=function(keyValue){
+                if(self.hashMap.has(keyValue)){
+                    return self.hashMap.get(keyValue);
+                }else{
+                    return undefined;
+                }
+            }
+            this.add = function (keyValue, index) {
+                self.hashMap.set(keyValue, index);
+            }
+            this.remove = function (keyValue) {
+                var hasItem = self.hashMap.has(keyValue);
+                if (hasItem) {
+                    self.hashMap.remove(keyValue);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+            for (var i = 0; i < _arr.length; i++) {
+                self.hashMap.set(_arr[i][keyName], i);
+            }
+
+            //return this;
+        }
+
+        function AttrValueCounter(_arr, _attrName) {
+            var self = this;
+            this.hashMap = new HashMap();
+
+
+            this.add = function (attrValue) {
+                if (!self.hashMap.has(attrValue)) {
+                    self.hashMap.set(attrValue, 1);
+                } else {
+                    self.hashMap.set(attrValue, self.hashMap.get(attrValue) + 1);
+                }
+            }
+            this.remove = function (attrValue) {
+                var hasItem = self.hashMap.has(attrValue);
+                if (hasItem) {
+                    if (self.hashMap.get(attrValue) > 0) {
+                        self.hashMap.set(attrValue, self.hashMap.get(attrValue) - 1);
+                    }
+                }
+            }
+
+            for (var i = 0; i < _arr.length; i++) {
+                self.add(_arr[i][_attrName]);
+            }
+
+            //return this;
+        }
+        
         
         
         function agGridTextFilter(filterModel, field, item){
@@ -116,168 +307,93 @@
             }
             return true;
         }
+        
+        
+        
+        function genAgGridOptions(_columnDefs, _data, _getRows){
+            var defaultGetRows=function(params){
+                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel);     
+                var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
+                var lastRow = dataAfterSortingAndFiltering.length;
+                params.successCallback(rowsThisPage, lastRow);
+            }
+            var dataSource={
+                pageSize: 200, 
+                getRows: _getRows ? _getRows : defaultGetRows
+            };
             
-        
-        
+            return {
+                columnDefs: _columnDefs,
+                datasource: dataSource,
+                enableSorting: true,
+                enableFilter: true,
+                enableColResize: true,
+                enableServerSideSorting: true,
+                enableServerSideFilter: true,
+                angularCompileRows: false
+            }
+            
+            function sortAndFilter(sortModel, filterModel) {
+                return sortData(sortModel, filterData(filterModel, _data));
+            }
 
-        function WatchDelayReload($scope, triggerObj, _minInterval, _reloadFun) {
-            var self = this;
-            this.lastReloadTime = 0;
-            this.minInterval = _minInterval;
-            this.reloadFun = _reloadFun;
-
-            $scope.$watch(function () { return triggerObj.triggered }, function () {
-                if ((new Date()).getTime() - self.lastReloadTime > self.minInterval) {
-                    self.reloadFun();
-                    self.lastReloadTime = (new Date()).getTime();
+            function sortData(sortModel, data) {
+                var sortPresent = sortModel && sortModel.length > 0;
+                if (!sortPresent) {
+                    return data;
+                }
+                // do an in memory sort of the data, across all the fields
+                var resultOfSort = data.slice();
+                resultOfSort.sort(function(a,b) {
+                    for (var k = 0; k<sortModel.length; k++) {
+                        var sortColModel = sortModel[k];
+                        var valueA = a[sortColModel.colId];
+                        var valueB = b[sortColModel.colId];
+                        // this filter didn't find a difference, move onto the next one
+                        if (valueA==valueB) {
+                            continue;
+                        }
+                        var sortDirection = sortColModel.sort === 'asc' ? 1 : -1;
+                        if (valueA > valueB) {
+                            return sortDirection;
+                        } else {
+                            return sortDirection * -1;
+                        }
+                    }
+                    // no filters found a difference
+                    return 0;
+                });
+                return resultOfSort;
+            }
+            
+            function filterData(filterModel, data) {
+                var filterPresent = filterModel && Object.keys(filterModel).length > 0;
+                if (!filterPresent) {
+                    return data;
                 }
 
-            });
-            return this;
-        }
-        
-        function DelayScopeApply(_scope, _interval, _fun) {
-            var self = this;
-            this.lastApplyTime = 0;
-            this.theInterval = _interval;
-            this.theFun = _fun;
-            this.theScope=_scope;
-            this.fun=function(param){
-                if (null!=self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
-                    self.theScope.$apply(function(){
-                        self.theFun(param);
-                    });
-                    self.lastApplyTime = (new Date()).getTime();
-                }else{
-                    self.theFun(param);
-                }
-            }
-            return this;
-        }
+                var resultOfFilter = [];
+                for (var i = 0; i<data.length; i++) {
+                    var item = data[i];
 
-
-
-
-
-
-
-        function ObjectArrayKeyIndexManager(_arr, _keyName) {
-            var self = this;
-            this.hashMap = new HashMap();
-            var arr = _arr;
-            var keyName = _keyName;
-
-
-
-
-            this.getArray=function(){
-                return arr;
-            }
-            this.has=function(keyValue){
-                return self.hashMap.has(keyValue);
-            }
-            this.get=function(keyValue){
-                if(self.has(keyValue)){
-                    return self.hashMap.get(keyValue);
-                }else{
-                    return undefined;
-                }
-            }
-            this.add = function (arrItem) {
-                var idx=-1;
-                var hasItem = self.hashMap.has(arrItem[keyName]);
-                if (!hasItem) {
-                    arr.push(arrItem);
-                    idx=arr.length-1;
-                    self.hashMap.set(arrItem[keyName], idx);
-                } else {
-                    idx=self.hashMap.get(arrItem[keyName]);
-                    arr[idx] = arrItem;
-                }
-                return idx;
-            }
-            this.remove = function (keyValue) {
-                var hasItem = self.hashMap.has(keyValue);
-                if (hasItem) {
-                    var idx = self.hashMap.get(keyValue);
-                    self.hashMap.remove(keyValue);
-                    arr.splice(idx, 1);
-                    return idx;
-                } else {
-                    return -1;
-                }
-            }
-
-
-            for (var i = 0; i < arr.length; i++) {
-                self.hashMap.set(arr[i][keyName], i);
-            }
-
-            return this;
-        }
-        
-        function KeyIndexMap(_arr, _keyName) {
-            var self = this;
-            this.hashMap = new HashMap();
-            var keyName = _keyName;
-
-            this.has=function(keyValue){
-                return self.hashMap.has(keyValue);
-            }
-            this.get=function(keyValue){
-                if(self.hashMap.has(keyValue)){
-                    return self.hashMap.get(keyValue);
-                }else{
-                    return undefined;
-                }
-            }
-            this.add = function (keyValue, index) {
-                self.hashMap.set(keyValue, index);
-            }
-            this.remove = function (keyValue) {
-                var hasItem = self.hashMap.has(keyValue);
-                if (hasItem) {
-                    self.hashMap.remove(keyValue);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-
-            for (var i = 0; i < _arr.length; i++) {
-                self.hashMap.set(_arr[i][keyName], i);
-            }
-
-            return this;
-        }
-
-        function AttrValueCounter(_arr, _attrName) {
-            var self = this;
-            this.hashMap = new HashMap();
-
-
-            this.add = function (attrValue) {
-                if (!self.hashMap.has(attrValue)) {
-                    self.hashMap.set(attrValue, 1);
-                } else {
-                    self.hashMap.set(attrValue, self.hashMap.get(attrValue) + 1);
-                }
-            }
-            this.remove = function (attrValue) {
-                var hasItem = self.hashMap.has(attrValue);
-                if (hasItem) {
-                    if (self.hashMap.get(attrValue) > 0) {
-                        self.hashMap.set(attrValue, self.hashMap.get(attrValue) - 1);
+                    if(agGridFilter(filterModel, item)){
+                        resultOfFilter.push(item);
+                    }else{
+                        continue;
                     }
                 }
-            }
 
-            for (var i = 0; i < _arr.length; i++) {
-                self.add(_arr[i][_attrName]);
+                return resultOfFilter;
             }
-
-            return this;
+        }
+        
+        function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval){
+            watchDelayReload(scope, trigger, interval, function(){
+                var scrollIdleFactorMS=1000;
+                if((new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS){
+                    gridOptions.api.refreshCurrentDatasource();
+                }
+            });
         }
 
     }

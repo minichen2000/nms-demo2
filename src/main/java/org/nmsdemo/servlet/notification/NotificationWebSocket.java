@@ -69,6 +69,9 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										"unprotected",
 										aEnds,
 										zEnds)));
+						
+						String body="{\"neKey\": \"100/1\", \"name\":\"node_100/1new\", \"communicationState\": \"available\"}";
+						remote.sendString(MDLUtil.Event_WRAP("neChange", body));
 
 						Thread.sleep(1000);
 						remote.sendString(MDLUtil.Event_WRAP("alarmStatastic",
@@ -99,7 +102,9 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										"unprotected",
 										aEnds,
 										zEnds)));
-
+						
+						body="{\"neKey\": \"100/1\", \"name\":\"node_100/1\", \"communicationState\": \"unavailable\"}";
+						remote.sendString(MDLUtil.Event_WRAP("neChange", body));
 
 					} catch (Exception e) {
 						e.printStackTrace(System.err);

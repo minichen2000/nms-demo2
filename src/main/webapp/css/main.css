@@ -216,4 +216,34 @@ div.form-inputgroup{
     color: white;
     margin:2px;
 }
+.table-snc-protect-protected{
+    text-align:center;
+    background-color: #2ca02c;
+    color: white;
+    margin:2px;
+}
+.table-snc-protect-unprotected{
+    text-align:center;
+    background-color: #EEE;
+    color: black;
+    margin:2px;
+}
+.table-snc-state-defined{
+    text-align:center;
+    background-color: #EEE;
+    color: black;
+    margin:2px;
+}
+.table-snc-state-allocated{
+    text-align:center;
+    background-color: #ff7f0e;
+    color: white;
+    margin:2px;
+}
+.table-snc-state-implemented{
+    text-align:center;
+    background-color: #2ca02c;
+    color: white;
+    margin:2px;
+}
 

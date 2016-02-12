@@ -7,12 +7,7 @@
 
     <div class="row">
         <div class="col col-lg-12">
-
-            <my-ng-table-dynamic my-ng-table-params="vm.tableParams" my-ng-table-cols="vm.cols" my-ng-table-cols-width="vm.tableColsWidth"
-            my-ng-table-class-fun="vm.tableClassFun" my-ng-table-show-filters="true" my-ng-table-tr-style-fun="vm.tableTrStyleFun"
-            my-ng-table-td-style-fun="vm.tableTdStyleFun" my-ng-table-item-click-fun="vm.tableItemClickFun">
-            </my-ng-table-dynamic>
-
+            <div  ag-grid="vm.gridOptions" class="ag-fresh myGrid"></div>
         </div>
     </div>
 </div>

@@ -231,12 +231,8 @@ function MiddleDashBoardController(statasticService, logger, $scope, serverNotif
     vm.neStChartData = statasticService.neStChartData;
     vm.connStChartData = statasticService.alarmStChartData;
     
-    
-    var filterFun=function(event){
-        return commonUtil.itemInArray(event.eventType, ["alarmStatastic", "neCreation", "neDeletion"]);
-    }
-    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, function(event){})).fun;
-    var listener={name: 'MiddleDashBoardController', filter:filterFun, fun:listenerFun};
+
+    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["alarmStatastic", "neCreation", "neDeletion"], null, 200, 'MiddleDashBoardController');
     serverNotificationService.addListener(listener);
     
     $scope.$on("$destroy", function(){
@@ -251,26 +247,11 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$stateParams', 'statasticService','$scope','logger','$state', 'commonUtil', 'serverNotificationService'];
-function MiddleNEController($stateParams, statasticService, $scope, logger, $state, commonUtil, serverNotificationService) {
+MiddleNEController.$inject = ['$scope', 'statasticService','logger','$state', 'commonUtil', 'serverNotificationService'];
+function MiddleNEController($scope, statasticService, logger, $state, commonUtil, serverNotificationService) {
     var vm = this;
-    vm.message = $stateParams.treeItemId;
     vm.data=statasticService.getNEList();
-    vm.dataChangeTrigger=statasticService.dataChangeTrigger;
-    
-    
-    /*vm.gridOptions.appScopeProvider = vm;
-    vm.gridOptions.data=vm.data;
-    vm.gridOptions.enableFiltering=true;
-    vm.gridOptions.enableGridMenu=true;
-    vm.gridOptions.enableColumnResizing=true;
-    vm.gridOptions.flatEntityAccess=true;
-    vm.gridOptions.showGridFooter=true;
-    vm.gridOptions.paginationPageSizes=[20, 50, 100];
-    vm.gridOptions.paginationPageSize=20;
-    vm.gridOptions.onRegisterApi=function(gridApi){
-        vm.gridApi=gridApi;
-    }*/
+    vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
     
     var columnDefs=[
         {
@@ -291,7 +272,9 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
             filter: 'text',
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
-            onCellClicked: cellClicked,
+            onCellClicked: function(params){
+                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId });
+                },
             cellClass: 'table-name-field'
         },
          {
@@ -414,449 +397,19 @@ function MiddleNEController($stateParams, statasticService, $scope, logger, $sta
         },
     ];
     
-    
-    function sortAndFilter(sortModel, filterModel) {
-        return sortData(sortModel, filterData(filterModel, vm.data));
-    }
-
-    function sortData(sortModel, data) {
-        var sortPresent = sortModel && sortModel.length > 0;
-        if (!sortPresent) {
-            return data;
-        }
-        // do an in memory sort of the data, across all the fields
-        var resultOfSort = data.slice();
-        resultOfSort.sort(function(a,b) {
-            for (var k = 0; k<sortModel.length; k++) {
-                var sortColModel = sortModel[k];
-                var valueA = a[sortColModel.colId];
-                var valueB = b[sortColModel.colId];
-                // this filter didn't find a difference, move onto the next one
-                if (valueA==valueB) {
-                    continue;
-                }
-                var sortDirection = sortColModel.sort === 'asc' ? 1 : -1;
-                if (valueA > valueB) {
-                    return sortDirection;
-                } else {
-                    return sortDirection * -1;
-                }
-            }
-            // no filters found a difference
-            return 0;
-        });
-        return resultOfSort;
-    }
-    
-    function filterData(filterModel, data) {
-        var filterPresent = filterModel && Object.keys(filterModel).length > 0;
-        if (!filterPresent) {
-            return data;
-        }
-
-        var resultOfFilter = [];
-        for (var i = 0; i<data.length; i++) {
-            var item = data[i];
-
-            if(commonUtil.agGridFilter(filterModel, item)){
-                resultOfFilter.push(item);
-            }else{
-                continue;
-            }
-        }
-
-        return resultOfFilter;
-    }
-
-
-    
-    var dataSource = {
-        pageSize: 200, 
-        getRows: function (params) {
-            var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel);
-                
-                var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
-                var lastRow = dataAfterSortingAndFiltering.length;
-                params.successCallback(rowsThisPage, lastRow);
-        }
-    };
-    vm.gridOptions={
-        columnDefs: columnDefs,
-        datasource:dataSource,
-        enableSorting: true,
-        enableFilter: true,
-        enableColResize: true,
-        enableServerSideSorting: true,
-        enableServerSideFilter: true,
-        angularCompileRows: false
-        
-    };
-    
-    function cellClicked(params){
-        $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId });
-    }
-    
-    function nameCellRendererFunc(params){
-        return '<a href="#">'+params.data.name+'</a>';
-    }
-
-    
-    vm.tableTdStyleFun=function(item, col){
-        var rlt={
-            'overflow':'hidden',
-            'white-space': 'nowrap',
-            'text-overflow': 'ellipsis',
-            'padding-left': '4px',
-            'padding-right': '4px',
-            'padding-top': '2px',
-            'padding-bottom': '2px'
-        };
-        if(col.field=="suppervisionState"){
-            if(item[col.field]=="unsuppervised"){
-                rlt['background-color']='white';
-                rlt['color']='black';
-            }else{
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }else if(col.field=="communicationState"){
-            if(item[col.field]=="unavailable"){
-                rlt['background-color']='#d62728';
-                rlt['color']='white';
-            }else{
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }else if(col.field=="alarmState"){
-            if(item[col.field]=="critical"){
-                rlt['background-color']='#d62728';
-                rlt['color']='white';
-            }else if(item[col.field]=="major"){
-                rlt['background-color']='#ff7f0e';
-                rlt['color']='white';
-            }else if(item[col.field]=="minor"){
-                rlt['background-color']='#ffbb78';
-                rlt['color']='white';
-            }else if(item[col.field]=="warning"){
-                rlt['background-color']='#aec7e8';
-                rlt['color']='white';
-            }else if(item[col.field]=="indeterminate"){
-                rlt['background-color']='#98df8a';
-                rlt['color']='white';
-            }else if(item[col.field]=="cleared"){
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }
-        return rlt;
-    }
-
-    
-    function htmlValue($scope, row) {
-      var value = row[this.field];
-      var html=""+value;
-      if(this.field=="name"){
-          //html="<a href='#' uib-tooltip=\""+html+"\">"+html+"</a>";
-          html="<a href='#' uib-tooltip='"+html+"' tooltip-placement='top-left' ng-click=\"myNgTableItemClickFun(item, col)\">"+html+"</a>";
-      }else{
-          html="<span>"+html+"</span>";
-      }
-      //var rlt=$sce.trustAsHtml(html);
-      return html;
-    }
-    
-    
-    
-    var filterFun=function(event){
-        return commonUtil.itemInArray(event.eventType, ["neCreation", "neDeletion"]);
-    }
-    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, function(event){})).fun;
-    var listener={name:'MiddleNEController', filter:filterFun, fun:listenerFun};
-    serverNotificationService.addListener(listener);
-    
-    $scope.$on("$destroy", function(){
-        logger.log("MiddleNEController,$destroy");
-        serverNotificationService.removeListener(listener);
-    });
-    
-    
-    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
-        logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
-        var scrollIdleFactorMS=1000;
-        logger.log("vm.gridOptions.api.getLastScrollMS()="+vm.gridOptions.api.getLastScrollMS());
-        if((new Date()).getTime() - vm.gridOptions.api.getLastScrollMS() > scrollIdleFactorMS){
-            vm.gridOptions.api.refreshCurrentDatasource();
-        }
-    });
    
-    
-}
-
-angular
-    .module('nmsdemoApp')
-    .controller('MiddleNE_bak_Controller', MiddleNE_bak_Controller);
-
-MiddleNE_bak_Controller.$inject = ['$stateParams','NgTableParams', 'statasticService','$scope','logger', '$sce','$state', 'ngTableEventsChannel', 'commonUtil', 'serverNotificationService'];
-function MiddleNE_bak_Controller($stateParams, NgTableParams, statasticService, $scope, logger, $sce, $state, ngTableEventsChannel, commonUtil, serverNotificationService) {
-    var vm = this;
-    vm.message = $stateParams.treeItemId;
-    vm.data=statasticService.getNEList();
-    vm.dataChangeTrigger=statasticService.dataChangeTrigger;
-    
-    vm.cols=[
-         {
-            field: "neId",
-            title: "网元ID",
-            sortable: "neId",
-            filter: { neId: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "neGroupId",
-            title: "网元组",
-            sortable: "neGroupId",
-            filter: { neGroupId: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "name",
-            title: "名称",
-            sortable: "name",
-            filter: { name: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "location",
-            title: "位置",
-            sortable: "location",
-            filter: { location: "text" },
-            getValue: htmlValue,
-            show: false
-        },
-        {
-            field: "type",
-            title: "类型",
-            sortable: "type",
-            filter: { type: "select" },
-            filterData: [
-                { id: '1660sm', title: '1660sm' },
-                { id: '1678mc', title: '1678mc' },
-                { id: 'es16', title: 'es16' },
-                { id: '1662smc', title: '1662smc' }
-            ],
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "subtype",
-            title: "子类型",
-            sortable: "subtype",
-            filter: { subtype: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "version",
-            title: "版本",
-            sortable: "version",
-            filter: { version: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "creationDate",
-            title: "创建日期",
-            sortable: "creationDate",
-            filter: { creationDate: "text" },
-            getValue: htmlValue,
-            show: false
-        },
-        {
-            field: "protocolAddress",
-            title: "协议地址",
-            sortable: "protocolAddress",
-            filter: { protocolAddress: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "suppervisionState",
-            title: "管理状态",
-            sortable: "suppervisionState",
-            filter: { suppervisionState: "select" },
-            filterData: [
-                { id: 'suppervised', title: 'suppervised' },
-                { id: 'unsuppervised', title: 'unsuppervised' }
-            ],
-            getValue: htmlValue, 
-            show: true
-        },
-        {
-            field: "communicationState",
-            title: "通讯状态",
-            sortable: "communicationState",
-            filter: { communicationState: "select" },
-            filterData: [
-                { id: 'available', title: 'available' },
-                { id: 'unavailable', title: 'unavailable' }
-            ],
-            getValue: htmlValue, 
-            show: true
-        },
-        {
-            field: "alarmState",
-            title: "告警级别",
-            sortable: "alarmState",
-            filter: { alarmState: "select" },
-            filterData: [
-                { id: 'critical', title: 'critical' },
-                { id: 'major', title: 'major' },
-                { id: 'minor', title: 'minor' },
-                { id: 'warning', title: 'warning' },
-                { id: 'indeterminate', title: 'indeterminate' },
-                { id: 'cleared', title: 'cleared' },
-            ],
-            getValue: htmlValue, 
-            show: true
-        },
-       
-        {
-            field: "neGroupType",
-            title: "组类型",
-            sortable: "neGroupType",
-            filter: { neGroupType: "select" },
-            filterData: [
-                { id: 'q3', title: 'q3' },
-                { id: 'dex', title: 'dex' },
-                { id: 'snmp', title: 'snmp' }
-            ],
-            getValue: htmlValue,
-            show: false
-        },
-        {
-            field: "comments",
-            title: "备注",
-            sortable: "comments",
-            filter: { comments: "text" },
-            getValue: htmlValue,
-            show: false
-        },
-    ];
-    vm.tableParams = new NgTableParams(
-        { 
-            count: 15
-        }, 
-        { counts: [15, 20, 50, 100],
-            dataset:  vm.data
-        }
-    );
-    
-    /*ngTableEventsChannel.onAfterCreated(function(){logger.log("onAfterCreated")}, $scope, vm.tableParams);
-    ngTableEventsChannel.onAfterReloadData(function(){logger.log("onAfterReloadData")}, $scope, vm.tableParams);
-    ngTableEventsChannel.onDatasetChanged(function(){logger.log("onDatasetChanged")}, $scope, vm.tableParams);
-    ngTableEventsChannel.onPagesChanged(function(){logger.log("onPagesChanged")}, $scope, vm.tableParams);*/
-
-    
-    vm.tableColsWidth=['8%', '8%', '14%', '10%', '8%', '8%', '11%', '11%', '11%', '11%'];
-    vm.tableClassFun=function(){
-        return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
-        //return "table table-striped table-bordered table-hover table-condensed";
-    }
-    vm.tableTrStyleFun=function(item){
-        var rlt={
+    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null);
             
-        };
-        return rlt;
-    }
-    vm.tableTdStyleFun=function(item, col){
-        var rlt={
-            'overflow':'hidden',
-            'white-space': 'nowrap',
-            'text-overflow': 'ellipsis',
-            'padding-left': '4px',
-            'padding-right': '4px',
-            'padding-top': '2px',
-            'padding-bottom': '2px'
-        };
-        if(col.field=="suppervisionState"){
-            if(item[col.field]=="unsuppervised"){
-                rlt['background-color']='white';
-                rlt['color']='black';
-            }else{
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }else if(col.field=="communicationState"){
-            if(item[col.field]=="unavailable"){
-                rlt['background-color']='#d62728';
-                rlt['color']='white';
-            }else{
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }else if(col.field=="alarmState"){
-            if(item[col.field]=="critical"){
-                rlt['background-color']='#d62728';
-                rlt['color']='white';
-            }else if(item[col.field]=="major"){
-                rlt['background-color']='#ff7f0e';
-                rlt['color']='white';
-            }else if(item[col.field]=="minor"){
-                rlt['background-color']='#ffbb78';
-                rlt['color']='white';
-            }else if(item[col.field]=="warning"){
-                rlt['background-color']='#aec7e8';
-                rlt['color']='white';
-            }else if(item[col.field]=="indeterminate"){
-                rlt['background-color']='#98df8a';
-                rlt['color']='white';
-            }else if(item[col.field]=="cleared"){
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }
-        return rlt;
-    }
-    vm.tableItemClickFun=function(item, col){
-        logger.log("tableItemClickFun:"+col.field+":"+item[col.field]);
-        $state.go('main.treeitem.secondlevel',{treeItemId: 'ne', neGroupId: item.neGroupId, neId: item.neId });
-    }
-    
-    function htmlValue($scope, row) {
-      var value = row[this.field];
-      var html=""+value;
-      if(this.field=="name"){
-          //html="<a href='#' uib-tooltip=\""+html+"\">"+html+"</a>";
-          html="<a href='#' uib-tooltip='"+html+"' tooltip-placement='top-left' ng-click=\"myNgTableItemClickFun(item, col)\">"+html+"</a>";
-      }else{
-          html="<span>"+html+"</span>";
-      }
-      //var rlt=$sce.trustAsHtml(html);
-      return html;
-    }
-    
-    
-    
-    var filterFun=function(event){
-        return commonUtil.itemInArray(event.eventType, ["neCreation", "neDeletion"]);
-    }
-    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, function(event){})).fun;
-    var listener={name:'MiddleNEController', filter:filterFun, fun:listenerFun};
+    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["neCreation", "neDeletion", "neChange"], null, 200, 'MiddleNEController');
     serverNotificationService.addListener(listener);
-    
     $scope.$on("$destroy", function(){
         logger.log("MiddleNEController,$destroy");
         serverNotificationService.removeListener(listener);
     });
     
-    
-    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
-        //logger.log((new Date()).toString()+" watch vm.data - ne "+vm.dataChangeTrigger+" "+vm.data.length);
-        vm.tableParams.reload();
-    });
+
+    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0);       
+            
    
     
 }
@@ -885,26 +438,26 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleTrailController', MiddleTrailController);
 
-MiddleTrailController.$inject = ['$stateParams','retrievedSNCs','NgTableParams', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService'];
-function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logger, $state, $scope, commonUtil, serverNotificationService) {
+MiddleTrailController.$inject = ['$stateParams','retrievedSNCs', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService'];
+function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService) {
     var vm = this;
     var sncSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, 'sncKey');
     vm.data=sncSearchMap.getArray();
-    vm.dataChangeTrigger={triggered: false};
+    vm.dataChangeTrigger=new commonUtil.WatchTrigger();
     
     function addSNC(snc) {
         if (sncSearchMap.add(snc)) {
-            vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
+            vm.dataChangeTrigger.trigger();
         }
     }
     function removeSNC(snc) {
         if (sncSearchMap.remove(snc.sncKey)) {
-            vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
+            vm.dataChangeTrigger.trigger();
         }
     }
     function updateSNC(snc) {
         sncSearchMap.add(snc);
-        vm.dataChangeTrigger.triggered=!vm.dataChangeTrigger.triggered;
+        vm.dataChangeTrigger.trigger();
     }
     function eventListener(event) {
         //logger.log("sncEvent:"+JSON.stringify(event));
@@ -918,11 +471,127 @@ function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logge
 
         
     }
-    var filterFun=function(event){
-        return commonUtil.itemInArray(event.eventType, ["sncCreation", "sncDeletion"]);
-    }
-    var listenerFun=(new commonUtil.DelayScopeApply($scope, 200, eventListener)).fun;
-    var listener={name: 'MiddleTrailController', filter:filterFun, fun:listenerFun};
+    
+    var columnDefs=[
+        {
+            headerName: "#", 
+            colId: "rowNum", 
+            valueGetter: "node.id", 
+            suppressSorting: true, 
+            suppressMenu: true, 
+            width: 40, 
+            minWidth: 40, 
+            pinned: 'left'
+        },
+        {
+            field: "name",
+            headerName: "名称",
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'},
+            pinned: 'left',
+            onCellClicked: function(params){
+                    $state.go('main.treeitem_secondlevel',{treeItemId: 'trail', sncId: params.data.sncId});
+                },
+            cellClass: 'table-name-field'
+        },
+         {
+            field: "sncId",
+            headerName: "子网连接ID",
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        },
+        {
+            field: "rate",
+            headerName: "层次",
+            width: 90,
+            minWidth: 90,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        },
+        {
+            field: "protectedType",
+            headerName: "保护",
+            width: 110,
+            minWidth: 110,
+            filter: 'set',
+            filterParams: {values: ['protected', 'unprotected'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls='table-snc-protect-'+params.value;
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
+        },
+        {
+            field: "sncState",
+            headerName: "实施状态",
+            width: 110,
+            minWidth: 110,
+            filter: 'set',
+            filterParams: {values: ['defined', 'allocated','implemented'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls='table-snc-state-'+params.value;
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
+        }, 
+        {
+            field: "aEndPorts[0].neName",
+            headerName: "A端网元",
+            valueGetter: function(params){
+                return params.data.aEndPorts[0].neName;
+            },
+            onCellClicked: function(params){
+                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId });
+                },
+            cellClass: 'table-name-field',
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        },
+        {
+            field: "aEndTP",
+            headerName: "A端TP",
+            valueGetter: function(params){
+                return params.data.aEndPorts[0].tpName;
+            },
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        },
+        {
+            field: "zEndNE",
+            headerName: "Z端网元",
+            valueGetter: function(params){
+                return params.data.zEndPorts[0].neName;
+            },
+            onCellClicked: function(params){
+                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId });
+                },
+            cellClass: 'table-name-field',
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        },
+        {
+            field: "zEndTP",
+            headerName: "Z端TP",
+            valueGetter: function(params){
+                return params.data.zEndPorts[0].tpName;
+            },
+            width: 120,
+            minWidth: 120,
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        }
+    ];
+    
+    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null);
+    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["sncCreation", "sncDeletion"], eventListener, 200, 'MiddleTrailController');
     serverNotificationService.addListener(listener);
     
     $scope.$on("$destroy", function(){
@@ -930,133 +599,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, NgTableParams, logge
         serverNotificationService.removeListener(listener);
     });
     
-    
-    vm.cols=[
-         {
-            field: "sncId",
-            title: "子网连接ID",
-            sortable: "sncId",
-            filter: { sncId: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "name",
-            title: "名称",
-            sortable: "name",
-            filter: { name: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "rate",
-            title: "层次",
-            sortable: "rate",
-            filter: { rate: "text" },
-            getValue: htmlValue,
-            show: true
-        },
-        {
-            field: "sncState",
-            title: "实施状态",
-            sortable: "sncState",
-            filter: { sncState: "select" },
-            filterData: [
-                { id: 'defined', title: 'defined' },
-                { id: 'allocated', title: 'allocated' },
-                { id: 'implemented', title: 'implemented' }
-            ],
-            getValue: htmlValue,
-            show: true
-        },
-        
-        {
-            field: "protectedType",
-            title: "保护",
-            sortable: "protectedType",
-            filter: { protectedType: "select" },
-            filterData: [
-                { id: 'protected', title: 'protected' },
-                { id: 'unprotected', title: 'unprotected' }
-            ],
-            getValue: htmlValue, 
-            show: true
-        }
-    ];
-    vm.tableParams = new NgTableParams(
-        { 
-            count: 15
-        }, 
-        { counts: [15, 20, 50, 100],
-            dataset:  vm.data
-        }
-    );
-    
-    vm.tableColsWidth=['20%', '20%', '20%', '20%', '20%'];
-    vm.tableClassFun=function(){
-        return {'table':true, 'table-striped':true, 'table-bordered':true, 'table-hover':true, 'table-condensed':true};
-    }
-    vm.tableTrStyleFun=function(item){
-        var rlt={
-            
-        };
-        return rlt;
-    }
-    vm.tableTdStyleFun=function(item, col){
-        var rlt={
-            'overflow':'hidden',
-            'white-space': 'nowrap',
-            'text-overflow': 'ellipsis',
-            'padding-left': '4px',
-            'padding-right': '4px',
-            'padding-top': '2px',
-            'padding-bottom': '2px'
-        };
-        if(col.field=="sncState"){
-            if(item[col.field]=="defined"){
-                rlt['background-color']='white';
-                rlt['color']='black';
-            }else if(item[col.field]=="allocated"){
-                rlt['background-color']='#ff7f0e';
-                rlt['color']='white';
-            }else if(item[col.field]=="implemented"){
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }else if(col.field=="protectedType"){
-            if(item[col.field]=="unprotected"){
-                rlt['background-color']='white';
-                rlt['color']='black';
-            }else{
-                rlt['background-color']='#2ca02c';
-                rlt['color']='white';
-            }
-        }
-        return rlt;
-    }
-    vm.tableItemClickFun=function(item, col){
-        logger.log("tableItemClickFun:"+col.field+":"+item[col.field]);
-        $state.go('main.treeitem_secondlevel',{treeItemId: 'trail', sncId: item.sncId});
-    }
-    
-    function htmlValue($scope, row) {
-      var value = row[this.field];
-      var html=""+value;
-      if(this.field=="name"){
-          //html="<a href='#' uib-tooltip=\""+html+"\">"+html+"</a>";
-          html="<a href='#' uib-tooltip='"+html+"' tooltip-placement='top-left' ng-click=\"myNgTableItemClickFun(item, col)\">"+html+"</a>";
-      }else{
-          html="<span>"+html+"</span>";
-      }
-      //var rlt=$sce.trustAsHtml(html);
-      return html;
-    }
-    
-    
-    new commonUtil.WatchDelayReload($scope, vm.dataChangeTrigger, 0, function(){
-        //logger.log((new Date()).toString()+" watch vm.data - snc");
-        vm.tableParams.reload();
-    });
+    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0); 
 }
 
 angular
