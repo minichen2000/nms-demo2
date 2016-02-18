@@ -46,6 +46,7 @@ angular
 TreeController.$inject = ['$state', 'dataService', 'statasticService', 'serverNotificationService', '$location', 'logger','commonUtil','$timeout'];
 function TreeController($state, dataService, statasticService, serverNotificationService, $location, logger, commonUtil, $timeout) {
     var vm = this;
+    vm.getH=commonUtil.getH;
     vm.homeTreeData = statasticService.getHomeTreeData();
     vm.neTreeData = statasticService.getNETreeData();
     vm.mapTreeData = statasticService.getMapTreeData();
@@ -247,9 +248,10 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$scope', 'statasticService','logger','$state', 'commonUtil', 'serverNotificationService'];
-function MiddleNEController($scope, statasticService, logger, $state, commonUtil, serverNotificationService) {
+MiddleNEController.$inject = ['$scope', 'statasticService','logger','$state', 'commonUtil', 'serverNotificationService', '$timeout'];
+function MiddleNEController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
+    vm.getH=commonUtil.getH;
     vm.data=statasticService.getNEList();
     vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
     
@@ -260,8 +262,8 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
             valueGetter: "node.id", 
             suppressSorting: true, 
             suppressMenu: true, 
-            width: 40, 
-            minWidth: 40, 
+            width: commonUtil.getW(40), 
+            minWidth: commonUtil.getW(40), 
             pinned: 'left'
         },
         {
@@ -269,16 +271,17 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
             colId: "operation",
             suppressSorting: true,
             suppressMenu: true,
-            width: 65,
-            minWidth:65,
+            width: commonUtil.getW(30),
+            minWidth:commonUtil.getW(30),
             pinned: 'left',
-            cellRenderer: function(params){
+            cellClass: ['table-name-field','table-item-center'],
+            /*cellRenderer: function(params){
                 var rlt= '<div class="btn-group">'+
 	'<button type="button" class="btn btn-default btn-xs"><i class="fa fa-info-circle fa-fw"></i></button>'+
    '<button type="button" class="btn btn-default btn-xs dropdown-toggle"  data-toggle="dropdown">'+
       '<span class="caret"></span>'+
    '</button>'+
-   '<ul class="dropdown-menu" role="menu" style="z-index: 1000;">'+
+   '<ul class="dropdown-menu" role="menu">'+
       '<li><a href="#">功能('+params.data.name+')</a></li>'+
       '<li><a href="#">另一个功能</a></li>'+
       '<li><a href="#">其他</a></li>'+
@@ -286,44 +289,47 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
       '<li><a href="#">分离的链接</a></li>'+
    '</ul>'+
 '</div>';
-logger.log("rlt:"+rlt);
 return rlt;
+            }*/
+            cellRenderer: function(params){
+                var rlt="<i class='fa fa-info-circle fa-fw'></i>";
+                return rlt;
             }
         },
         {
             field: "name",
             headerName: "名称",
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId });
+                    commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
                 },
             cellClass: 'table-name-field'
         },
          {
             field: "neId",
             headerName: "网元ID",
-            width: 95,
-            minWidth: 95,
+            width: commonUtil.getW(95),
+            minWidth: commonUtil.getW(95),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "neGroupId",
             headerName: "网元组",
-            width: 90,
-            minWidth: 90,
+            width: commonUtil.getW(90),
+            minWidth: commonUtil.getW(90),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "location",
             headerName: "位置",
-            width: 100,
-            minWidth: 100,
+            width: commonUtil.getW(100),
+            minWidth: commonUtil.getW(100),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
@@ -331,32 +337,32 @@ return rlt;
             field: "type",
             headerName: "类型",
             enableColumnMenu:false,
-            width: 70,
-            minWidth: 70,
+            width: commonUtil.getW(70),
+            minWidth: commonUtil.getW(70),
             filter: 'set',
             filterParams: {values: ['1660sm', '1678mc', 'es16'], newRowsAction: 'keep'}
         },
         {
             field: "subtype",
             headerName: "子类型",
-            width: 90,
-            minWidth: 90,
+            width: commonUtil.getW(90),
+            minWidth: commonUtil.getW(90),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "version",
             headerName: "版本",
-            width: 80,
-            minWidth: 80,
+            width: commonUtil.getW(80),
+            minWidth: commonUtil.getW(80),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "suppervisionState",
             headerName: "管理状态",
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'set',
             filterParams: {values: ['suppervised', 'unsuppervised'], newRowsAction: 'keep'},
             cellRenderer: function(params){
@@ -367,8 +373,8 @@ return rlt;
         {
             field: "communicationState",
             headerName: "通讯状态",
-            width: 110,
-            minWidth: 110,
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
             filter: 'set',
             filterParams: {values: ['available', 'unavailable'], newRowsAction: 'keep'},
             cellRenderer: function(params){
@@ -379,8 +385,8 @@ return rlt;
         {
             field: "alarmState",
             headerName: "告警级别",
-            width: 110,
-            minWidth: 110,
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
             filter: 'set',
             filterParams: {values: ['critical', 'major','minor','warning', 'indeterminate','cleared'], newRowsAction: 'keep'},
             cellRenderer: function(params){
@@ -392,32 +398,32 @@ return rlt;
         {
             field: "neGroupType",
             headerName: "组类型",
-            width: 90,
-            minWidth: 90,
+            width: commonUtil.getW(90),
+            minWidth: commonUtil.getW(90),
             filter: 'set',
             filterParams: {values: ['q3', 'snmp', 'dex'], newRowsAction: 'keep'}
         },
         {
             field: "creationDate",
             headerName: "创建日期",
-            width: 160,
-            minWidth: 160,
+            width: commonUtil.getW(160),
+            minWidth: commonUtil.getW(160),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "protocolAddress",
             headerName: "协议地址",
-            width: 110,
-            minWidth: 110,
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "comments",
             headerName: "备注",
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
@@ -464,9 +470,10 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleTrailController', MiddleTrailController);
 
-MiddleTrailController.$inject = ['$stateParams','retrievedSNCs', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService'];
-function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService) {
+MiddleTrailController.$inject = ['$stateParams','retrievedSNCs', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService', '$timeout'];
+function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
+    vm.getH=commonUtil.getH;
     var sncSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, 'sncKey');
     vm.data=sncSearchMap.getArray();
     vm.dataChangeTrigger=new commonUtil.WatchTrigger();
@@ -505,44 +512,44 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
             valueGetter: "node.id", 
             suppressSorting: true, 
             suppressMenu: true, 
-            width: 40, 
-            minWidth: 40, 
+            width: commonUtil.getW(40), 
+            minWidth: commonUtil.getW(40), 
             pinned: 'left'
         },
         {
             field: "name",
             headerName: "名称",
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    $state.go('main.treeitem_secondlevel',{treeItemId: 'trail', sncId: params.data.sncId});
+                    commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'trail', sncId: params.data.sncId});
                 },
             cellClass: 'table-name-field'
         },
          {
             field: "sncId",
             headerName: "子网连接ID",
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "rate",
             headerName: "层次",
-            width: 90,
-            minWidth: 90,
+            width: commonUtil.getW(90),
+            minWidth: commonUtil.getW(90),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
         {
             field: "protectedType",
             headerName: "保护",
-            width: 110,
-            minWidth: 110,
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
             filter: 'set',
             filterParams: {values: ['protected', 'unprotected'], newRowsAction: 'keep'},
             cellRenderer: function(params){
@@ -553,8 +560,8 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
         {
             field: "sncState",
             headerName: "实施状态",
-            width: 110,
-            minWidth: 110,
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
             filter: 'set',
             filterParams: {values: ['defined', 'allocated','implemented'], newRowsAction: 'keep'},
             cellRenderer: function(params){
@@ -572,8 +579,8 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
                     $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId });
                 },
             cellClass: 'table-name-field',
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
@@ -583,8 +590,8 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
             valueGetter: function(params){
                 return params.data.aEndPorts[0].tpName;
             },
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
@@ -598,8 +605,8 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
                     $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId });
                 },
             cellClass: 'table-name-field',
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },
@@ -609,8 +616,8 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
             valueGetter: function(params){
                 return params.data.zEndPorts[0].tpName;
             },
-            width: 120,
-            minWidth: 120,
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         }
@@ -665,13 +672,12 @@ function MiddleEVCController($stateParams) {
 angular
     .module('nmsdemoApp')
     .controller('MiddleSingleNEController', MiddleSingleNEController);
-
-MiddleSingleNEController.$inject = ['$stateParams','$state'];
-function MiddleSingleNEController($stateParams,$state) {
+MiddleSingleNEController.$inject = ['$stateParams','$state', '$timeout', 'commonUtil'];
+function MiddleSingleNEController($stateParams,$state, $timeout, commonUtil) {
     var vm = this;
     vm.message = $stateParams.neGroupId+"/"+$stateParams.neId;
     vm.backToNeList=function(){
-        $state.go('main.treeitem',{treeItemId: 'ne'});
+        commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'ne'});
     }
 }
 
@@ -679,12 +685,12 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleSingleTrailController', MiddleSingleTrailController);
 
-MiddleSingleTrailController.$inject = ['$stateParams','$state'];
-function MiddleSingleTrailController($stateParams,$state) {
+MiddleSingleTrailController.$inject = ['$stateParams','$state', 'commonUtil', '$timeout'];
+function MiddleSingleTrailController($stateParams,$state, commonUtil, $timeout) {
     var vm = this;
     vm.message = ""+$stateParams.sncId;
     vm.backToTrailList=function(){
-        $state.go('main.treeitem',{treeItemId: 'trail'});
+        commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'trail'});
     }
 }
 

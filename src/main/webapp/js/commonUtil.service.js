@@ -13,12 +13,20 @@
 
 
     function commonUtil(logger, $location) {
+
+        var availHeightFactor = null;
+        var availWidthFactor = null;
         var service = {
+            getHeightFactor: getHeightFactor,
+            getWidthFactor: getWidthFactor,
+            getW: getW,
+            getH: getH,
+            navWithLoadingPage:navWithLoadingPage,
             itemInArray: itemInArray,
             indexInArray: indexInArray,
             agGridTextFilter: agGridTextFilter,
             agGridSelectFilter: agGridSelectFilter,
-            agGridFilter:agGridFilter,
+            agGridFilter: agGridFilter,
             genAgGridOptions: genAgGridOptions,
             genAgGridWatchDelayReloader: genAgGridWatchDelayReloader,
             copyAttrs: copyAttrs,
@@ -34,6 +42,35 @@
         return service;
 
         ////////////
+        
+        function navWithLoadingPage($state, $timeout, state, nav_params) {
+            $state.go('main.treeitem', { treeItemId: "loading" });
+            $timeout(function () {
+                $state.go(state, nav_params);
+            }, 10);
+
+        };
+
+        function getHeightFactor() {
+            if (null == availHeightFactor) {
+                availHeightFactor = (window.screen.availHeight - 50) / (724 - 50);
+            }
+            return availHeightFactor;
+        }
+
+        function getWidthFactor() {
+            if (null == availWidthFactor) {
+                availWidthFactor = window.screen.availWidth / 1366;
+            }
+            return availWidthFactor;
+        }
+        function getW(w) {
+            return w * getWidthFactor();
+        }
+        function getH(h) {
+            return h * getHeightFactor();
+        }
+
         function generateWSUrl() {
             var absUrl = $location.absUrl();
             logger.log("$location.absUrl()=" + absUrl);
@@ -51,27 +88,27 @@
             }
             return -1;
         }
-        function itemInArray(item, arr){
-            return arr.indexOf(item)>=0 ? true : false;
+        function itemInArray(item, arr) {
+            return arr.indexOf(item) >= 0 ? true : false;
         }
-        
-        function copyAttrs(source, target){
-            for( var param in source){
-                if(typeof(source[param])!="function"){
-                    target[param]=source[param];
+
+        function copyAttrs(source, target) {
+            for (var param in source) {
+                if (typeof (source[param]) != "function") {
+                    target[param] = source[param];
                 }
             }
         }
 
-        function WatchTrigger(){
+        function WatchTrigger() {
             var self = this;
-            this.triggered=0;
-            this.trigger=function(){
-                self.triggered>=1000 ? self.triggered=0 : self.triggered++;
+            this.triggered = 0;
+            this.trigger = function () {
+                self.triggered >= 1000 ? self.triggered = 0 : self.triggered++;
             }
             //return this;
         }
-        
+
 
         function watchDelayReload($scope, triggerObj, _minInterval, _reloadFun) {
             var lastReloadTime = 0;
@@ -87,32 +124,32 @@
             });
             //return this;
         }
-        
+
         function DelayScopeApply(_scope, _interval, _fun) {
             var self = this;
             this.lastApplyTime = 0;
             this.theInterval = _interval;
             this.theFun = _fun;
-            this.theScope=_scope;
-            this.fun=function(param){
-                if (null!=self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
-                    self.theScope.$apply(function(){
+            this.theScope = _scope;
+            this.fun = function (param) {
+                if (null != self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
+                    self.theScope.$apply(function () {
                         self.theFun(param);
                     });
                     self.lastApplyTime = (new Date()).getTime();
-                }else{
+                } else {
                     self.theFun(param);
                 }
             }
             //return this;
         }
-        
-        function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName){
-            var filterFun=function(event){
+
+        function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName) {
+            var filterFun = function (event) {
                 return itemInArray(event.eventType, _eventTypeArr);
             }
-            var listenerFun=(new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function(event){})).fun;
-            return {name:listenerName, filter: _filterFun ? _filterFun : filterFun, fun:listenerFun};
+            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function (event) { })).fun;
+            return { name: listenerName, filter: _filterFun ? _filterFun : filterFun, fun: listenerFun };
         }
 
 
@@ -130,28 +167,28 @@
 
 
 
-            this.getArray=function(){
+            this.getArray = function () {
                 return arr;
             }
-            this.has=function(keyValue){
+            this.has = function (keyValue) {
                 return self.hashMap.has(keyValue);
             }
-            this.get=function(keyValue){
-                if(self.has(keyValue)){
+            this.get = function (keyValue) {
+                if (self.has(keyValue)) {
                     return self.hashMap.get(keyValue);
-                }else{
+                } else {
                     return undefined;
                 }
             }
             this.add = function (arrItem) {
-                var idx=-1;
+                var idx = -1;
                 var hasItem = self.hashMap.has(arrItem[keyName]);
                 if (!hasItem) {
                     arr.push(arrItem);
-                    idx=arr.length-1;
+                    idx = arr.length - 1;
                     self.hashMap.set(arrItem[keyName], idx);
                 } else {
-                    idx=self.hashMap.get(arrItem[keyName]);
+                    idx = self.hashMap.get(arrItem[keyName]);
                     arr[idx] = arrItem;
                 }
                 return idx;
@@ -175,19 +212,19 @@
 
             //return this;
         }
-        
+
         function KeyIndexMap(_arr, _keyName) {
             var self = this;
             this.hashMap = new HashMap();
             var keyName = _keyName;
 
-            this.has=function(keyValue){
+            this.has = function (keyValue) {
                 return self.hashMap.has(keyValue);
             }
-            this.get=function(keyValue){
-                if(self.hashMap.has(keyValue)){
+            this.get = function (keyValue) {
+                if (self.hashMap.has(keyValue)) {
                     return self.hashMap.get(keyValue);
-                }else{
+                } else {
                     return undefined;
                 }
             }
@@ -239,68 +276,68 @@
 
             //return this;
         }
-        
-        
-        
-        function agGridTextFilter(filterModel, field, item, fieldValueGetterFun){
-            if(filterModel[field]){
-                var fieldValue= (fieldValueGetterFun ? fieldValueGetterFun(item, field) : item[field]);
-                if(filterModel[field].type==1){//contains
-                    if(fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())<0){
+
+
+
+        function agGridTextFilter(filterModel, field, item, fieldValueGetterFun) {
+            if (filterModel[field]) {
+                var fieldValue = (fieldValueGetterFun ? fieldValueGetterFun(item, field) : item[field]);
+                if (filterModel[field].type == 1) {//contains
+                    if (fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase()) < 0) {
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
-                }else if(filterModel[field].type==2){//equals
-                    if(fieldValue.toString().toLowerCase()!==filterModel[field].filter.toLowerCase()){
+                } else if (filterModel[field].type == 2) {//equals
+                    if (fieldValue.toString().toLowerCase() !== filterModel[field].filter.toLowerCase()) {
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
-                }else if(filterModel[field].type==3){//startWith
-                    if(fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase())!=0){
+                } else if (filterModel[field].type == 3) {//startWith
+                    if (fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase()) != 0) {
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
-                }else{//endWith
-                    var idx=fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase());
-                    if(fieldValue.toString().length-idx!=filterModel[field].filter.length){
+                } else {//endWith
+                    var idx = fieldValue.toString().toLowerCase().indexOf(filterModel[field].filter.toLowerCase());
+                    if (fieldValue.toString().length - idx != filterModel[field].filter.length) {
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
                 }
-            }else{
+            } else {
                 return true;
             }
         }
-        
-        function agGridSelectFilter(filterModel, field, item, fieldValueGetterFun){
-            if(filterModel[field]){
-                if(filterModel[field].indexOf(item[field].toString())<0){
+
+        function agGridSelectFilter(filterModel, field, item, fieldValueGetterFun) {
+            if (filterModel[field]) {
+                if (filterModel[field].indexOf(item[field].toString()) < 0) {
                     return false;
-                }else{
+                } else {
                     return true;
                 }
-            }else{
+            } else {
                 return true;
             }
         }
-        
-        function agGridFilter(filterModel, item, fieldValueGetterFun){
-            for(var param in filterModel){
-                if(typeof(filterModel[param])!="function"){
-                    if(Object.prototype.toString.call(filterModel[param]) === '[object Array]'){//array
-                        if(!agGridSelectFilter(filterModel, param, item, fieldValueGetterFun)){
+
+        function agGridFilter(filterModel, item, fieldValueGetterFun) {
+            for (var param in filterModel) {
+                if (typeof (filterModel[param]) != "function") {
+                    if (Object.prototype.toString.call(filterModel[param]) === '[object Array]') {//array
+                        if (!agGridSelectFilter(filterModel, param, item, fieldValueGetterFun)) {
                             return false;
-                        }else{
+                        } else {
                             continue;
                         }
-                    }else{//object
-                        if(!agGridTextFilter(filterModel, param, item, fieldValueGetterFun)){
+                    } else {//object
+                        if (!agGridTextFilter(filterModel, param, item, fieldValueGetterFun)) {
                             return false;
-                        }else{
+                        } else {
                             continue;
                         }
                     }
@@ -308,22 +345,22 @@
             }
             return true;
         }
-        
-        
-        
-        function genAgGridOptions(_columnDefs, _data, _fieldValueGetterFun, _getRows){
-            var fieldValueGetterFun=_fieldValueGetterFun;
-            var defaultGetRows=function(params){
-                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel, fieldValueGetterFun);     
+
+
+
+        function genAgGridOptions(_columnDefs, _data, _fieldValueGetterFun, _getRows) {
+            var fieldValueGetterFun = _fieldValueGetterFun;
+            var defaultGetRows = function (params) {
+                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel, fieldValueGetterFun);
                 var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
                 var lastRow = dataAfterSortingAndFiltering.length;
                 params.successCallback(rowsThisPage, lastRow);
             }
-            var dataSource={
-                pageSize: 200, 
+            var dataSource = {
+                pageSize: 200,
                 getRows: _getRows ? _getRows : defaultGetRows
             };
-            
+
             return {
                 rowHeight: 27,
                 columnDefs: _columnDefs,
@@ -335,7 +372,7 @@
                 enableServerSideFilter: true,
                 angularCompileRows: false
             }
-            
+
             function sortAndFilter(sortModel, filterModel, fieldValueGetterFun) {
                 return sortData(sortModel, filterData(filterModel, _data, fieldValueGetterFun), fieldValueGetterFun);
             }
@@ -347,13 +384,13 @@
                 }
                 // do an in memory sort of the data, across all the fields
                 var resultOfSort = data.slice();
-                resultOfSort.sort(function(a,b) {
-                    for (var k = 0; k<sortModel.length; k++) {
+                resultOfSort.sort(function (a, b) {
+                    for (var k = 0; k < sortModel.length; k++) {
                         var sortColModel = sortModel[k];
                         var valueA = (fieldValueGetterFun ? fieldValueGetterFun(a, sortColModel.colId) : a[sortColModel.colId]);
                         var valueB = (fieldValueGetterFun ? fieldValueGetterFun(b, sortColModel.colId) : b[sortColModel.colId]);
                         // this filter didn't find a difference, move onto the next one
-                        if (valueA==valueB) {
+                        if (valueA == valueB) {
                             continue;
                         }
                         var sortDirection = sortColModel.sort === 'asc' ? 1 : -1;
@@ -368,7 +405,7 @@
                 });
                 return resultOfSort;
             }
-            
+
             function filterData(filterModel, data, fieldValueGetterFun) {
                 var filterPresent = filterModel && Object.keys(filterModel).length > 0;
                 if (!filterPresent) {
@@ -376,12 +413,12 @@
                 }
 
                 var resultOfFilter = [];
-                for (var i = 0; i<data.length; i++) {
+                for (var i = 0; i < data.length; i++) {
                     var item = data[i];
 
-                    if(agGridFilter(filterModel, item, fieldValueGetterFun)){
+                    if (agGridFilter(filterModel, item, fieldValueGetterFun)) {
                         resultOfFilter.push(item);
-                    }else{
+                    } else {
                         continue;
                     }
                 }
@@ -389,11 +426,11 @@
                 return resultOfFilter;
             }
         }
-        
-        function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval){
-            watchDelayReload(scope, trigger, interval, function(){
-                var scrollIdleFactorMS=1000;
-                if((new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS){
+
+        function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval) {
+            watchDelayReload(scope, trigger, interval, function () {
+                var scrollIdleFactorMS = 1000;
+                if ((new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS) {
                     gridOptions.api.refreshCurrentDatasource();
                 }
             });

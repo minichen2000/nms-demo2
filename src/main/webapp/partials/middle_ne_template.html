@@ -1,13 +1,13 @@
 <div ui-view>
     <div class="row">
         <div class="col col-lg-12">
-            <pre>ne</pre>
+            <pre style="margin-bottom:{{vm.getH(8)}}px;height:{{vm.getH(36)}}px;padding:{{vm.getH(8)}}px">ne</pre>
         </div>
     </div>
 
     <div class="row">
         <div class="col col-lg-12">
-            <div  ag-grid="vm.gridOptions" class="ag-fresh myGrid"></div>
+            <div class="ag-fresh" style="width:100%;height:{{vm.getH(544)}}px;" ag-grid="vm.gridOptions" ></div>
         </div>
     </div>
 </div>
