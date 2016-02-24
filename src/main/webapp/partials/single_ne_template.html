@@ -10,13 +10,13 @@
 </div>-->
 <div class="row">
     <div class="col col-lg-12">
-        <ol class="breadcrumb" style="margin-bottom:{{vm.getH(8)}}px;height:{{vm.getH(36)}}px;padding-left:{{vm.getH(12)}}px">
+        <ol class="breadcrumb" style="margin-bottom:8px;padding-left:{{vm.getH(12)}}px">
             <li><a href="#" ng-click="vm.backToNeList()">网元列表</a></li>
             <li class="active">{{vm.message}}</li>
         </ol>
     </div>
 </div>
-<div class="row" style="margin-bottom:10px">
+<div class="row">
     <div class="col col-lg-12">
         <uib-tabset>
             <uib-tab heading="端口" select="vm.tabClicked('ports')"></uib-tab>
@@ -26,7 +26,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col col-lg-12">
-        <div ui-view></div>
+    <div class="col col-lg-12" >
+        <div ui-view style="padding:6px;border: 1px solid #ddd;border-top-color: transparent;"></div>
     </div>
 </div>

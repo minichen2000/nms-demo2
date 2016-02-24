@@ -60,7 +60,7 @@
 
         function getHeightFactor() {
             if (null == availHeightFactor) {
-                availHeightFactor = (window.screen.availHeight - 50) / (724 - 50);
+                availHeightFactor = window.screen.availHeight/724;
             }
             return availHeightFactor;
         }
@@ -132,14 +132,15 @@
             //return this;
         }
 
-        function DelayScopeApply(_scope, _interval, _fun) {
+        function DelayScopeApply(_scope, _interval, _fun, _dontApplyFun) {
             var self = this;
             this.lastApplyTime = 0;
             this.theInterval = _interval;
             this.theFun = _fun;
             this.theScope = _scope;
+            this.dontApplyFun=_dontApplyFun;
             this.fun = function (param) {
-                if (null != self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
+                if ((null==self.dontApplyFun || !self.dontApplyFun() ) && null != self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
                     self.theScope.$apply(function () {
                         self.theFun(param);
                     });
@@ -151,12 +152,14 @@
             //return this;
         }
 
-        function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName) {
+        function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName, _dontApplyFun) {
             var filterFun = function (event) {
-                return itemInArray(event.eventType, _eventTypeArr);
+                var inArr= (undefined!=_eventTypeArr && null!=_eventTypeArr) ? itemInArray(event.eventType, _eventTypeArr) : true;
+                var filterFunRlt= (undefined!=_filterFun && null!=_filterFun) ? _filterFun(event) : true;
+                return inArr && filterFunRlt;
             }
-            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function (event) { })).fun;
-            return { name: listenerName, filter: _filterFun ? _filterFun : filterFun, fun: listenerFun };
+            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function (event) {}, _dontApplyFun)).fun;
+            return { name: listenerName, filter: filterFun, fun: listenerFun };
         }
 
 
@@ -436,10 +439,10 @@
             }
         }
 
-        function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval) {
+        function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval, dontReloadFun) {
             watchDelayReload(scope, trigger, interval, function () {
                 var scrollIdleFactorMS = 1000;
-                if ((new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS) {
+                if ((null==dontReloadFun || !dontReloadFun())&&(new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS) {
                     gridOptions.api.refreshCurrentDatasource();
                 }
             });

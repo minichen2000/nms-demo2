@@ -1,15 +1,48 @@
 <div ui-view>
     <div class="row">
         <div class="col col-lg-12">
-            <ol class="breadcrumb" style="margin-bottom:{{vm.getH(8)}}px;height:{{vm.getH(36)}}px;padding-left:{{vm.getH(12)}}px">
+            <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px">
                 <li class="active">子网连接列表</li>
             </ol>
         </div>
     </div>
-
     <div class="row">
         <div class="col col-lg-12">
-            <div  ag-grid="vm.gridOptions" class="ag-nms" style="width:100%;height:{{vm.getH(544)}}px;"></div>
+            <div style="padding:6px;border: 1px solid #ddd;border-radius: 4px;">
+                <div class="row">
+                    <div class="col col-lg-12" style="margin-bottom:4px">
+                        <div class="btn-group" uib-dropdown >
+                            <button id="action-button" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle>
+                                <i class="fa fa-bars fa-fw"></i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm">
+                                <i class="fa fa-close fa-fw"></i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm">
+                                <i class="fa fa-check fa-fw"></i>
+                            </button>
+                            <ul uib-dropdown-menu role="menu" aria-labelledby="action-button">
+                                <li role="menuitem"><a href="#">Action</a></li>
+                                <li role="menuitem"><a href="#">Another action</a></li>
+                                <li role="menuitem"><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li role="menuitem"><a href="#">Separated link</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group" style="float: right">
+                            <label class="btn btn-default btn-sm" ng-model="vm.enableNotif" uib-btn-checkbox><i class="fa fa-bell fa-fw"></i></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div ag-grid="vm.gridOptions" class="ag-nms" style="width:100%;height:{{vm.getH(495)}}px;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+
 </div>

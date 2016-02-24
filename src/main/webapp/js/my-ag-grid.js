@@ -2420,23 +2420,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	var utils_1 = __webpack_require__(6);
 	var template = '<div class="ag-paging-panel">' +
 	    '<span id="pageRowSummaryPanel" class="ag-paging-row-summary-panel">' +
-	    '<span id="firstRowOnPage"></span>' +
-	    ' [TO] ' +
+	    '#&nbsp<span id="firstRowOnPage"></span>' +
+	    '-' +
 	    '<span id="lastRowOnPage"></span>' +
-	    ' [OF] ' +
+	    '&nbsp[' +
 	    '<span id="recordCount"></span>' +
+        ']'+
 	    '</span>' +
-	    '<span class="ag-paging-page-summary-panel">' +
-	    '<button type="button" class="ag-paging-button" id="btFirst">[FIRST]</button>' +
-	    '<button type="button" class="ag-paging-button" id="btPrevious">[PREVIOUS]</button>' +
-	    '[PAGE] ' +
-	    '<span id="current"></span>' +
-	    ' [OF] ' +
-	    '<span id="total"></span>' +
-	    '<button type="button" class="ag-paging-button" id="btNext">[NEXT]</button>' +
-	    '<button type="button" class="ag-paging-button" id="btLast">[LAST]</button>' +
+	    
+        '<div style="float:right">' +
+        '<span>' +
+        '[PAGE] ' +
+	    '[<span id="current"></span>' +
+	    '/' +
+	    '<span id="total"></span><span style="margin-right:6px">]</span>' +
+        '<span>' +
+        '<div class="btn-group">'+
+	    '<button type="button" class="btn btn-primary btn-sm" id="btFirst">[FIRST]</button>' +
+	    '<button type="button" class="btn btn-primary btn-sm" id="btPrevious">[PREVIOUS]</button>' +
+        '<button type="button" class="btn btn-primary btn-sm" id="btNext">[NEXT]</button>' +
+	    '<button type="button" class="btn btn-primary btn-sm" id="btLast">[LAST]</button>' +
+        '</div>'+
+        '</span></div>' +
 	    '</span>' +
 	    '</div>';
+
 	var PaginationController = (function () {
 	    function PaginationController() {
 	    }
