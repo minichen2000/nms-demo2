@@ -257,46 +257,6 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
     
     var columnDefs=[
         {
-            headerName: "#", 
-            colId: "rowNum", 
-            valueGetter: "node.id", 
-            suppressSorting: true, 
-            suppressMenu: true, 
-            width: commonUtil.getW(40), 
-            minWidth: commonUtil.getW(40), 
-            pinned: 'left'
-        },
-        {
-            headerName: "*",
-            colId: "operation",
-            suppressSorting: true,
-            suppressMenu: true,
-            width: commonUtil.getW(30),
-            minWidth:commonUtil.getW(30),
-            pinned: 'left',
-            cellClass: ['table-name-field','table-item-center'],
-            /*cellRenderer: function(params){
-                var rlt= '<div class="btn-group">'+
-	'<button type="button" class="btn btn-default btn-xs"><i class="fa fa-info-circle fa-fw"></i></button>'+
-   '<button type="button" class="btn btn-default btn-xs dropdown-toggle"  data-toggle="dropdown">'+
-      '<span class="caret"></span>'+
-   '</button>'+
-   '<ul class="dropdown-menu" role="menu">'+
-      '<li><a href="#">功能('+params.data.name+')</a></li>'+
-      '<li><a href="#">另一个功能</a></li>'+
-      '<li><a href="#">其他</a></li>'+
-      '<li class="divider"></li>'+
-      '<li><a href="#">分离的链接</a></li>'+
-   '</ul>'+
-'</div>';
-return rlt;
-            }*/
-            cellRenderer: function(params){
-                var rlt="<i class='fa fa-info-circle fa-fw'></i>";
-                return rlt;
-            }
-        },
-        {
             field: "name",
             headerName: "名称",
             width: commonUtil.getW(120),
