@@ -8,6 +8,11 @@ body {
   padding-top: 50px;
 }
 
+a:active, a:hover, a:focus {
+    outline: none;
+    cursor: pointer;
+}
+
 
 .form-signin {
   max-width: 330px;
@@ -46,6 +51,13 @@ body {
 
 
 
+
+.breadcrumb {
+    margin-bottom: 10px;
+}
+/*.nav > li > a {
+    padding: 10px 8px;
+}*/
 
 /*
  * Global add-ons
@@ -112,8 +124,8 @@ body {
 
 @media (min-width: 768px) {
   .main {
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: 30px;
+    padding-left: 20px;
   }
 }
 .main .page-header {

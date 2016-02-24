@@ -24,87 +24,122 @@ angular
                     url: "main/treeitem/:treeItemId",
                     resolve: {
                         retrievedSNCs: ['dataService', '$stateParams', 'logger',
-                            function(dataService, $stateParams, logger){
-                                if($stateParams.treeItemId!='trail'){
+                            function (dataService, $stateParams, logger) {
+                                if ($stateParams.treeItemId != 'trail') {
                                     return;
-                                }else{
+                                } else {
                                     return dataService.retrieveSNCs();
                                 }
-                                
-                        }]
+
+                            }]
                     },
                     templateUrl: function ($stateParams) {
-                        if($stateParams.treeItemId=='loading'){
+                        if ($stateParams.treeItemId == 'loading') {
                             return "./partials/middle_loading_template.html?dummy";
-                        }else if($stateParams.treeItemId=='loadingFailed'){
+                        } else if ($stateParams.treeItemId == 'loadingFailed') {
                             return "./partials/middle_loading_failed_template.html?dummy";
-                        }else if($stateParams.treeItemId=='home'){
+                        } else if ($stateParams.treeItemId == 'home') {
                             return "./partials/middle_dashboard_template.html?dummy";
-                        }else if($stateParams.treeItemId=='ne'){
+                        } else if ($stateParams.treeItemId == 'ne') {
                             return "./partials/middle_ne_template.html?dummy";
-                        }else if($stateParams.treeItemId=='physicalLink'){
+                        } else if ($stateParams.treeItemId == 'physicalLink') {
                             return "./partials/middle_test_template.html?dummy";
-                        }else if($stateParams.treeItemId=='map'){
+                        } else if ($stateParams.treeItemId == 'map') {
                             return "./partials/middle_test_template.html?dummy";
-                        }else if($stateParams.treeItemId=='trail'){
+                        } else if ($stateParams.treeItemId == 'trail') {
                             return "./partials/middle_trail_template.html?dummy";
-                        }else if($stateParams.treeItemId=='path'){
+                        } else if ($stateParams.treeItemId == 'path') {
                             return "./partials/middle_test_template.html?dummy";
-                        }else if($stateParams.treeItemId=='evc'){
+                        } else if ($stateParams.treeItemId == 'evc') {
                             return "./partials/middle_test_template.html?dummy";
-                        }else if($stateParams.treeItemId=='creation_snc'){
+                        } else if ($stateParams.treeItemId == 'creation_snc') {
                             return "./partials/creation_snc_template.html?dummy";
                         }
-                        
+
                     },
                     controllerProvider: function ($stateParams) {
-                        console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='loading'){
+                        console.log("$stateParams:" + JSON.stringify($stateParams));
+                        if ($stateParams.treeItemId == 'loading') {
                             return "MiddleLoadingController as vm";
-                        }else if($stateParams.treeItemId=='loadingFailed'){
+                        } else if ($stateParams.treeItemId == 'loadingFailed') {
                             return "MiddleLoadingFailedController as vm";
-                        }else if($stateParams.treeItemId=='home'){
+                        } else if ($stateParams.treeItemId == 'home') {
                             return "MiddleDashBoardController as vm";
-                        }else if($stateParams.treeItemId=='ne'){
+                        } else if ($stateParams.treeItemId == 'ne') {
                             return "MiddleNEController as vm";
-                        }else if($stateParams.treeItemId=='physicalLink'){
+                        } else if ($stateParams.treeItemId == 'physicalLink') {
                             return "MiddlePhysicalLinkController as vm";
-                        }else if($stateParams.treeItemId=='map'){
+                        } else if ($stateParams.treeItemId == 'map') {
                             return "MiddleMapController as vm";
-                        }else if($stateParams.treeItemId=='trail'){
+                        } else if ($stateParams.treeItemId == 'trail') {
                             return "MiddleTrailController as vm";
-                        }else if($stateParams.treeItemId=='path'){
+                        } else if ($stateParams.treeItemId == 'path') {
                             return "MiddlePathController as vm";
-                        }else if($stateParams.treeItemId=='evc'){
+                        } else if ($stateParams.treeItemId == 'evc') {
                             return "MiddleEVCController as vm";
-                        }else if($stateParams.treeItemId=='creation_snc'){
+                        } else if ($stateParams.treeItemId == 'creation_snc') {
                             return "MiddleCreationSNCController as vm";
                         }
-                        
+
                     }
 
                 })
                 .state('main.treeitem_secondlevel', {
                     url: "main/treeitem_secondlevel/:treeItemId/:neGroupId/:neId:/:sncId",
                     templateUrl: function ($stateParams) {
-                        console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='ne' && $stateParams.neGroupId && $stateParams.neId){
+                        console.log("$stateParams:" + JSON.stringify($stateParams));
+                        if ($stateParams.treeItemId == 'ne' && $stateParams.neGroupId && $stateParams.neId) {
                             return "./partials/single_ne_template.html?dummy";
-                        }else if($stateParams.treeItemId=='trail' && $stateParams.sncId){
+                        } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId) {
                             return "./partials/single_trail_template.html?dummy";
                         }
-                        
+
                     },
                     controllerProvider: function ($stateParams) {
-                        console.log("$stateParams:"+JSON.stringify($stateParams));
-                        if($stateParams.treeItemId=='ne' && $stateParams.neGroupId && $stateParams.neId){
+                        console.log("$stateParams:" + JSON.stringify($stateParams));
+                        if ($stateParams.treeItemId == 'ne' && $stateParams.neGroupId && $stateParams.neId) {
                             return "MiddleSingleNEController as vm";
-                        }else if($stateParams.treeItemId=='trail' && $stateParams.sncId){
+                        } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId) {
                             return "MiddleSingleTrailController as vm";
                         }
-                        
+
                     }
 
+                })
+                .state('main.treeitem_secondlevel.ne_tabs', {
+                    url: "main/treeitem_secondlevel/ne_tabs/:tabId/:neGroupId/:neId",
+                    resolve: {
+                        retrievedPorts: ['dataService', '$stateParams', 'logger',
+                            function (dataService, $stateParams, logger) {
+                                if ($stateParams.tabId != 'ports') {
+                                    return;
+                                } else {
+                                    return dataService.retrievePorts($stateParams.neGroupId, $stateParams.neId);
+                                }
+                            }]
+                    },
+                    templateUrl: function ($stateParams) {
+                        if ($stateParams.tabId == 'loading') {
+                            return "./partials/middle_loading_template.html?dummy";
+                        } else if ($stateParams.tabId == 'loadingFailed') {
+                            return "./partials/middle_loading_failed_template.html?dummy";
+                        } else if ($stateParams.tabId == 'ports') {
+                            return "./partials/ne_ports_template.html?dummy";
+                        } else if ($stateParams.tabId == 'boards') {
+                            return "./partials/ne_boards_template.html?dummy";
+                        }
+                    },
+                    controllerProvider: function ($stateParams) {
+                        if ($stateParams.tabId == 'loading') {
+                            return "MiddleLoadingController as vm";
+                        } else if ($stateParams.tabId == 'loadingFailed') {
+                            return "MiddleLoadingFailedController as vm";
+                        } else if ($stateParams.tabId == 'ports') {
+                            return "NEPortController as vm";
+                        } else if ($stateParams.tabId == 'boards') {
+                            return "NEBoardController as vm";
+                        }
+                    }
                 });
         }]);
 

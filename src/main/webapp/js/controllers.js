@@ -59,7 +59,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
     vm.bannerClicked = bannerClicked;
     
     
-    serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
+    //serverNotificationService.connect(commonUtil.generateWSUrl(), "5000");
     
 
 
@@ -305,7 +305,7 @@ return rlt;
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
                 },
             cellClass: 'table-name-field'
         },
@@ -525,7 +525,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'trail', sncId: params.data.sncId});
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'trail', sncId: params.data.sncId});
                 },
             cellClass: 'table-name-field'
         },
@@ -675,9 +675,23 @@ angular
 MiddleSingleNEController.$inject = ['$stateParams','$state', '$timeout', 'commonUtil'];
 function MiddleSingleNEController($stateParams,$state, $timeout, commonUtil) {
     var vm = this;
+    vm.getH=commonUtil.getH;
     vm.message = $stateParams.neGroupId+"/"+$stateParams.neId;
     vm.backToNeList=function(){
-        commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'ne'});
+        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'ne'});
+    }
+    $timeout(function(){
+        commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'ports', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+    },10);
+    
+    vm.tabClicked=function(tabId){
+        if(tabId=='ports'){
+            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'ports', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+        }else if(tabId=='boards'){
+            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'boards', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+        }else if(tabId=='alarms'){
+            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'alarms', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+        }
     }
 }
 
@@ -688,9 +702,10 @@ angular
 MiddleSingleTrailController.$inject = ['$stateParams','$state', 'commonUtil', '$timeout'];
 function MiddleSingleTrailController($stateParams,$state, commonUtil, $timeout) {
     var vm = this;
+    vm.getH=commonUtil.getH;
     vm.message = ""+$stateParams.sncId;
     vm.backToTrailList=function(){
-        commonUtil.navWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'trail'});
+        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'trail'});
     }
 }
 
@@ -909,6 +924,266 @@ function MiddleCreationSNCController($stateParams,statasticService, commonUtil, 
         }
     }
     
+}
+
+
+angular
+    .module('nmsdemoApp')
+    .controller('NEPortController', NEPortController);
+
+NEPortController.$inject = ['$scope', 'statasticService', 'retrievedPorts', 'logger','$state', 'commonUtil', 'serverNotificationService', '$timeout'];
+function NEPortController($scope, statasticService, retrievedPorts, logger, $state, commonUtil, serverNotificationService, $timeout) {
+    var vm = this;
+    vm.getH=commonUtil.getH;
+    var portSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedPorts, 'tpKey');
+    vm.data=portSearchMap.getArray();
+    vm.dataChangeTrigger=new commonUtil.WatchTrigger();
+    
+    function addPort(port) {
+        if (portSearchMap.add(port)) {
+            vm.dataChangeTrigger.trigger();
+        }
+    }
+    function removePort(port) {
+        if (portSearchMap.remove(port.tpKey)) {
+            vm.dataChangeTrigger.trigger();
+        }
+    }
+    function updatePort(port) {
+        portSearchMap.add(port);
+        vm.dataChangeTrigger.trigger();
+    }
+    function eventListener(event) {
+        //logger.log("portEvent:"+JSON.stringify(event));
+        if (event.eventType == "portCreation") {
+            addPort(event.event);
+            //logger.log("eventListener: portCreation:\n" + JSON.stringify(event.event));
+        } else if (event.eventType == "portDeletion") {
+            removePort(event.event);
+            //logger.log("eventListener: portDeletion:\n" + JSON.stringify(event.event));
+        }
+
+        
+    }
+    
+    var columnDefs=[
+        {
+            headerName: "#", 
+            colId: "rowNum", 
+            valueGetter: "node.id", 
+            suppressSorting: true, 
+            suppressMenu: true, 
+            width: commonUtil.getW(40), 
+            minWidth: commonUtil.getW(40), 
+            pinned: 'left'
+        },
+        {
+            headerName: "*",
+            colId: "operation",
+            suppressSorting: true,
+            suppressMenu: true,
+            width: commonUtil.getW(30),
+            minWidth:commonUtil.getW(30),
+            pinned: 'left',
+            cellClass: ['table-name-field','table-item-center'],
+            /*cellRenderer: function(params){
+                var rlt= '<div class="btn-group">'+
+	'<button type="button" class="btn btn-default btn-xs"><i class="fa fa-info-circle fa-fw"></i></button>'+
+   '<button type="button" class="btn btn-default btn-xs dropdown-toggle"  data-toggle="dropdown">'+
+      '<span class="caret"></span>'+
+   '</button>'+
+   '<ul class="dropdown-menu" role="menu">'+
+      '<li><a href="#">功能('+params.data.name+')</a></li>'+
+      '<li><a href="#">另一个功能</a></li>'+
+      '<li><a href="#">其他</a></li>'+
+      '<li class="divider"></li>'+
+      '<li><a href="#">分离的链接</a></li>'+
+   '</ul>'+
+'</div>';
+return rlt;
+            }*/
+            cellRenderer: function(params){
+                var rlt="<i class='fa fa-info-circle fa-fw'></i>";
+                return rlt;
+            }
+        },
+        {
+            field: "name",
+            headerName: "名称",
+            width: commonUtil.getW(135),
+            minWidth: commonUtil.getW(135),
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'},
+            pinned: 'left',
+            onCellClicked: function(params){
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
+                },
+            cellClass: 'table-name-field'
+        },
+        {
+            field: "rate",
+            headerName: "速率",
+            enableColumnMenu:false,
+            width: commonUtil.getW(80),
+            minWidth: commonUtil.getW(80),
+            filter: 'set',
+            filterParams: {values: ['STM1', 'STM4'], newRowsAction: 'keep'}
+        },
+        {
+            field: "connected",
+            headerName: "连接状态",
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
+            filter: 'set',
+            filterParams: {values: ['connected', 'not connected'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls=(params.value===true ?'table-suppervised':'table-unsuppervised');
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
+        },
+        {
+            field: "plKey",
+            headerName: "物理连接",
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        }
+    ];
+    
+   
+    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null, null);
+    
+    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["portCreation", "portDeletion", "portChange"], eventListener, 200, 'NEPortController');
+    serverNotificationService.addListener(listener);
+    $scope.$on("$destroy", function(){
+        logger.log("NEPortController,$destroy");
+        serverNotificationService.removeListener(listener);
+    });
+    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0);
+}
+
+
+angular
+    .module('nmsdemoApp')
+    .controller('NEBoardController', NEBoardController);
+
+NEBoardController.$inject = ['$scope', 'statasticService','logger','$state', 'commonUtil', 'serverNotificationService', '$timeout'];
+function NEBoardController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
+    var vm = this;
+    vm.getH=commonUtil.getH;
+    vm.data=[];
+    vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
+    
+    var columnDefs=[
+        {
+            headerName: "#", 
+            colId: "rowNum", 
+            valueGetter: "node.id", 
+            suppressSorting: true, 
+            suppressMenu: true, 
+            width: commonUtil.getW(40), 
+            minWidth: commonUtil.getW(40), 
+            pinned: 'left'
+        },
+        {
+            headerName: "*",
+            colId: "operation",
+            suppressSorting: true,
+            suppressMenu: true,
+            width: commonUtil.getW(30),
+            minWidth:commonUtil.getW(30),
+            pinned: 'left',
+            cellClass: ['table-name-field','table-item-center'],
+            /*cellRenderer: function(params){
+                var rlt= '<div class="btn-group">'+
+	'<button type="button" class="btn btn-default btn-xs"><i class="fa fa-info-circle fa-fw"></i></button>'+
+   '<button type="button" class="btn btn-default btn-xs dropdown-toggle"  data-toggle="dropdown">'+
+      '<span class="caret"></span>'+
+   '</button>'+
+   '<ul class="dropdown-menu" role="menu">'+
+      '<li><a href="#">功能('+params.data.name+')</a></li>'+
+      '<li><a href="#">另一个功能</a></li>'+
+      '<li><a href="#">其他</a></li>'+
+      '<li class="divider"></li>'+
+      '<li><a href="#">分离的链接</a></li>'+
+   '</ul>'+
+'</div>';
+return rlt;
+            }*/
+            cellRenderer: function(params){
+                var rlt="<i class='fa fa-info-circle fa-fw'></i>";
+                return rlt;
+            }
+        },
+        {
+            field: "name",
+            headerName: "名称",
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'},
+            pinned: 'left',
+            onCellClicked: function(params){
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
+                },
+            cellClass: 'table-name-field'
+        },
+        {
+            field: "type",
+            headerName: "类型",
+            enableColumnMenu:false,
+            width: commonUtil.getW(70),
+            minWidth: commonUtil.getW(70),
+            filter: 'set',
+            filterParams: {values: ['1660sm', '1678mc', 'es16'], newRowsAction: 'keep'}
+        },
+        {
+            field: "version",
+            headerName: "版本",
+            width: commonUtil.getW(80),
+            minWidth: commonUtil.getW(80),
+            filter: 'text',
+            filterParams: {newRowsAction: 'keep'}
+        },
+        {
+            field: "suppervisionState",
+            headerName: "管理状态",
+            width: commonUtil.getW(120),
+            minWidth: commonUtil.getW(120),
+            filter: 'set',
+            filterParams: {values: ['suppervised', 'unsuppervised'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls=(params.value==='suppervised'?'table-suppervised':'table-unsuppervised');
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
+        },
+        {
+            field: "alarmState",
+            headerName: "告警级别",
+            width: commonUtil.getW(110),
+            minWidth: commonUtil.getW(110),
+            filter: 'set',
+            filterParams: {values: ['critical', 'major','minor','warning', 'indeterminate','cleared'], newRowsAction: 'keep'},
+            cellRenderer: function(params){
+                var cls='table-alarm-'+params.value;
+                return "<div class='"+cls+"'>"+params.value+"</div>";
+            }
+        }
+    ];
+    
+   
+    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null, null);
+            
+    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["boardCreation", "boardDeletion", "boardChange"], null, 200, 'NEBoardController');
+    serverNotificationService.addListener(listener);
+    $scope.$on("$destroy", function(){
+        logger.log("NEBoardController,$destroy");
+        serverNotificationService.removeListener(listener);
+    });
+    
+
+    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0);
 }
 
 

@@ -1,13 +1,15 @@
 <div ui-view>
     <div class="row">
         <div class="col col-lg-12">
-            <pre style="margin-bottom:{{vm.getH(8)}}px;height:{{vm.getH(36)}}px;padding:{{vm.getH(8)}}px">ne</pre>
+            <ol class="breadcrumb" style="margin-bottom:{{vm.getH(8)}}px;height:{{vm.getH(36)}}px;padding-left:{{vm.getH(12)}}px">
+                <li class="active">网元列表</li>
+            </ol>
         </div>
     </div>
 
     <div class="row">
         <div class="col col-lg-12">
-            <div class="ag-fresh" style="width:100%;height:{{vm.getH(544)}}px;" ag-grid="vm.gridOptions" ></div>
+            <div class="ag-fresh" style="width:100%;height:{{vm.getH(544)}}px;" ag-grid="vm.gridOptions"></div>
         </div>
     </div>
 </div>

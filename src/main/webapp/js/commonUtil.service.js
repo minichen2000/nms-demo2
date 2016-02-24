@@ -21,7 +21,8 @@
             getWidthFactor: getWidthFactor,
             getW: getW,
             getH: getH,
-            navWithLoadingPage:navWithLoadingPage,
+            treeNavWithLoadingPage:treeNavWithLoadingPage,
+            genericNavWithLoadingPage: genericNavWithLoadingPage,
             itemInArray: itemInArray,
             indexInArray: indexInArray,
             agGridTextFilter: agGridTextFilter,
@@ -43,8 +44,14 @@
 
         ////////////
         
-        function navWithLoadingPage($state, $timeout, state, nav_params) {
-            $state.go('main.treeitem', { treeItemId: "loading" });
+        function treeNavWithLoadingPage($state, $timeout, state, nav_params) {
+            genericNavWithLoadingPage($state, 'main.treeitem', 'treeItemId', $timeout, state, nav_params);
+
+        };
+        function genericNavWithLoadingPage($state, loadingState, itemIdName,  $timeout, state, nav_params) {
+            var loadingParam={};
+            loadingParam[itemIdName]='loading';
+            $state.go(loadingState, loadingParam);
             $timeout(function () {
                 $state.go(state, nav_params);
             }, 10);
@@ -370,6 +377,8 @@
                 enableColResize: true,
                 enableServerSideSorting: true,
                 enableServerSideFilter: true,
+                rowSelection: 'multiple',
+                rowDeselection: true,
                 angularCompileRows: false
             }
 
