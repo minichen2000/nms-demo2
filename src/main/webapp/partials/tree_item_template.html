@@ -1,10 +1,9 @@
 <li>
-				<a href="#" ng-click="toggle()" ng-dblclick="changeType()" >
-					<i class='fa fa-fw' ng-class="{'fa-dot-circle-o': !isFolder(), 'fa-folder-open': isFolder()}"></i>
-						{{treeItemData.name}}
-			<span class='fa tree-item-tail' ng-class="{'fa-angle-left': isFolder()&&(!open), 'fa-angle-down': isFolder()&&open, 'icon-leaf': !isFolder()}"></span>
-		</a>
-				<ul ng-if="isFolder()&&open" class="nav nav-second-level">
-					<treeitem ng-repeat="child in treeItemData.children" tree-item-data="child" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
-				</ul>
-	</li>
+    <a href="#" ng-click="toggle()" ng-dblclick="changeType()">
+        <i class='fa fa-fw' ng-class="{'fa-dot-circle-o': !isFolder(), 'fa-folder-open': isFolder()}"></i> {{treeItemData.name}}
+        <span class='fa tree-item-tail' ng-class="{'fa-angle-left': isFolder()&&(!open), 'fa-angle-down': isFolder()&&open, 'icon-leaf': !isFolder()}"></span>
+    </a>
+    <ul ng-if="isFolder()&&open" class="nav nav-second-level">
+        <treeitem ng-repeat="child in treeItemData.children" tree-item-data="child" left-tree-changed="leftTreeChanged" tree-item-clicked="treeItemClicked"></treeitem>
+    </ul>
+</li>

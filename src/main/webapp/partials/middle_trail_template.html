@@ -9,7 +9,19 @@
     <div class="row">
         <div class="col col-lg-12">
             <div style="padding:6px;border: 1px solid #ddd;border-radius: 4px;">
-                <div class="row">
+                <nms-data-panel 
+                ctrl-scope="vm.ctrlScope" 
+                data-array="vm.dataArray" 
+                data-key="vm.dataKey" 
+                table-column-defs="vm.tableColumnDefs" 
+                obj-creation-nt-type="vm.objCreationNtType" 
+                obj-deletion-nt-type="vm.objDeletionNtType" 
+                obj-update-nt-type="vm.objUpdateNtType" 
+                notif-filter-fun="vm.notifFilterFun" 
+                ctrl-name="vm.ctrlName" 
+                grid-height="490" 
+                field-value-getter-fun="vm.fieldValueGetterFun"></nms-data-panel>
+                <!--<div class="row">
                     <div class="col col-lg-12" style="margin-bottom:4px">
                         <div class="btn-group" uib-dropdown >
                             <button id="action-button" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle>
@@ -39,7 +51,7 @@
                     <div class="col col-lg-12">
                         <div ag-grid="vm.gridOptions" class="ag-nms" ng-style="vm.tableSizeClassFun(490)"></div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
