@@ -60,22 +60,22 @@
 
         function getHeightFactor() {
             if (null == availHeightFactor) {
-                availHeightFactor = Math.floor((window.screen.availHeight-50-20)/(724-50-20));
+                availHeightFactor = (window.screen.availHeight-50-20)/(724-50-20);
             }
             return availHeightFactor;
         }
 
         function getWidthFactor() {
             if (null == availWidthFactor) {
-                availWidthFactor = Math.floor(window.screen.availWidth / 1366);
+                availWidthFactor = window.screen.availWidth / 1366;
             }
             return availWidthFactor;
         }
         function getW(w) {
-            return w * getWidthFactor();
+            return Math.floor(w * getWidthFactor());
         }
         function getH(h) {
-            return h * getHeightFactor();
+            return Math.floor(h * getHeightFactor());
         }
 
         function generateWSUrl() {

@@ -10,17 +10,18 @@
         <div class="col col-lg-12">
             <div style="padding:6px;border: 1px solid #ddd;border-radius: 4px;">
                 <nms-data-panel 
-                ctrl-scope="vm.ctrlScope" 
-                data-array="vm.dataArray" 
-                data-key="vm.dataKey" 
-                table-column-defs="vm.tableColumnDefs" 
-                obj-creation-nt-type="vm.objCreationNtType" 
-                obj-deletion-nt-type="vm.objDeletionNtType" 
-                obj-update-nt-type="vm.objUpdateNtType" 
-                notif-filter-fun="vm.notifFilterFun" 
-                ctrl-name="vm.ctrlName" 
-                grid-height="490" 
-                field-value-getter-fun="vm.fieldValueGetterFun"></nms-data-panel>
+                ndp-ctrl-scope="vm.ctrlScope" 
+                ndp-obj-search-map="vm.objSearchMap" 
+                ndp-data-key="vm.dataKey" 
+                ndp-table-column-defs="vm.tableColumnDefs" 
+                ndp-obj-creation-nt-type="vm.objCreationNtType" 
+                ndp-obj-deletion-nt-type="vm.objDeletionNtType" 
+                ndp-obj-update-nt-type="vm.objUpdateNtType" 
+                ndp-notif-filter-fun="vm.notifFilterFun" 
+                ndp-ctrl-name="vm.ctrlName" 
+                ndp-grid-height="490" 
+                ndp-grid-options="vm.gridOptions"
+                ndp-enable-notif="true"></nms-data-panel>
                 <!--<div class="row">
                     <div class="col col-lg-12" style="margin-bottom:4px">
                         <div class="btn-group" uib-dropdown >

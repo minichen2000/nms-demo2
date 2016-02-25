@@ -12996,6 +12996,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	exports.initialiseAgGridWithAngular1 = initialiseAgGridWithAngular1;
 	function AngularDirectiveController($element, $scope, $compile, $attrs) {
+        
 	    var gridOptions;
 	    var quickFilterOnScope;
 	    var keyOfGridInScope = $attrs.agGrid;

@@ -439,32 +439,15 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
     var vm = this;
     vm.getH=commonUtil.getH;
     vm.ctrlScope=$scope;
-    vm.dataArray=retrievedSNCs;
     vm.dataKey='sncKey';
     vm.objCreationNtType='sncCreation';
     vm.objDeletionNtType='sncDeletion';
     vm.objUpdateNtType='sncUpdate';
     vm.notifFilterFun=null;
-    vm.ctrlName='MiddleTrailController';   
+    vm.ctrlName='MiddleTrailController'; 
+    vm.objSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, vm.dataKey);  
     
-    
-    logger.log("vm.dataKey:"+vm.dataKey);
-    
-    vm.fieldValueGetterFun=function(item, field){
-        if(field==='aEndNE'){
-            return item.aEndPorts[0].neName;
-        }else if(field==='aEndTP'){
-            return item.aEndPorts[0].tpName;
-        }else if(field==='zEndNE'){
-            return item.zEndPorts[0].neName;
-        }else if(field==='zEndTP'){
-            return item.zEndPorts[0].tpName;
-        }else{
-            return item[field];
-        }
-    }
-     
-    vm.tableColumnDefs=[
+    var columnDefs=[
         {
             field: "name",
             headerName: "名称",
@@ -572,7 +555,20 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
         }
     ];
     
-    
+    function fieldValueGetterFun(item, field){
+        if(field==='aEndNE'){
+            return item.aEndPorts[0].neName;
+        }else if(field==='aEndTP'){
+            return item.aEndPorts[0].tpName;
+        }else if(field==='zEndNE'){
+            return item.zEndPorts[0].neName;
+        }else if(field==='zEndTP'){
+            return item.zEndPorts[0].tpName;
+        }else{
+            return item[field];
+        }
+    }
+    vm.gridOptions = commonUtil.genAgGridOptions(columnDefs, vm.objSearchMap.getArray(), fieldValueGetterFun, null); 
 }
 
 angular

@@ -2,156 +2,169 @@
 
 /* Directives */
 
-angular
-    .module('nmsdemoApp')
-    .directive('treeitem',
-        function () {
-            return {
-                // can be used as attribute or element
-                restrict: 'AE',
-                scope: {
-                    treeItemData: '=',
-                    treeItemLevel: '=',
-                    leftTreeChanged: '=',
-                    treeItemClicked: '='
-                },
-                // which markup this directive generates
-                templateUrl: './partials/tree_item_template.html?dummy',
-                replace: true,
+angular.module('nmsdemoApp').directive('treeItem', TreeItem);
+TreeItem.$inject = [];
+function TreeItem() {
 
-                link: function (scope, iElement, iAttrs) {
+    return {
+        // can be used as attribute or element
+        restrict: 'AE',
+        scope: {
+            treeItemData: '=',
+            treeItemLevel: '=',
+            leftTreeChanged: '=',
+            treeItemClicked: '='
+        },
+        // which markup this directive generates
+        templateUrl: './partials/tree_item_template.html?dummy',
+        replace: true,
 
-                    //scope.leftTreeChanged=true;
-                    scope.open = false;
-                    scope.isFolder = function () {
-                        return scope.treeItemData.children && scope.treeItemData.children.length
-                    }
-                    scope.toggle = function () {
+        link: function (scope, iElement, iAttrs) {
 
-                        if (scope.isFolder()) {
-                            scope.open = !scope.open;
-                            scope.leftTreeChanged.changed = !scope.leftTreeChanged.changed;
+            //scope.leftTreeChanged=true;
+            scope.open = false;
+            scope.isFolder = function () {
+                return scope.treeItemData.children && scope.treeItemData.children.length
+            }
+            scope.toggle = function () {
 
-                        }
-                        if (scope.treeItemClicked) {
-                            scope.treeItemClicked(scope.treeItemData.id);
-                        }
+                if (scope.isFolder()) {
+                    scope.open = !scope.open;
+                    scope.leftTreeChanged.changed = !scope.leftTreeChanged.changed;
 
-
-                    },
-                    scope.changeType = function () {
-                        if (!scope.isFolder()) {
-
-                        }
-                    },
-                    scope.addChild = function () {
-                        this.treeItemData.children.push({
-                            name: 'new stuff'
-                        })
-                    }
                 }
-            };
-        });
-        
-angular
-    .module('nmsdemoApp')
-    .directive('maintree',
-        function () {
-            return {
-                // can be used as attribute or element
-                restrict: 'AE',
-                scope: {
-                    homeTreeData: '=',
-                    neTreeData: '=',
-                    mapTreeData: '=',
-                    tlTreeData: '=',
-                    trailTreeData: '=',
-                    pathTreeData: '=',
-                    evcTreeData: '=',
-                    treeItemClicked: '=',
-                    leftTreeChanged: '='
-                },
-                // which markup this directive generates
-                templateUrl: './partials/main_tree_template.html?dummy',
-                replace: false
-            };
-        });
+                if (scope.treeItemClicked) {
+                    scope.treeItemClicked(scope.treeItemData.id);
+                }
 
-angular
-    .module('nmsdemoApp')
-    .directive('nmsDataPanel', NmsDataPanel);
+
+            },
+            scope.changeType = function () {
+                if (!scope.isFolder()) {
+
+                }
+            },
+            scope.addChild = function () {
+                this.treeItemData.children.push({
+                    name: 'new stuff'
+                })
+            }
+        }
+    }
+};
+
+angular.module('nmsdemoApp').directive('mainTree', MainTree);
+MainTree.$inject = [];
+function MainTree() {
+    return {
+        // can be used as attribute or element
+        restrict: 'AE',
+        scope: {
+            homeTreeData: '=',
+            neTreeData: '=',
+            mapTreeData: '=',
+            tlTreeData: '=',
+            trailTreeData: '=',
+            pathTreeData: '=',
+            evcTreeData: '=',
+            treeItemClicked: '=',
+            leftTreeChanged: '='
+        },
+        // which markup this directive generates
+        templateUrl: './partials/main_tree_template.html?dummy',
+        replace: false
+    };
+};
+
+/*angular.module('nmsdemoApp').directive('testDirectiveOne', TestDirectiveOne);
+TestDirectiveOne.$inject = ['logger', 'commonUtil', 'serverNotificationService'];
+function TestDirectiveOne(logger, commonUtil, serverNotificationService) {
+    return {
+        restrict: 'AE',
+        scope: {
+            tdoCtrlScope: '=',
+            tdoDataKey: '=',
+            tdoCtrlName: '='
+        },
+        replace: true,
+        templateUrl: './partials/test-directive-one.html?dummy',
+        link: function (scope, iElement, iAttrs) {
+            logger.log("scope.tdoDataKey: " + scope.tdoDataKey);
+            logger.log("scope.tdoCtrlName: " + scope.tdoCtrlName);
+            logger.log("====================");
+        }
+    }
+};*/
+
+angular.module('nmsdemoApp').directive('nmsDataPanel', NmsDataPanel);
 NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService'];
 function NmsDataPanel(logger, commonUtil, serverNotificationService) {
     return {
         // can be used as attribute or element
         restrict: 'AE',
         scope: {
-            ctrlScope: '=',
-            dataArray: '=',
-            dataKey: '=',
-            tableColumnDefs: '=',
-            objCreationNtType: '=',
-            objDeletionNtType: '=',
-            objUpdateNtType: '=',
-            notifFilterFun: '=',
-            ctrlName: '=',
-            gridHeight: '=',
-            fieldValueGetterFun: '='
+            ndpCtrlScope: '=',
+            ndpObjSearchMap: '=',
+            ndpDataKey: '=',
+            ndpObjCreationNtType: '=',
+            ndpObjDeletionNtType: '=',
+            ndpObjUpdateNtType: '=',
+            ndpNotifFilterFun: '=',
+            ndpCtrlName: '=',
+            ndpGridOptions: '=',
+            ndpGridHeight: '=',
+            ndpEnableNotif: '='
         },
         // which markup this directive generates
         templateUrl: './partials/nms-data-panel.html?dummy',
         replace: true,
         link: function (scope, iElement, iAttrs) {
             //logger.log("scope:"+JSON.stringify(scope));
+            scope.ndpTableSizeStyle = { width: '100%', height: "" + commonUtil.getH(scope.ndpGridHeight) + "px" };
             
-            logger.log("scope.dataKey: "+scope.dataKey);
-            scope.tableSizeClass = { width: '100%', height: "" + commonUtil.getH(scope.gridHeight) + "px" };
-            var objSearchMap = new commonUtil.ObjectArrayKeyIndexManager(scope.dataArray, scope.dataKey);
-            scope.data = objSearchMap.getArray();
-            scope.dataChangeTrigger = new commonUtil.WatchTrigger();
-            scope.enableNotif = true;
+            scope.ndpDataChangeTrigger = new commonUtil.WatchTrigger();
+            scope.ndpEnableNotif = undefined==scope.ndpEnableNotif ? true : scope.ndpEnableNotif;
 
             function addObj(obj) {
-                if (objSearchMap.add(obj)) {
-                    scope.dataChangeTrigger.trigger();
+                if (scope.ndpObjSearchMap.add(obj)) {
+                    scope.ndpDataChangeTrigger.trigger();
                 }
             }
             function removeObj(obj) {
-                if (objSearchMap.remove(obj[scope.sncKey])) {
-                    scope.dataChangeTrigger.trigger();
+                if (scope.ndpObjSearchMap.remove(obj[scope.ndpDataKey])) {
+                    scope.ndpDataChangeTrigger.trigger();
                 }
             }
             function updateObj(obj) {
-                objSearchMap.add(obj);
-                scope.dataChangeTrigger.trigger();
+                scope.ndpObjSearchMap.add(obj);
+                scope.ndpDataChangeTrigger.trigger();
             }
             function eventListener(event) {
-                // logger.log(scope.ctrlName+" event:"+JSON.stringify(event));
-                if (event.eventType == scope.objCreationNtType) {
+                // logger.log(scope.ndpCtrlName+" event:"+JSON.stringify(event));
+                if (event.eventType == scope.ndpObjCreationNtType) {
                     addObj(event.event);
-                    // logger.log(scope.ctrlName+": objCreation:\n" + JSON.stringify(event.event));
-                } else if (event.eventType == scope.objDeletionNtType) {
+                    // logger.log(scope.ndpCtrlName+": objCreation:\n" + JSON.stringify(event.event));
+                } else if (event.eventType == scope.ndpObjDeletionNtType) {
                     removeObj(event.event);
-                    // logger.log(scope.ctrlName+": objDeletion:\n" + JSON.stringify(event.event));
-                } else if (event.eventType == scope.objUpdateNtType) {
+                    // logger.log(scope.ndpCtrlName+": objDeletion:\n" + JSON.stringify(event.event));
+                } else if (event.eventType == scope.ndpObjUpdateNtType) {
                     updateObj(event.event);
-                    // logger.log(scope.ctrlName+": objUpdate:\n" + JSON.stringify(event.event));
+                    // logger.log(scope.ndpCtrlName+": objUpdate:\n" + JSON.stringify(event.event));
                 }
             }
 
             function dontApplyFun() {
-                return !scope.enableNotif;
+                return !scope.ndpEnableNotif;
             }
-            scope.gridOptions = commonUtil.genAgGridOptions(scope.tableColumnDefs, scope.data, scope.fieldValueGetterFun, null);
-            var listener = commonUtil.genDelayScopeApplyEventListener(scope.ctrlScope, scope.notifFilterFun, [scope.objCreationNtType, scope.objDeletionNtType, scope.objUpdateNtType], eventListener, 200, scope.ctrlName, dontApplyFun);
+            var listener = commonUtil.genDelayScopeApplyEventListener(scope.ndpCtrlScope, scope.ndpNotifFilterFun, [scope.ndpObjCreationNtType, scope.ndpObjDeletionNtType, scope.ndpObjUpdateNtType], eventListener, 200, scope.ndpCtrlName, dontApplyFun);
             serverNotificationService.addListener(listener);
 
-            scope.ctrlScope.$on("$destroy", function () {
-                logger.log(scope.ctrlName + ",$destroy");
+            scope.ndpCtrlScope.$on("$destroy", function () {
+                logger.log(scope.ndpCtrlName + ",$destroy");
                 serverNotificationService.removeListener(listener);
             });
-
-            commonUtil.genAgGridWatchDelayReloader(scope.ctrlScope, scope.dataChangeTrigger, scope.gridOptions, 0, dontApplyFun);
+            
+            commonUtil.genAgGridWatchDelayReloader(scope.ndpCtrlScope, scope.ndpDataChangeTrigger, scope.ndpGridOptions, 0, dontApplyFun);
         }
     };
 }
