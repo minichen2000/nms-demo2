@@ -252,6 +252,9 @@ MiddleNEController.$inject = ['$scope', 'statasticService','logger','$state', 'c
 function MiddleNEController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
+    vm.tableSizeClassFun=function(dim){
+        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
+    }
     vm.data=statasticService.getNEList();
     vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
     vm.enableNotif=true;
@@ -438,6 +441,9 @@ MiddleTrailController.$inject = ['$stateParams','retrievedSNCs', 'logger', '$sta
 function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
+    vm.tableSizeClassFun=function(dim){
+        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
+    }
     var sncSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, 'sncKey');
     vm.data=sncSearchMap.getArray();
     vm.dataChangeTrigger=new commonUtil.WatchTrigger();
@@ -893,6 +899,9 @@ NEPortController.$inject = ['$scope', 'statasticService', 'retrievedPorts', 'log
 function NEPortController($scope, statasticService, retrievedPorts, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
+    vm.tableSizeClassFun=function(dim){
+        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
+    }
     var portSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedPorts, 'tpKey');
     vm.data=portSearchMap.getArray();
     vm.dataChangeTrigger=new commonUtil.WatchTrigger();
@@ -994,6 +1003,9 @@ NEBoardController.$inject = ['$scope', 'statasticService','logger','$state', 'co
 function NEBoardController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
+    vm.tableSizeClassFun=function(dim){
+        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
+    }
     vm.data=[];
     vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
     vm.enableNotif=true;

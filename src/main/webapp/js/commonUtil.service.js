@@ -60,14 +60,14 @@
 
         function getHeightFactor() {
             if (null == availHeightFactor) {
-                availHeightFactor = window.screen.availHeight/724;
+                availHeightFactor = Math.floor((window.screen.availHeight-50-20)/(724-50-20));
             }
             return availHeightFactor;
         }
 
         function getWidthFactor() {
             if (null == availWidthFactor) {
-                availWidthFactor = window.screen.availWidth / 1366;
+                availWidthFactor = Math.floor(window.screen.availWidth / 1366);
             }
             return availWidthFactor;
         }
