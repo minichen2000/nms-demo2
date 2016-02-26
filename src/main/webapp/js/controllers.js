@@ -252,14 +252,11 @@ MiddleNEController.$inject = ['$scope', 'statasticService','logger','$state', 'c
 function MiddleNEController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
-    vm.tableSizeClassFun=function(dim){
-        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
-    }
-    vm.data=statasticService.getNEList();
+    vm.ctrlScope=$scope;
+    vm.dataArray=statasticService.getNEList();
     vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
-    vm.enableNotif=true;
     
-    var columnDefs=[
+    vm.columnDefs=[
         {
             field: "name",
             headerName: "名称",
@@ -390,24 +387,8 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
             minWidth: commonUtil.getW(120),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
-        },
+        }
     ];
-    
-   
-    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null, null);
-            
-    function dontApplyFun(){
-        return !vm.enableNotif;
-    }
-    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["neCreation", "neDeletion", "neChange"], null, 200, 'MiddleNEController', dontApplyFun);
-    serverNotificationService.addListener(listener);
-    $scope.$on("$destroy", function(){
-        logger.log("MiddleNEController,$destroy");
-        serverNotificationService.removeListener(listener);
-    });
-    
-
-    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0, dontApplyFun);       
 }
 
 angular
@@ -439,15 +420,24 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
     var vm = this;
     vm.getH=commonUtil.getH;
     vm.ctrlScope=$scope;
-    vm.dataKey='sncKey';
-    vm.objCreationNtType='sncCreation';
-    vm.objDeletionNtType='sncDeletion';
-    vm.objUpdateNtType='sncUpdate';
+    vm.dataArray=retrievedSNCs;
     vm.notifFilterFun=null;
-    vm.ctrlName='MiddleTrailController'; 
-    vm.objSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, vm.dataKey);  
-    
-    var columnDefs=[
+
+    vm.fieldValueGetterFun=function(item, field){
+        if(field==='aEndNE'){
+            return item.aEndPorts[0].neName;
+        }else if(field==='aEndTP'){
+            return item.aEndPorts[0].tpName;
+        }else if(field==='zEndNE'){
+            return item.zEndPorts[0].neName;
+        }else if(field==='zEndTP'){
+            return item.zEndPorts[0].tpName;
+        }else{
+            return item[field];
+        }
+    }
+
+    vm.columnDefs=[
         {
             field: "name",
             headerName: "名称",
@@ -555,20 +545,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
         }
     ];
     
-    function fieldValueGetterFun(item, field){
-        if(field==='aEndNE'){
-            return item.aEndPorts[0].neName;
-        }else if(field==='aEndTP'){
-            return item.aEndPorts[0].tpName;
-        }else if(field==='zEndNE'){
-            return item.zEndPorts[0].neName;
-        }else if(field==='zEndTP'){
-            return item.zEndPorts[0].tpName;
-        }else{
-            return item[field];
-        }
-    }
-    vm.gridOptions = commonUtil.genAgGridOptions(columnDefs, vm.objSearchMap.getArray(), fieldValueGetterFun, null); 
+    logger.log("ctrl finished");
 }
 
 angular
@@ -1037,42 +1014,9 @@ NEPortController.$inject = ['$scope', 'statasticService', 'retrievedPorts', 'log
 function NEPortController($scope, statasticService, retrievedPorts, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
-    vm.tableSizeClassFun=function(dim){
-        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
-    }
-    var portSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedPorts, 'tpKey');
-    vm.data=portSearchMap.getArray();
-    vm.dataChangeTrigger=new commonUtil.WatchTrigger();
-    vm.enableNotif=true;
-    
-    function addPort(port) {
-        if (portSearchMap.add(port)) {
-            vm.dataChangeTrigger.trigger();
-        }
-    }
-    function removePort(port) {
-        if (portSearchMap.remove(port.tpKey)) {
-            vm.dataChangeTrigger.trigger();
-        }
-    }
-    function updatePort(port) {
-        portSearchMap.add(port);
-        vm.dataChangeTrigger.trigger();
-    }
-    function eventListener(event) {
-        //logger.log("portEvent:"+JSON.stringify(event));
-        if (event.eventType == "portCreation") {
-            addPort(event.event);
-            //logger.log("eventListener: portCreation:\n" + JSON.stringify(event.event));
-        } else if (event.eventType == "portDeletion") {
-            removePort(event.event);
-            //logger.log("eventListener: portDeletion:\n" + JSON.stringify(event.event));
-        }
-
-        
-    }
-    
-    var columnDefs=[
+    vm.ctrlScope=$scope;
+    vm.dataArray=retrievedPorts;
+    vm.columnDefs=[
         {
             field: "name",
             headerName: "名称",
@@ -1116,20 +1060,6 @@ function NEPortController($scope, statasticService, retrievedPorts, logger, $sta
             filterParams: {newRowsAction: 'keep'}
         }
     ];
-    
-   
-    function dontApplyFun(){
-        return !vm.enableNotif;
-    }
-    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null, null);
-    
-    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["portCreation", "portDeletion", "portChange"], eventListener, 200, 'NEPortController', dontApplyFun);
-    serverNotificationService.addListener(listener);
-    $scope.$on("$destroy", function(){
-        logger.log("NEPortController,$destroy");
-        serverNotificationService.removeListener(listener);
-    });
-    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0, dontApplyFun);
 }
 
 
@@ -1141,14 +1071,9 @@ NEBoardController.$inject = ['$scope', 'statasticService','logger','$state', 'co
 function NEBoardController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
-    vm.tableSizeClassFun=function(dim){
-        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
-    }
-    vm.data=[];
-    vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
-    vm.enableNotif=true;
-    
-    var columnDefs=[
+    vm.ctrlScope=$scope;
+    vm.dataArray=[];
+    vm.columnDefs=[
         {
             field: "name",
             headerName: "名称",
@@ -1204,22 +1129,6 @@ function NEBoardController($scope, statasticService, logger, $state, commonUtil,
             }
         }
     ];
-    
-   
-    function dontApplyFun(){
-        return !vm.enableNotif;
-    }
-    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, null, null);
-            
-    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["boardCreation", "boardDeletion", "boardChange"], null, 200, 'NEBoardController', dontApplyFun);
-    serverNotificationService.addListener(listener);
-    $scope.$on("$destroy", function(){
-        logger.log("NEBoardController,$destroy");
-        serverNotificationService.removeListener(listener);
-    });
-    
-
-    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0, dontApplyFun);
 }
 
 

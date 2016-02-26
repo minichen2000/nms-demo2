@@ -27,7 +27,7 @@ public class MDL_NEServlet extends HttpServlet {
 		// req.setCharacterEncoding("utf-8");
 
 		List<MDL_NE> nes = new ArrayList<MDL_NE>();
-		int LL = 100;
+		int LL = 30024;
 
 		Random random = new Random();
 		for (int i = 0; i < LL; i++) {

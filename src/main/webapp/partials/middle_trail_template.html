@@ -8,52 +8,20 @@
     </div>
     <div class="row">
         <div class="col col-lg-12">
-            <div style="padding:6px;border: 1px solid #ddd;border-radius: 4px;">
-                <nms-data-panel 
+                <nms-data-panel
+                ndp-partial-border="false" 
                 ndp-ctrl-scope="vm.ctrlScope" 
-                ndp-obj-search-map="vm.objSearchMap" 
-                ndp-data-key="vm.dataKey" 
-                ndp-table-column-defs="vm.tableColumnDefs" 
-                ndp-obj-creation-nt-type="vm.objCreationNtType" 
-                ndp-obj-deletion-nt-type="vm.objDeletionNtType" 
-                ndp-obj-update-nt-type="vm.objUpdateNtType" 
+                ndp-data-array="vm.dataArray"
+                ndp-data-key="'sncKey'" 
+                ndp-column-defs="vm.columnDefs" 
+                ndp-obj-creation-nt-type="'sncCreation'" 
+                ndp-obj-deletion-nt-type="'sncDeletion'" 
+                ndp-obj-update-nt-type="'sncUpdate'" 
                 ndp-notif-filter-fun="vm.notifFilterFun" 
-                ndp-ctrl-name="vm.ctrlName" 
+                ndp-field-value-getter-fun="vm.fieldValueGetterFun"
+                ndp-ctrl-name="'MiddleTrailController'" 
                 ndp-grid-height="490" 
-                ndp-grid-options="vm.gridOptions"
                 ndp-enable-notif="true"></nms-data-panel>
-                <!--<div class="row">
-                    <div class="col col-lg-12" style="margin-bottom:4px">
-                        <div class="btn-group" uib-dropdown >
-                            <button id="action-button" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle>
-                                <i class="fa fa-bars fa-fw"></i>
-                            </button>
-                            <button type="button" class="btn btn-default btn-sm">
-                                <i class="fa fa-close fa-fw"></i>
-                            </button>
-                            <button type="button" class="btn btn-default btn-sm">
-                                <i class="fa fa-check fa-fw"></i>
-                            </button>
-                            <ul uib-dropdown-menu role="menu" aria-labelledby="action-button">
-                                <li role="menuitem"><a href="#">Action</a></li>
-                                <li role="menuitem"><a href="#">Another action</a></li>
-                                <li role="menuitem"><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li role="menuitem"><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                        <div class="btn-group" style="float: right">
-                            <label class="btn btn-default btn-sm" ng-model="vm.enableNotif" uib-btn-checkbox><i class="fa fa-bell fa-fw"></i></label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-lg-12">
-                        <div ag-grid="vm.gridOptions" class="ag-nms" ng-style="vm.tableSizeClassFun(490)"></div>
-                    </div>
-                </div>-->
-            </div>
         </div>
     </div>
 

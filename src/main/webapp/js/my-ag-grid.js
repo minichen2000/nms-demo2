@@ -196,10 +196,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!this.finished) {
 	            var that = this;
 	            setTimeout(function () {
+                    //console.log("Grid.prototype.periodicallyDoLayout");
 	                that.doLayout();
 	                that.gridPanel.periodicallyCheck();
-	                that.periodicallyDoLayout();
-	            }, 500);
+	                //that.periodicallyDoLayout();
+	            }, 10);
 	        }
 	    };
 	    Grid.prototype.setupComponents = function ($scope, $compile, eUserProvidedDiv, globalEventListener) {
@@ -306,7 +307,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            east: toolPanelLayout,
 	            south: paginationGui,
 	            dontFill: gridOptionsWrapper.isForPrint(),
-	            name: 'eRootPanel'
+	            name: 'eRootPanel',
+                preferedHeight: this.gridOptions.preferedHeight
 	        });
 	        popupService.init(this.eRootPanel.getGui());
 	        // default is we don't show paging panel, this is set to true when datasource is set
@@ -10494,8 +10496,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        '</div>';
 	            }
 	            else {
+                    var styleHeight=(undefined==params.preferedHeight) ? '100%' : params.preferedHeight;
 	                template =
-	                    '<div style="height: 100%; position: relative;">' +
+	                    '<div style="height: '+styleHeight+'; position: relative;">' +
 	                        '<div id="north"></div>' +
 	                        '<div id="centerRow" style="height: 100%; overflow: hidden;">' +
 	                        '<div id="west" style="height: 100%; float: left;"></div>' +
@@ -12996,7 +12999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	exports.initialiseAgGridWithAngular1 = initialiseAgGridWithAngular1;
 	function AngularDirectiveController($element, $scope, $compile, $attrs) {
-        
+        //console.log("agGrid init");
 	    var gridOptions;
 	    var quickFilterOnScope;
 	    var keyOfGridInScope = $attrs.agGrid;

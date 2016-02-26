@@ -367,7 +367,7 @@
                 params.successCallback(rowsThisPage, lastRow);
             }
             var dataSource = {
-                pageSize: 200,
+                pageSize: 10000,
                 getRows: _getRows ? _getRows : defaultGetRows
             };
 

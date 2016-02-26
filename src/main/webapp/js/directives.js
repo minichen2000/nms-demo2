@@ -76,96 +76,101 @@ function MainTree() {
     };
 };
 
-/*angular.module('nmsdemoApp').directive('testDirectiveOne', TestDirectiveOne);
-TestDirectiveOne.$inject = ['logger', 'commonUtil', 'serverNotificationService'];
-function TestDirectiveOne(logger, commonUtil, serverNotificationService) {
-    return {
-        restrict: 'AE',
-        scope: {
-            tdoCtrlScope: '=',
-            tdoDataKey: '=',
-            tdoCtrlName: '='
-        },
-        replace: true,
-        templateUrl: './partials/test-directive-one.html?dummy',
-        link: function (scope, iElement, iAttrs) {
-            logger.log("scope.tdoDataKey: " + scope.tdoDataKey);
-            logger.log("scope.tdoCtrlName: " + scope.tdoCtrlName);
-            logger.log("====================");
-        }
-    }
-};*/
 
 angular.module('nmsdemoApp').directive('nmsDataPanel', NmsDataPanel);
-NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService'];
-function NmsDataPanel(logger, commonUtil, serverNotificationService) {
+NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService','$timeout'];
+function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
     return {
         // can be used as attribute or element
         restrict: 'AE',
         scope: {
+            ndpPartialBorder: '=',
             ndpCtrlScope: '=',
-            ndpObjSearchMap: '=',
-            ndpDataKey: '=',
+            ndpDataArray: '=',
+            ndpDataUpdateOutside: '=?',
+            ndpDataChangeTrigger: '=?',
+            ndpDataKey: '=?',
+            ndpColumnDefs: '=',
             ndpObjCreationNtType: '=',
             ndpObjDeletionNtType: '=',
             ndpObjUpdateNtType: '=',
             ndpNotifFilterFun: '=',
+            ndpFieldValueGetterFun: '=',
             ndpCtrlName: '=',
-            ndpGridOptions: '=',
             ndpGridHeight: '=',
             ndpEnableNotif: '='
         },
         // which markup this directive generates
         templateUrl: './partials/nms-data-panel.html?dummy',
         replace: true,
-        link: function (scope, iElement, iAttrs) {
-            //logger.log("scope:"+JSON.stringify(scope));
-            scope.ndpTableSizeStyle = { width: '100%', height: "" + commonUtil.getH(scope.ndpGridHeight) + "px" };
-            
-            scope.ndpDataChangeTrigger = new commonUtil.WatchTrigger();
-            scope.ndpEnableNotif = undefined==scope.ndpEnableNotif ? true : scope.ndpEnableNotif;
+        compile: function (element, attrs) {
+            return {
+                pre: function preLink(scope, element, attrs) {
+                    scope.ndpPartialBorder = (undefined == scope.ndpPartialBorder || null== scope.ndpPartialBorder || false == scope.ndpPartialBorder) ? false : true;
+                    if(!scope.ndpPartialBorder){
+                        scope.ndpBorderStyle={'padding': '6px', 'border': '1px solid #ddd', 'border-radius': '4px'};
+                    }else{
+                        scope.ndpBorderStyle={'padding': '6px', 'border': '1px solid #ddd', 'border-top-color': 'transparent'};
+                    }
+                    scope.ndpEnableNotif = (undefined == scope.ndpEnableNotif || null== scope.ndpEnableNotif || true == scope.ndpEnableNotif) ? true : false;
+                    scope.ndpDataUpdateOutside = (undefined == scope.ndpDataUpdateOutside || null == scope.ndpDataUpdateOutside || false == scope.ndpDataUpdateOutside) ? false : true;
 
-            function addObj(obj) {
-                if (scope.ndpObjSearchMap.add(obj)) {
-                    scope.ndpDataChangeTrigger.trigger();
+                    var eventListener = null;
+                    var dataList = scope.ndpDataArray;
+                    if (!scope.ndpDataUpdateOutside) {
+                        var objSearchMap = new commonUtil.ObjectArrayKeyIndexManager(scope.ndpDataArray, scope.ndpDataKey);
+                        dataList = objSearchMap.getArray();
+                        scope.ndpDataChangeTrigger = new commonUtil.WatchTrigger();
+
+                        var addObj=function(obj) {
+                            if (objSearchMap.add(obj)) {
+                                scope.ndpDataChangeTrigger.trigger();
+                            }
+                        }
+                        var removeObj=function(obj) {
+                            if (objSearchMap.remove(obj[scope.ndpDataKey])) {
+                                scope.ndpDataChangeTrigger.trigger();
+                            }
+                        }
+                        var updateObj=function(obj) {
+                            objSearchMap.add(obj);
+                            scope.ndpDataChangeTrigger.trigger();
+                        }
+                        eventListener = function (event) {
+                            // logger.log(scope.ndpCtrlName+" event:"+JSON.stringify(event));
+                            if (event.eventType == scope.ndpObjCreationNtType) {
+                                addObj(event.event);
+                                // logger.log(scope.ndpCtrlName+": objCreation:\n" + JSON.stringify(event.event));
+                            } else if (event.eventType == scope.ndpObjDeletionNtType) {
+                                removeObj(event.event);
+                                // logger.log(scope.ndpCtrlName+": objDeletion:\n" + JSON.stringify(event.event));
+                            } else if (event.eventType == scope.ndpObjUpdateNtType) {
+                                updateObj(event.event);
+                                // logger.log(scope.ndpCtrlName+": objUpdate:\n" + JSON.stringify(event.event));
+                            }
+                        }
+                    }
+
+                    var dontApplyFun=function() {
+                        return !scope.ndpEnableNotif;
+                    }
+
+                    var listener = commonUtil.genDelayScopeApplyEventListener(scope.ndpCtrlScope, scope.ndpNotifFilterFun, [scope.ndpObjCreationNtType, scope.ndpObjDeletionNtType, scope.ndpObjUpdateNtType], eventListener, 200, scope.ndpCtrlName, dontApplyFun);
+                    serverNotificationService.addListener(listener);
+
+                    scope.ndpCtrlScope.$on("$destroy", function () {
+                        logger.log(scope.ndpCtrlName + ",$destroy");
+                        serverNotificationService.removeListener(listener);
+                    });
+
+                    scope.ndpGridOptions = commonUtil.genAgGridOptions(scope.ndpColumnDefs, dataList, scope.ndpFieldValueGetterFun, null);
+                    scope.ndpGridOptions['preferedHeight']="" + commonUtil.getH(scope.ndpGridHeight) + "px";
+                    commonUtil.genAgGridWatchDelayReloader(scope.ndpCtrlScope, scope.ndpDataChangeTrigger, scope.ndpGridOptions, 0, dontApplyFun);
+                
+                },
+                post: function postLink(scope, element, attrs) {
                 }
             }
-            function removeObj(obj) {
-                if (scope.ndpObjSearchMap.remove(obj[scope.ndpDataKey])) {
-                    scope.ndpDataChangeTrigger.trigger();
-                }
-            }
-            function updateObj(obj) {
-                scope.ndpObjSearchMap.add(obj);
-                scope.ndpDataChangeTrigger.trigger();
-            }
-            function eventListener(event) {
-                // logger.log(scope.ndpCtrlName+" event:"+JSON.stringify(event));
-                if (event.eventType == scope.ndpObjCreationNtType) {
-                    addObj(event.event);
-                    // logger.log(scope.ndpCtrlName+": objCreation:\n" + JSON.stringify(event.event));
-                } else if (event.eventType == scope.ndpObjDeletionNtType) {
-                    removeObj(event.event);
-                    // logger.log(scope.ndpCtrlName+": objDeletion:\n" + JSON.stringify(event.event));
-                } else if (event.eventType == scope.ndpObjUpdateNtType) {
-                    updateObj(event.event);
-                    // logger.log(scope.ndpCtrlName+": objUpdate:\n" + JSON.stringify(event.event));
-                }
-            }
-
-            function dontApplyFun() {
-                return !scope.ndpEnableNotif;
-            }
-            var listener = commonUtil.genDelayScopeApplyEventListener(scope.ndpCtrlScope, scope.ndpNotifFilterFun, [scope.ndpObjCreationNtType, scope.ndpObjDeletionNtType, scope.ndpObjUpdateNtType], eventListener, 200, scope.ndpCtrlName, dontApplyFun);
-            serverNotificationService.addListener(listener);
-
-            scope.ndpCtrlScope.$on("$destroy", function () {
-                logger.log(scope.ndpCtrlName + ",$destroy");
-                serverNotificationService.removeListener(listener);
-            });
-            
-            commonUtil.genAgGridWatchDelayReloader(scope.ndpCtrlScope, scope.ndpDataChangeTrigger, scope.ndpGridOptions, 0, dontApplyFun);
         }
-    };
+    }
 }
-
