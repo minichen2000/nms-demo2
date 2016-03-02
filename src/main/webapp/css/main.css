@@ -65,6 +65,14 @@ a:active, a:hover, a:focus {
 /*
  * Global add-ons
  */
+ 
+ 
+ .main {
+     padding-right:8px;
+     padding-left:8px;
+     padding-top:8px;
+     padding-bottom:8px;
+ }
 
 .sub-header {
   padding-bottom: 10px;
@@ -124,17 +132,6 @@ a:active, a:hover, a:focus {
 /*
  * Main content
  */
-
-@media (min-width: 768px) {
-  .main {
-    padding-right: 30px;
-    padding-left: 20px;
-  }
-}
-.main .page-header {
-  margin-top: 0;
-}
-
 
 .loginprogressbar{
     margin-top: 20px;

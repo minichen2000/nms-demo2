@@ -1,29 +1,29 @@
 <div ui-view>
-    <div class="row">
-        <div class="col col-lg-12">
-            <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px">
-                <li class="active">子网连接列表</li>
-            </ol>
+        <div class="row">
+            <div class="col col-lg-12">
+                <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px">
+                    <li class="active">子网连接列表</li>
+                </ol>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col col-lg-12">
-                <nms-data-panel
-                ndp-partial-border="false" 
-                ndp-ctrl-scope="vm.ctrlScope" 
-                ndp-data-array="vm.dataArray"
-                ndp-data-key="'sncKey'" 
-                ndp-column-defs="vm.columnDefs" 
-                ndp-obj-creation-nt-type="'sncCreation'" 
-                ndp-obj-deletion-nt-type="'sncDeletion'" 
-                ndp-obj-update-nt-type="'sncUpdate'" 
-                ndp-notif-filter-fun="vm.notifFilterFun" 
-                ndp-field-value-getter-fun="vm.fieldValueGetterFun"
-                ndp-ctrl-name="'MiddleTrailController'" 
-                ndp-grid-height="490" 
-                ndp-enable-notif="true"></nms-data-panel>
+        <div class="row">
+            <div class="col col-lg-12">
+                    <nms-data-panel
+                    ndp-partial-border="false" 
+                    ndp-ctrl-scope="vm.ctrlScope" 
+                    ndp-data-array="vm.dataArray"
+                    ndp-data-key="'sncKey'" 
+                    ndp-column-defs="vm.columnDefs" 
+                    ndp-obj-creation-nt-type="'sncCreation'" 
+                    ndp-obj-deletion-nt-type="'sncDeletion'" 
+                    ndp-obj-update-nt-type="'sncUpdate'" 
+                    ndp-notif-filter-fun="vm.notifFilterFun" 
+                    ndp-field-value-getter-fun="vm.fieldValueGetterFun"
+                    ndp-ctrl-name="'MiddleTrailController'" 
+                    ndp-grid-height="475" 
+                    ndp-enable-notif="true"></nms-data-panel>
+            </div>
         </div>
-    </div>
 
 
-</div>
+    </div>

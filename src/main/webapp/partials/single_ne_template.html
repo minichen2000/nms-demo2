@@ -8,25 +8,27 @@
         <label>{{vm.message}}</label>
     </div>
 </div>-->
-<div class="row">
-    <div class="col col-lg-12">
-        <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px">
-            <li><a href="#" ng-click="vm.backToNeList()">网元列表</a></li>
-            <li class="active">{{vm.message}}</li>
-        </ol>
+<div>
+    <div class="row">
+        <div class="col col-lg-12">
+            <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px">
+                <li><a href="#" ng-click="vm.backToNeList()">网元列表</a></li>
+                <li class="active">{{vm.message}}</li>
+            </ol>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col col-lg-12">
-        <uib-tabset>
-            <uib-tab heading="端口" select="vm.tabClicked('ports')"></uib-tab>
-            <uib-tab heading="板卡" select="vm.tabClicked('boards')"></uib-tab>
-            <uib-tab heading="告警" select="vm.tabClicked('alarms')"></uib-tab>
-        </uib-tabset>
+    <div class="row">
+        <div class="col col-lg-12">
+            <uib-tabset>
+                <uib-tab heading="端口" select="vm.tabClicked('ports')"></uib-tab>
+                <uib-tab heading="板卡" select="vm.tabClicked('boards')"></uib-tab>
+                <uib-tab heading="告警" select="vm.tabClicked('alarms')"></uib-tab>
+            </uib-tabset>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col col-lg-12" >
-        <div ui-view></div>
+    <div class="row">
+        <div class="col col-lg-12">
+            <div ui-view class="animated fadeIn fadeOut"></div>
+        </div>
     </div>
 </div>

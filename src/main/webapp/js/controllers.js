@@ -67,7 +67,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
         $state.go('main.treeitem', { treeItemId: "loadingFailed" });
     }
     function treeItemClicked(itemId) {
-        $state.go('main.treeitem', { treeItemId: "loading" });
+        //$state.go('main.treeitem', { treeItemId: "loading" });
         switch(itemId){
             case 'trail':
                 dataService.setRetrieveSNCs_failedCB(retrieveSNCs_failedCB);
@@ -88,7 +88,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
     
     $timeout(function(){
         $state.go('main.treeitem', { treeItemId: 'home' });
-    },200);
+    },600);
     ///////////////////////////////////////////////
 }
 

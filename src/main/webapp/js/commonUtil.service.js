@@ -49,12 +49,13 @@
 
         };
         function genericNavWithLoadingPage($state, loadingState, itemIdName,  $timeout, state, nav_params) {
-            var loadingParam={};
+            /*var loadingParam={};
             loadingParam[itemIdName]='loading';
             $state.go(loadingState, loadingParam);
             $timeout(function () {
                 $state.go(state, nav_params);
-            }, 10);
+            }, 10);*/
+            $state.go(state, nav_params);
 
         };
 
