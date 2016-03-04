@@ -5,7 +5,7 @@
     </a>
 </script>
 
-<div class="anim-fade">
+
 <div class="row">
     <div class="col col-lg-12">
         <pre>创建子网连接</pre>
@@ -25,14 +25,14 @@
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">速率</span>
                     <input type="text" placeholder="速率" ng-model="vm.SNCRateSelected" uib-typeahead="sncRate as sncRate.name for sncRate in vm.SNCRateWithFlags | filter:{name:$viewValue}"
-                    class="form-control" style="{{vm.isSNCRateSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" typeahead-template-url="sncRateSelectCustomTemplate.html">
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
+                    class="form-control" style="{{vm.isSNCRateSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" typeahead-template-url="sncRateSelectCustomTemplate.html" >
+                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}" ></i></span>
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">名称</span>
                     <input type="text" placeholder="子网连接名称" ng-model="vm.SNCUserlabelSelected" uib-typeahead="sncItem as sncItem.name for sncItem in vm.getSNCUserlabelList()" 
-                    class="form-control" style="{{vm.isSNCUserlabelSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0">
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCUserlabelSelected)}}"></i></span>
+                    class="form-control" style="{{vm.isSNCUserlabelSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" >
+                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCUserlabelSelected)}}" ></i></span>
                 </div>
             </div>
         </div>
@@ -47,20 +47,20 @@
                 <div class="input-group  form-inputgroup">
                     <span class="input-group-addon">网元</span>
                     <input type="text" placeholder="网元名称" ng-model="vm.AEndNESelected" uib-typeahead="aEndNE as aEndNE.name for aEndNE in vm.neList | filter:{name:$viewValue}"
-                    class="form-control" style="{{vm.isAEndNESelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isSNCRateSelected">
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}"></i></span>
+                    class="form-control" style="{{vm.isAEndNESelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isSNCRateSelected" >
+                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}" ></i></span>
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">端口</span>
                     <input type="text" placeholder="端口名称" ng-model="vm.AEndPortSelected" uib-typeahead="aEndPort as aEndPort.name for aEndPort in vm.getAEndPortNameList($viewValue)" 
-                    class="form-control" style="{{vm.isAEndPortSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndNESelected">
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndPortSelected)}}"></i></span>
+                    class="form-control" style="{{vm.isAEndPortSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndNESelected" >
+                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndPortSelected)}}" ></i></span>
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">时隙</span>
                     <input type="text" placeholder="时隙" ng-model="vm.AEndCTPSelected" uib-typeahead="aEndCTP as aEndCTP.name for aEndCTP in vm.getAEndCTPNameList($viewValue)" 
-                    class="form-control" style="{{vm.isAEndCTPSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndPortSelected">
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndCTPSelected)}}"></i></span>
+                    class="form-control" style="{{vm.isAEndCTPSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndPortSelected" >
+                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndCTPSelected)}}" ></i></span>
                 </div>
             </div>
         </div>
@@ -92,5 +92,4 @@
 
 
     </div>
-</div>
 </div>

@@ -3,8 +3,8 @@
 /* App Module Creation*/
 agGrid.initialiseAgGridWithAngular1(angular);
 angular.module('nmsdemoApp', [
-    'ui.router',
     'ngAnimate',
+    'ui.router',
     'nvd3',
     'ui.bootstrap',
     'agGrid'

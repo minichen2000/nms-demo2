@@ -106,6 +106,8 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
         compile: function (element, attrs) {
             return {
                 pre: function preLink(scope, element, attrs) {
+                    scope.getH=commonUtil.getH;
+                    scope.ndpToShow=false;
                     scope.ndpPartialBorder = (undefined == scope.ndpPartialBorder || null== scope.ndpPartialBorder || false == scope.ndpPartialBorder) ? false : true;
                     if(!scope.ndpPartialBorder){
                         scope.ndpBorderStyle={'padding': '6px', 'border': '1px solid #ddd', 'border-radius': '4px'};
@@ -165,6 +167,17 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
 
                     scope.ndpGridOptions = commonUtil.genAgGridOptions(scope.ndpColumnDefs, dataList, scope.ndpFieldValueGetterFun, null);
                     scope.ndpGridOptions['preferedHeight']="" + commonUtil.getH(scope.ndpGridHeight) + "px";
+                    scope.ndpGridOptions['onGridReady']=function(){
+                        logger.log("onGridReady");
+                        $timeout(function(){
+                            scope.ndpToShow=true;
+                        }, 10);
+                        setTimeout(function(){
+                            scope.ndpGridOptions.api.setDatasource(null);
+                        }, 100);
+                        
+                        
+                    };
                     commonUtil.genAgGridWatchDelayReloader(scope.ndpCtrlScope, scope.ndpDataChangeTrigger, scope.ndpGridOptions, 0, dontApplyFun);
                 
                 },

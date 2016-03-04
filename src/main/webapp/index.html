@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="bower_components/ag-grid/dist/styles/theme-blue.css">
     <link rel="stylesheet" href="css/theme-nms.css">
     <link rel="stylesheet" href="css/main-tree.css">
-    <link rel="stylesheet" href="css/animate.css">
     
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -51,9 +50,8 @@
 </head>
 
 <body style="overflow-y:scroll">
-<div ui-view class="animated fadeIn fadeOut">
+<div ui-view>
     <div class="container" ng-controller="LoginController as vm ">
-
       <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
         <input class="form-control " placeholder="用户名" type="text " required autofocus ng-model="vm.username ">
