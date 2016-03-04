@@ -21,8 +21,19 @@ angular
                     }
                 })
                 .state('main.treeitem', {
-                    url: "main/treeitem/:treeItemId",
+                    url: "main/treeitem/:treeItemId/:filterField/:filterValue",
                     resolve: {
+                        additionalFilterFun: ['$stateParams', 'logger',
+                            function ($stateParams, logger) {
+                                if ($stateParams.filterField && $stateParams.filterValue) {
+                                    return function(item){
+                                        return item[$stateParams.filterField]==$stateParams.filterValue;
+                                    }
+                                } else {
+                                    return undefined;
+                                }
+
+                            }],
                         retrievedSNCs: ['dataService', '$stateParams', 'logger',
                             function (dataService, $stateParams, logger) {
                                 if ($stateParams.treeItemId != 'trail') {

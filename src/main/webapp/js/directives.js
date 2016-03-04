@@ -87,6 +87,7 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
             ndpPartialBorder: '=',
             ndpCtrlScope: '=',
             ndpDataArray: '=',
+            ndpAddtionalFilterFun: '=?',
             ndpDataUpdateOutside: '=?',
             ndpDataChangeTrigger: '=?',
             ndpDataKey: '=?',
@@ -116,6 +117,7 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
                     }
                     scope.ndpEnableNotif = (undefined == scope.ndpEnableNotif || null== scope.ndpEnableNotif || true == scope.ndpEnableNotif) ? true : false;
                     scope.ndpDataUpdateOutside = (undefined == scope.ndpDataUpdateOutside || null == scope.ndpDataUpdateOutside || false == scope.ndpDataUpdateOutside) ? false : true;
+
 
                     var eventListener = null;
                     var dataList = scope.ndpDataArray;
@@ -165,8 +167,9 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
                         serverNotificationService.removeListener(listener);
                     });
 
-                    scope.ndpGridOptions = commonUtil.genAgGridOptions(scope.ndpColumnDefs, dataList, scope.ndpFieldValueGetterFun, null);
+                    scope.ndpGridOptions = commonUtil.genAgGridOptions(scope.ndpColumnDefs, dataList, scope.ndpFieldValueGetterFun, null, scope.ndpAddtionalFilterFun);
                     scope.ndpGridOptions['preferedHeight']="" + commonUtil.getH(scope.ndpGridHeight) + "px";
+                    
                     scope.ndpGridOptions['onGridReady']=function(){
                         logger.log("onGridReady");
                         $timeout(function(){

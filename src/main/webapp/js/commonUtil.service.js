@@ -44,18 +44,18 @@
 
         ////////////
         
-        function treeNavWithLoadingPage($state, $timeout, state, nav_params) {
-            genericNavWithLoadingPage($state, 'main.treeitem', 'treeItemId', $timeout, state, nav_params);
+        function treeNavWithLoadingPage($state, $timeout, state, nav_params, isInherit) {
+            genericNavWithLoadingPage($state, 'main.treeitem', 'treeItemId', $timeout, state, nav_params, isInherit);
 
         };
-        function genericNavWithLoadingPage($state, loadingState, itemIdName,  $timeout, state, nav_params) {
+        function genericNavWithLoadingPage($state, loadingState, itemIdName,  $timeout, state, nav_params, isInherit) {
             /*var loadingParam={};
             loadingParam[itemIdName]='loading';
-            $state.go(loadingState, loadingParam);
+            $state.go(loadingState, loadingParam, {inherit:isInherit});
             $timeout(function () {
-                $state.go(state, nav_params);
-            }, 10);*/
-            $state.go(state, nav_params);
+                $state.go(state, nav_params, {inherit:isInherit});
+            }, 5);*/
+            $state.go(state, nav_params, {inherit:isInherit});
 
         };
 
@@ -336,33 +336,41 @@
             }
         }
 
-        function agGridFilter(filterModel, item, fieldValueGetterFun) {
-            for (var param in filterModel) {
-                if (typeof (filterModel[param]) != "function") {
-                    if (Object.prototype.toString.call(filterModel[param]) === '[object Array]') {//array
-                        if (!agGridSelectFilter(filterModel, param, item, fieldValueGetterFun)) {
-                            return false;
-                        } else {
-                            continue;
-                        }
-                    } else {//object
-                        if (!agGridTextFilter(filterModel, param, item, fieldValueGetterFun)) {
-                            return false;
-                        } else {
-                            continue;
+        function agGridFilter(filterModel, item, fieldValueGetterFun, addtionalFilterFun) {
+            if(addtionalFilterFun){
+                if(!addtionalFilterFun(item)){
+                    return false;
+                }
+            }
+            if(filterModel){
+                for (var param in filterModel) {
+                    if (typeof (filterModel[param]) != "function") {
+                        if (Object.prototype.toString.call(filterModel[param]) === '[object Array]') {//array
+                            if (!agGridSelectFilter(filterModel, param, item, fieldValueGetterFun)) {
+                                return false;
+                            } else {
+                                continue;
+                            }
+                        } else {//object
+                            if (!agGridTextFilter(filterModel, param, item, fieldValueGetterFun)) {
+                                return false;
+                            } else {
+                                continue;
+                            }
                         }
                     }
                 }
             }
+            
             return true;
         }
 
 
 
-        function genAgGridOptions(_columnDefs, _data, _fieldValueGetterFun, _getRows) {
+        function genAgGridOptions(_columnDefs, _data, _fieldValueGetterFun, _getRows, _addtionalFilterFun) {
             var fieldValueGetterFun = _fieldValueGetterFun;
             var defaultGetRows = function (params) {
-                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel, fieldValueGetterFun);
+                var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel, fieldValueGetterFun, _addtionalFilterFun);
                 var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
                 var lastRow = dataAfterSortingAndFiltering.length;
                 params.successCallback(rowsThisPage, lastRow);
@@ -386,8 +394,8 @@
                 angularCompileRows: false
             }
 
-            function sortAndFilter(sortModel, filterModel, fieldValueGetterFun) {
-                return sortData(sortModel, filterData(filterModel, _data, fieldValueGetterFun), fieldValueGetterFun);
+            function sortAndFilter(sortModel, filterModel, fieldValueGetterFun, addtionalFilterFun) {
+                return sortData(sortModel, filterData(filterModel, _data, fieldValueGetterFun, addtionalFilterFun), fieldValueGetterFun);
             }
 
             function sortData(sortModel, data, fieldValueGetterFun) {
@@ -419,8 +427,8 @@
                 return resultOfSort;
             }
 
-            function filterData(filterModel, data, fieldValueGetterFun) {
-                var filterPresent = filterModel && Object.keys(filterModel).length > 0;
+            function filterData(filterModel, data, fieldValueGetterFun, addtionalFilterFun) {
+                var filterPresent = (addtionalFilterFun || (filterModel && Object.keys(filterModel).length > 0));
                 if (!filterPresent) {
                     return data;
                 }
@@ -429,7 +437,7 @@
                 for (var i = 0; i < data.length; i++) {
                     var item = data[i];
 
-                    if (agGridFilter(filterModel, item, fieldValueGetterFun)) {
+                    if (agGridFilter(filterModel, item, fieldValueGetterFun, addtionalFilterFun)) {
                         resultOfFilter.push(item);
                     } else {
                         continue;

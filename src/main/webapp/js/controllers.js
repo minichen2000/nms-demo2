@@ -29,7 +29,7 @@ function LoginController($state, loginService) {
         loginService.setUsername(vm.username);
         loginService.setPassword(vm.password);
         loginService.setLoginProgressCB(loginCB);
-        $state.go('main');
+        $state.go('main',{}, {inherit:false});
     }
 
     function loginCB(ip, p, m) {
@@ -64,10 +64,9 @@ function TreeController($state, dataService, statasticService, serverNotificatio
 
 
     function retrieveSNCs_failedCB(msg){
-        $state.go('main.treeitem', { treeItemId: "loadingFailed" });
+        $state.go('main.treeitem', { treeItemId: "loadingFailed" }, {inherit:false});
     }
     function treeItemClicked(itemId) {
-        //$state.go('main.treeitem', { treeItemId: "loading" });
         switch(itemId){
             case 'trail':
                 dataService.setRetrieveSNCs_failedCB(retrieveSNCs_failedCB);
@@ -76,27 +75,25 @@ function TreeController($state, dataService, statasticService, serverNotificatio
                 break;
                 
         }
-        $timeout(function(){
-            $state.go('main.treeitem', { treeItemId: itemId });
-        }, 10);
+        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: itemId }, false);
         
     };
     
     function bannerClicked(){
-        $state.go('main.treeitem', { treeItemId: 'creation_snc' });
+        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'creation_snc' }, false);
     }
     
     $timeout(function(){
-        $state.go('main.treeitem', { treeItemId: 'home' });
-    },600);
+        $state.go('main.treeitem', { treeItemId: 'home' }, {inherit:false});
+    },100);
     ///////////////////////////////////////////////
 }
 
 angular
     .module('nmsdemoApp')
     .controller('MiddleDashBoardController', MiddleDashBoardController);
-MiddleDashBoardController.$inject = ['statasticService', 'logger', '$scope', 'serverNotificationService', 'commonUtil'];
-function MiddleDashBoardController(statasticService, logger, $scope, serverNotificationService, commonUtil) {
+MiddleDashBoardController.$inject = ['statasticService', '$timeout', '$state', 'logger', '$scope', 'serverNotificationService', 'commonUtil'];
+function MiddleDashBoardController(statasticService, $timeout, $state, logger, $scope, serverNotificationService, commonUtil) {
     var vm = this;
     vm.alarmStatastic = statasticService.getAlarmSt();
     vm.activeAlarmCount = statasticService.activeAlarmCount
@@ -179,6 +176,7 @@ function MiddleDashBoardController(statasticService, logger, $scope, serverNotif
                 dispatch: {
                     elementClick: function (e) {
                         logger.log('click');
+                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'ne', filterField: 'type', filterValue: e.data.key}, false);
                     }
                 }
             }
@@ -248,13 +246,14 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleNEController', MiddleNEController);
 
-MiddleNEController.$inject = ['$scope', 'statasticService','logger','$state', 'commonUtil', 'serverNotificationService', '$timeout'];
-function MiddleNEController($scope, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
+MiddleNEController.$inject = ['$scope', 'additionalFilterFun', 'statasticService','logger','$state', 'commonUtil', 'serverNotificationService', '$timeout'];
+function MiddleNEController($scope, additionalFilterFun, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
     vm.ctrlScope=$scope;
     vm.dataArray=statasticService.getNEList();
     vm.dataChangeTrigger=statasticService.neDataChangeTrigger;
+    vm.addtionalFilterFun=additionalFilterFun;
     
     vm.columnDefs=[
         {
@@ -266,7 +265,7 @@ function MiddleNEController($scope, statasticService, logger, $state, commonUtil
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId}, false);
                 },
             cellClass: 'table-name-field'
         },
@@ -415,12 +414,13 @@ angular
     .module('nmsdemoApp')
     .controller('MiddleTrailController', MiddleTrailController);
 
-MiddleTrailController.$inject = ['$stateParams','retrievedSNCs', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService', '$timeout'];
-function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
+MiddleTrailController.$inject = ['$stateParams','additionalFilterFun', 'retrievedSNCs', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService', '$timeout'];
+function MiddleTrailController($stateParams, additionalFilterFun, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
     var vm = this;
     vm.getH=commonUtil.getH;
     vm.ctrlScope=$scope;
     vm.dataArray=retrievedSNCs;
+    vm.addtionalFilterFun=additionalFilterFun;
     vm.notifFilterFun=null;
 
     vm.fieldValueGetterFun=function(item, field){
@@ -447,7 +447,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'trail', sncId: params.data.sncId});
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'trail', sncId: params.data.sncId}, false);
                 },
             cellClass: 'table-name-field'
         },
@@ -498,7 +498,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
                 return params.data.aEndPorts[0].neName;
             },
             onCellClicked: function(params){
-                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId });
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId }, false);
                 },
             cellClass: 'table-name-field',
             width: commonUtil.getW(120),
@@ -524,7 +524,7 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
                 return params.data.zEndPorts[0].neName;
             },
             onCellClicked: function(params){
-                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId });
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId }, false);
                 },
             cellClass: 'table-name-field',
             width: commonUtil.getW(120),
@@ -546,186 +546,6 @@ function MiddleTrailController($stateParams, retrievedSNCs, logger, $state, $sco
     ];
     
     logger.log("ctrl finished");
-}
-
-angular
-    .module('nmsdemoApp')
-    .controller('MiddleTrailController2', MiddleTrailController2);
-
-MiddleTrailController2.$inject = ['$stateParams','retrievedSNCs', 'logger', '$state', '$scope','commonUtil', 'serverNotificationService', '$timeout'];
-function MiddleTrailController2($stateParams, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
-    var vm = this;
-    vm.getH=commonUtil.getH;
-    vm.tableSizeClassFun=function(dim){
-        return {width:'100%',height:""+commonUtil.getH(dim)+"px"};
-    }
-    var sncSearchMap = new commonUtil.ObjectArrayKeyIndexManager(retrievedSNCs, 'sncKey');
-    vm.data=sncSearchMap.getArray();
-    vm.dataChangeTrigger=new commonUtil.WatchTrigger();
-    vm.enableNotif=true;
-    
-    function addSNC(snc) {
-        if (sncSearchMap.add(snc)) {
-            vm.dataChangeTrigger.trigger();
-        }
-    }
-    function removeSNC(snc) {
-        if (sncSearchMap.remove(snc.sncKey)) {
-            vm.dataChangeTrigger.trigger();
-        }
-    }
-    function updateSNC(snc) {
-        sncSearchMap.add(snc);
-        vm.dataChangeTrigger.trigger();
-    }
-    function eventListener(event) {
-        //logger.log("sncEvent:"+JSON.stringify(event));
-        if (event.eventType == "sncCreation") {
-            addSNC(event.event);
-            //logger.log("eventListener: sncCreation:\n" + JSON.stringify(event.event));
-        } else if (event.eventType == "sncDeletion") {
-            removeSNC(event.event);
-            //logger.log("eventListener: sncDeletion:\n" + JSON.stringify(event.event));
-        }
-
-        
-    }
-    
-    var columnDefs=[
-        {
-            field: "name",
-            headerName: "名称",
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'},
-            pinned: 'left',
-            onCellClicked: function(params){
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'trail', sncId: params.data.sncId});
-                },
-            cellClass: 'table-name-field'
-        },
-         {
-            field: "sncId",
-            headerName: "子网连接ID",
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'}
-        },
-        {
-            field: "rate",
-            headerName: "层次",
-            width: commonUtil.getW(90),
-            minWidth: commonUtil.getW(90),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'}
-        },
-        {
-            field: "protectedType",
-            headerName: "保护",
-            width: commonUtil.getW(110),
-            minWidth: commonUtil.getW(110),
-            filter: 'set',
-            filterParams: {values: ['protected', 'unprotected'], newRowsAction: 'keep'},
-            cellRenderer: function(params){
-                var cls='table-snc-protect-'+params.value;
-                return "<div class='"+cls+"'>"+params.value+"</div>";
-            }
-        },
-        {
-            field: "sncState",
-            headerName: "实施状态",
-            width: commonUtil.getW(110),
-            minWidth: commonUtil.getW(110),
-            filter: 'set',
-            filterParams: {values: ['defined', 'allocated','implemented'], newRowsAction: 'keep'},
-            cellRenderer: function(params){
-                var cls='table-snc-state-'+params.value;
-                return "<div class='"+cls+"'>"+params.value+"</div>";
-            }
-        }, 
-        {
-            field: "aEndNE",
-            headerName: "A端网元",
-            valueGetter: function(params){
-                return params.data.aEndPorts[0].neName;
-            },
-            onCellClicked: function(params){
-                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId });
-                },
-            cellClass: 'table-name-field',
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'}
-        },
-        {
-            field: "aEndTP",
-            headerName: "A端TP",
-            valueGetter: function(params){
-                return params.data.aEndPorts[0].tpName;
-            },
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'}
-        },
-        {
-            field: "zEndNE",
-            headerName: "Z端网元",
-            valueGetter: function(params){
-                return params.data.zEndPorts[0].neName;
-            },
-            onCellClicked: function(params){
-                    $state.go('main.treeitem_secondlevel',{treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId });
-                },
-            cellClass: 'table-name-field',
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'}
-        },
-        {
-            field: "zEndTP",
-            headerName: "Z端TP",
-            valueGetter: function(params){
-                return params.data.zEndPorts[0].tpName;
-            },
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
-            filter: 'text',
-            filterParams: {newRowsAction: 'keep'}
-        }
-    ];
-    
-    function _fieldValueGetterFun(item, field){
-        if(field==='aEndNE'){
-            return item.aEndPorts[0].neName;
-        }else if(field==='aEndTP'){
-            return item.aEndPorts[0].tpName;
-        }else if(field==='zEndNE'){
-            return item.zEndPorts[0].neName;
-        }else if(field==='zEndTP'){
-            return item.zEndPorts[0].tpName;
-        }else{
-            return item[field];
-        }
-    }
-    
-    function dontApplyFun(){
-        return !vm.enableNotif;
-    }
-    vm.gridOptions=commonUtil.genAgGridOptions(columnDefs, vm.data, _fieldValueGetterFun, null);
-    var listener=commonUtil.genDelayScopeApplyEventListener($scope, null, ["sncCreation", "sncDeletion"], eventListener, 200, 'MiddleTrailController', dontApplyFun);
-    serverNotificationService.addListener(listener);
-    
-    $scope.$on("$destroy", function(){
-        logger.log("MiddleTrailController,$destroy");
-        serverNotificationService.removeListener(listener);
-    });
-    
-    commonUtil.genAgGridWatchDelayReloader($scope, vm.dataChangeTrigger, vm.gridOptions, 0, dontApplyFun); 
 }
 
 angular
@@ -757,19 +577,16 @@ function MiddleSingleNEController($stateParams,$state, $timeout, commonUtil) {
     vm.getH=commonUtil.getH;
     vm.message = $stateParams.neGroupId+"/"+$stateParams.neId;
     vm.backToNeList=function(){
-        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'ne'});
+        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'ne'}, false);
     }
-    $timeout(function(){
-        commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'ports', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
-    },10);
     
     vm.tabClicked=function(tabId){
         if(tabId=='ports'){
-            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'ports', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', {tabId: 'ports', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId}, true);
         }else if(tabId=='boards'){
-            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'boards', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', {tabId: 'boards', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId}, true);
         }else if(tabId=='alarms'){
-            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'alarms', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId});
+            commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', {tabId: 'alarms', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId}, true);
         }
     }
 }
@@ -784,7 +601,7 @@ function MiddleSingleTrailController($stateParams,$state, commonUtil, $timeout) 
     vm.getH=commonUtil.getH;
     vm.message = ""+$stateParams.sncId;
     vm.backToTrailList=function(){
-        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'trail'});
+        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', {treeItemId: 'trail'}, false);
     }
 }
 
@@ -1026,7 +843,7 @@ function NEPortController($scope, statasticService, retrievedPorts, logger, $sta
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId}, false);
                 },
             cellClass: 'table-name-field'
         },
@@ -1083,7 +900,7 @@ function NEBoardController($scope, statasticService, logger, $state, commonUtil,
             filterParams: {newRowsAction: 'keep'},
             pinned: 'left',
             onCellClicked: function(params){
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId});
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', {treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId}, false);
                 },
             cellClass: 'table-name-field'
         },
