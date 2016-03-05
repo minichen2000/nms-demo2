@@ -73,7 +73,8 @@
             return availWidthFactor;
         }
         function getW(w) {
-            return Math.floor(w * getWidthFactor());
+            //return Math.floor(w * getWidthFactor());
+            return w;
         }
         function getH(h) {
             return Math.floor(h * getHeightFactor());
