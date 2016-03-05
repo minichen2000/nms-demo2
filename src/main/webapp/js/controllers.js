@@ -85,7 +85,7 @@ function TreeController($state, dataService, statasticService, serverNotificatio
     
     $timeout(function(){
         $state.go('main.treeitem', { treeItemId: 'home' }, {inherit:false});
-    },100);
+    },500);
     ///////////////////////////////////////////////
 }
 
@@ -133,7 +133,7 @@ function MiddleDashBoardController(statasticService, $timeout, $state, logger, $
             donut: true,
             duration: 1000,
             labelThreshold: 0.02,
-            showLegend: true,
+            showLegend: false,
             height:200,
             pie: {
                 dispatch: {
@@ -170,7 +170,7 @@ function MiddleDashBoardController(statasticService, $timeout, $state, logger, $
             donut: false,
             duration: 1000,
             labelThreshold: 0.02,
-            showLegend: true,
+            showLegend: false,
             height:200,
             pie: {
                 dispatch: {
@@ -208,7 +208,7 @@ function MiddleDashBoardController(statasticService, $timeout, $state, logger, $
             donut: false,
             duration: 1000,
             labelThreshold: 0.02,
-            showLegend: true,
+            showLegend: false,
             height:200,
             pie: {
                 dispatch: {

@@ -1,46 +1,40 @@
-<div>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#" ng-click="vm.bannerClicked()">
+<div id="wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" ng-click="vm.bannerClicked()">
 			 NMS Demo v0.1
 			</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Help</a></li>
-                </ul>
-                <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Search...">
-                </form>
-            </div>
+        </div>
+        <!-- Top Menu Items -->
+        <ul class="nav navbar-right top-nav">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+        </ul>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <main-tree home-tree-data="vm.homeTreeData" ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData"
+            trail-tree-data="vm.trailTreeData" path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged"
+            tree-item-clicked="vm.treeItemClicked">
+            </main-tree>
+
         </div>
     </nav>
 
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-2 col-md-2 sidebar">
-                <main-tree home-tree-data="vm.homeTreeData" ne-tree-data="vm.neTreeData" map-tree-data="vm.mapTreeData" tl-tree-data="vm.tlTreeData"
-                trail-tree-data="vm.trailTreeData" path-tree-data="vm.pathTreeData" evc-tree-data="vm.evcTreeData" left-tree-changed="vm.leftTreeChanged"
-                tree-item-clicked="vm.treeItemClicked">
-                </main-tree>
-            </div>
-            <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2">
-                    <!--<div ui-view class="main animated fadeIn fadeOut">-->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
                     <div ui-view class="main">
                         <!--<div ng-include="'./partials/middle_dashboard_template.html'" ng-controller="MiddleDashBoardController as vm"></div>-->
                     </div>
+                </div>
             </div>
         </div>
     </div>
