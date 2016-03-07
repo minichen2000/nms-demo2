@@ -297,8 +297,8 @@ function MiddleNEController($scope, additionalFilterFun, statasticService, logge
             field: "type",
             headerName: "类型",
             enableColumnMenu:false,
-            width: commonUtil.getW(70),
-            minWidth: commonUtil.getW(70),
+            width: commonUtil.getW(80),
+            minWidth: commonUtil.getW(80),
             filter: 'set',
             filterParams: {values: ['1660sm', '1678mc', 'es16'], newRowsAction: 'keep'}
         },
@@ -454,8 +454,8 @@ function MiddleTrailController($stateParams, additionalFilterFun, retrievedSNCs,
          {
             field: "sncId",
             headerName: "子网连接ID",
-            width: commonUtil.getW(120),
-            minWidth: commonUtil.getW(120),
+            width: commonUtil.getW(125),
+            minWidth: commonUtil.getW(125),
             filter: 'text',
             filterParams: {newRowsAction: 'keep'}
         },

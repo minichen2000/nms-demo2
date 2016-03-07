@@ -21,10 +21,11 @@
             getWidthFactor: getWidthFactor,
             getW: getW,
             getH: getH,
-            treeNavWithLoadingPage:treeNavWithLoadingPage,
+            treeNavWithLoadingPage: treeNavWithLoadingPage,
             genericNavWithLoadingPage: genericNavWithLoadingPage,
             itemInArray: itemInArray,
             indexInArray: indexInArray,
+            objectToArray: objectToArray,
             agGridTextFilter: agGridTextFilter,
             agGridSelectFilter: agGridSelectFilter,
             agGridFilter: agGridFilter,
@@ -48,20 +49,20 @@
             genericNavWithLoadingPage($state, 'main.treeitem', 'treeItemId', $timeout, state, nav_params, isInherit);
 
         };
-        function genericNavWithLoadingPage($state, loadingState, itemIdName,  $timeout, state, nav_params, isInherit) {
+        function genericNavWithLoadingPage($state, loadingState, itemIdName, $timeout, state, nav_params, isInherit) {
             /*var loadingParam={};
             loadingParam[itemIdName]='loading';
             $state.go(loadingState, loadingParam, {inherit:isInherit});
             $timeout(function () {
                 $state.go(state, nav_params, {inherit:isInherit});
             }, 5);*/
-            $state.go(state, nav_params, {inherit:isInherit});
+            $state.go(state, nav_params, { inherit: isInherit });
 
         };
 
         function getHeightFactor() {
             if (null == availHeightFactor) {
-                availHeightFactor = (window.screen.availHeight-50-20)/(724-50-20);
+                availHeightFactor = (window.screen.availHeight - 50 - 20) / (724 - 50 - 20);
             }
             return availHeightFactor;
         }
@@ -99,6 +100,16 @@
         }
         function itemInArray(item, arr) {
             return arr.indexOf(item) >= 0 ? true : false;
+        }
+
+        function objectToArray(obj) {
+            var rlt=[];
+            for (var param in obj) {
+                if (typeof (obj[param]) != "function") {
+                    rlt.push({name:param, value:obj[param]});
+                }
+            }
+            return rlt;
         }
 
         function copyAttrs(source, target) {
@@ -140,9 +151,9 @@
             this.theInterval = _interval;
             this.theFun = _fun;
             this.theScope = _scope;
-            this.dontApplyFun=_dontApplyFun;
+            this.dontApplyFun = _dontApplyFun;
             this.fun = function (param) {
-                if ((null==self.dontApplyFun || !self.dontApplyFun() ) && null != self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
+                if ((null == self.dontApplyFun || !self.dontApplyFun()) && null != self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
                     self.theScope.$apply(function () {
                         self.theFun(param);
                     });
@@ -156,11 +167,11 @@
 
         function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName, _dontApplyFun) {
             var filterFun = function (event) {
-                var inArr= (undefined!=_eventTypeArr && null!=_eventTypeArr) ? itemInArray(event.eventType, _eventTypeArr) : true;
-                var filterFunRlt= (undefined!=_filterFun && null!=_filterFun) ? _filterFun(event) : true;
+                var inArr = (undefined != _eventTypeArr && null != _eventTypeArr) ? itemInArray(event.eventType, _eventTypeArr) : true;
+                var filterFunRlt = (undefined != _filterFun && null != _filterFun) ? _filterFun(event) : true;
                 return inArr && filterFunRlt;
             }
-            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function (event) {}, _dontApplyFun)).fun;
+            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function (event) { }, _dontApplyFun)).fun;
             return { name: listenerName, filter: filterFun, fun: listenerFun };
         }
 
@@ -338,12 +349,12 @@
         }
 
         function agGridFilter(filterModel, item, fieldValueGetterFun, addtionalFilterFun) {
-            if(addtionalFilterFun){
-                if(!addtionalFilterFun(item)){
+            if (addtionalFilterFun) {
+                if (!addtionalFilterFun(item)) {
                     return false;
                 }
             }
-            if(filterModel){
+            if (filterModel) {
                 for (var param in filterModel) {
                     if (typeof (filterModel[param]) != "function") {
                         if (Object.prototype.toString.call(filterModel[param]) === '[object Array]') {//array
@@ -362,7 +373,7 @@
                     }
                 }
             }
-            
+
             return true;
         }
 
@@ -452,7 +463,7 @@
         function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval, dontReloadFun) {
             watchDelayReload(scope, trigger, interval, function () {
                 var scrollIdleFactorMS = 1000;
-                if ((null==dontReloadFun || !dontReloadFun())&&(new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS) {
+                if ((null == dontReloadFun || !dontReloadFun()) && (new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS) {
                     gridOptions.api.refreshCurrentDatasource();
                 }
             });

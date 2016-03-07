@@ -78,7 +78,7 @@ function MainTree() {
 
 
 angular.module('nmsdemoApp').directive('nmsDataPanel', NmsDataPanel);
-NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService','$timeout'];
+NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService', '$timeout'];
 function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
     return {
         // can be used as attribute or element
@@ -107,15 +107,15 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
         compile: function (element, attrs) {
             return {
                 pre: function preLink(scope, element, attrs) {
-                    scope.getH=commonUtil.getH;
-                    scope.ndpToShow=false;
-                    scope.ndpPartialBorder = (undefined == scope.ndpPartialBorder || null== scope.ndpPartialBorder || false == scope.ndpPartialBorder) ? false : true;
-                    if(!scope.ndpPartialBorder){
-                        scope.ndpBorderStyle={'padding': '6px', 'border': '1px solid #ddd', 'border-radius': '4px'};
-                    }else{
-                        scope.ndpBorderStyle={'padding': '6px', 'border': '1px solid #ddd', 'border-top-color': 'transparent'};
+                    scope.getH = commonUtil.getH;
+                    scope.ndpToShow = false;
+                    scope.ndpPartialBorder = (undefined == scope.ndpPartialBorder || null == scope.ndpPartialBorder || false == scope.ndpPartialBorder) ? false : true;
+                    if (!scope.ndpPartialBorder) {
+                        scope.ndpBorderStyle = { 'padding': '6px', 'border': '1px solid #ddd', 'border-radius': '4px' };
+                    } else {
+                        scope.ndpBorderStyle = { 'padding': '6px', 'border': '1px solid #ddd', 'border-top-color': 'transparent' };
                     }
-                    scope.ndpEnableNotif = (undefined == scope.ndpEnableNotif || null== scope.ndpEnableNotif || true == scope.ndpEnableNotif) ? true : false;
+                    scope.ndpEnableNotif = (undefined == scope.ndpEnableNotif || null == scope.ndpEnableNotif || true == scope.ndpEnableNotif) ? true : false;
                     scope.ndpDataUpdateOutside = (undefined == scope.ndpDataUpdateOutside || null == scope.ndpDataUpdateOutside || false == scope.ndpDataUpdateOutside) ? false : true;
 
 
@@ -126,17 +126,17 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
                         dataList = objSearchMap.getArray();
                         scope.ndpDataChangeTrigger = new commonUtil.WatchTrigger();
 
-                        var addObj=function(obj) {
+                        var addObj = function (obj) {
                             if (objSearchMap.add(obj)) {
                                 scope.ndpDataChangeTrigger.trigger();
                             }
                         }
-                        var removeObj=function(obj) {
+                        var removeObj = function (obj) {
                             if (objSearchMap.remove(obj[scope.ndpDataKey])) {
                                 scope.ndpDataChangeTrigger.trigger();
                             }
                         }
-                        var updateObj=function(obj) {
+                        var updateObj = function (obj) {
                             objSearchMap.add(obj);
                             scope.ndpDataChangeTrigger.trigger();
                         }
@@ -155,7 +155,17 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
                         }
                     }
 
-                    var dontApplyFun=function() {
+                    scope.getSelectedItems = function () {
+                        var nodes=scope.ndpGridOptions.api.getSelectedNodes();
+                        var rlt=[];
+                        if(nodes && nodes.length>0){
+                            rlt.push(nodes[0].data);
+                        }
+                        console.log("rlt="+JSON.stringify(rlt));
+                        return rlt;
+                    }
+
+                    var dontApplyFun = function () {
                         return !scope.ndpEnableNotif;
                     }
 
@@ -168,25 +178,63 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
                     });
 
                     scope.ndpGridOptions = commonUtil.genAgGridOptions(scope.ndpColumnDefs, dataList, scope.ndpFieldValueGetterFun, null, scope.ndpAddtionalFilterFun);
-                    scope.ndpGridOptions['preferedHeight']="" + commonUtil.getH(scope.ndpGridHeight) + "px";
-                    
-                    scope.ndpGridOptions['onGridReady']=function(){
+                    scope.ndpGridOptions['preferedHeight'] = "" + commonUtil.getH(scope.ndpGridHeight) + "px";
+
+                    scope.ndpGridOptions['onGridReady'] = function () {
                         logger.log("onGridReady");
-                        $timeout(function(){
-                            scope.ndpToShow=true;
+                        $timeout(function () {
+                            scope.ndpToShow = true;
                         }, 10);
-                        setTimeout(function(){
+                        setTimeout(function () {
                             scope.ndpGridOptions.api.setDatasource(null);
                         }, 100);
-                        
-                        
+
+
                     };
                     commonUtil.genAgGridWatchDelayReloader(scope.ndpCtrlScope, scope.ndpDataChangeTrigger, scope.ndpGridOptions, 0, dontApplyFun);
-                
+
                 },
                 post: function postLink(scope, element, attrs) {
                 }
             }
         }
     }
-}
+};
+
+angular.module('nmsdemoApp').directive('nmsPropertiesPanel', NmsPropertiesPanel);
+NmsPropertiesPanel.$inject = ['commonUtil'];
+function NmsPropertiesPanel(commonUtil) {
+
+    return {
+        // can be used as attribute or element
+        restrict: 'AE',
+        scope: {
+            nppTitle: '=',
+            nppItem: '=',
+            nppValueGetterFun: '=?',
+            nppNameGetterFun: '=?'
+        },
+        // which markup this directive generates
+        templateUrl: './partials/nms-properties-panel.html?dummy',
+        replace: true,
+        compile: function (element, attrs) {
+
+            return {
+                pre: function preLink(scope, element, attrs) {
+
+                    scope.getNppItemNVArray = function(){
+                        return commonUtil.objectToArray(scope.nppItem);
+                    }
+                    scope.nppNameGetterFun = ((undefined != scope.nppNameGetterFun && null != scope.nppNameGetterFun) ? scope.nppNameGetterFun : function (nv) {
+                        return nv.name;
+                    });
+                    scope.nppValueGetterFun = ((undefined != scope.nppValueGetterFun && null != scope.nppValueGetterFun) ? scope.nppValueGetterFun : function (nv) {
+                        return nv.value;
+                    });
+                },
+                post: function postLink(scope, element, attrs) {
+                }
+            }
+        }
+    }
+};
