@@ -78,8 +78,8 @@ function MainTree() {
 
 
 angular.module('nmsdemoApp').directive('nmsDataPanel', NmsDataPanel);
-NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService', '$timeout'];
-function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
+NmsDataPanel.$inject = ['logger', 'commonUtil', 'serverNotificationService', '$timeout', '$uibModal'];
+function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout, $uibModal) {
     return {
         // can be used as attribute or element
         restrict: 'AE',
@@ -154,16 +154,40 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
                             }
                         }
                     }
-
-                    scope.getSelectedItems = function () {
-                        var nodes=scope.ndpGridOptions.api.getSelectedNodes();
-                        var rlt=[];
-                        if(nodes && nodes.length>0){
-                            rlt.push(nodes[0].data);
+                    scope.ndpSelectedItemsLength = 0;
+                    var getSelectedItems = function () {
+                        var nodes = scope.ndpGridOptions.api.getSelectedNodes();
+                        var rlt = [];
+                        if (nodes && nodes.length > 0) {
+                            rlt = nodes.map(function (node) {
+                                return node.data;
+                            });
                         }
-                        console.log("rlt="+JSON.stringify(rlt));
+                        if (rlt.length > 0) {
+                            logger.log("rlt[0]:" + JSON.stringify(rlt[0]));
+                        }
+                        logger.log("rlt.length:" + rlt.length);
                         return rlt;
-                    }
+                    };
+
+                    scope.npdOpenPropertiesDlg = function () {
+
+                        $uibModal.open({
+                            animation: false,
+                            windowTemplateUrl: './partials/nms_properties_dlg_window_template.html?dummy',
+                            templateUrl: './partials/nms_properties_dlg_template.html?dummy',
+                            controller: 'NmsPropertiesDlgCtrl',
+                            controllerAs: 'vm',
+                            resolve: {
+                                nppTitle: function () {return getSelectedItems()[0].name},
+                                nppItem: function () {return getSelectedItems()[0]},
+                                nppValueGetterFun: function () {return undefined},
+                                nppNameGetterFun: function () {return undefined}
+                            }
+                        });
+                    };
+
+
 
                     var dontApplyFun = function () {
                         return !scope.ndpEnableNotif;
@@ -191,6 +215,13 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout) {
 
 
                     };
+                    scope.ndpGridOptions['onSelectionChanged'] = function (event) {
+                        logger.log('selection changed, ' + event.selectedRows.length + ' rows selected');
+
+                        $timeout(function () {
+                            scope.ndpSelectedItemsLength = event.selectedRows.length;
+                        }, 0);
+                    }
                     commonUtil.genAgGridWatchDelayReloader(scope.ndpCtrlScope, scope.ndpDataChangeTrigger, scope.ndpGridOptions, 0, dontApplyFun);
 
                 },
@@ -217,12 +248,23 @@ function NmsPropertiesPanel(commonUtil) {
         // which markup this directive generates
         templateUrl: './partials/nms-properties-panel.html?dummy',
         replace: true,
+        link: function (scope, iElement, iAttrs) {
+            scope.nppNvArray=[];
+            commonUtil.objectToArray(scope.nppItem, scope.nppNvArray, false);
+            scope.nppNameGetterFun = ((undefined != scope.nppNameGetterFun && null != scope.nppNameGetterFun) ? scope.nppNameGetterFun : function (nv) {
+                return nv.name;
+            });
+            scope.nppValueGetterFun = ((undefined != scope.nppValueGetterFun && null != scope.nppValueGetterFun) ? scope.nppValueGetterFun : function (nv) {
+                return nv.value;
+            });
+        }/*,
         compile: function (element, attrs) {
 
             return {
                 pre: function preLink(scope, element, attrs) {
 
-                    scope.getNppItemNVArray = function(){
+                    scope.getNppItemNVArray = function () {
+                        console.log("scope.nppItem:" + JSON.stringify(scope.nppItem));
                         return commonUtil.objectToArray(scope.nppItem);
                     }
                     scope.nppNameGetterFun = ((undefined != scope.nppNameGetterFun && null != scope.nppNameGetterFun) ? scope.nppNameGetterFun : function (nv) {
@@ -235,6 +277,6 @@ function NmsPropertiesPanel(commonUtil) {
                 post: function postLink(scope, element, attrs) {
                 }
             }
-        }
+        }*/
     }
 };

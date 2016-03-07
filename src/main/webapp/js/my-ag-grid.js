@@ -1762,11 +1762,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.doRowsToDisplay();
 	        }
 	        this.eventService.dispatchEvent(events_1.Events.EVENT_MODEL_UPDATED);
-	        if (this.$scope) {
+	        /*if (this.$scope) {
 	            setTimeout(function () {
 	                _this.$scope.$apply();
 	            }, 0);
-	        }
+	        }*/
 	    };
 	    InMemoryRowController.prototype.ensureRowHasHeight = function (rowNode) {
 	    };
@@ -3410,12 +3410,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	            this.eventService.dispatchEvent(events_1.Events.EVENT_SELECTION_CHANGED, event);
 	        }
-	        var that = this;
+	       /* var that = this;
 	        if (this.$scope) {
 	            setTimeout(function () {
 	                that.$scope.$apply();
 	            }, 0);
-	        }
+	        }*/
 	    };
 	    SelectionController.prototype.recursivelyCheckIfSelected = function (node) {
 	        var foundSelected = false;
@@ -11749,12 +11749,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // which doesn't take any parameters.
 	            callback();
 	        }
-	        if (this.$scope) {
+	        /*if (this.$scope) {
 	            var that = this;
 	            setTimeout(function () {
 	                that.$scope.$apply();
 	            }, 0);
-	        }
+	        }*/
 	    };
 	    return TemplateService;
 	})();

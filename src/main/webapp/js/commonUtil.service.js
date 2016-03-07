@@ -23,6 +23,7 @@
             getH: getH,
             treeNavWithLoadingPage: treeNavWithLoadingPage,
             genericNavWithLoadingPage: genericNavWithLoadingPage,
+            copyArray: copyArray,
             itemInArray: itemInArray,
             indexInArray: indexInArray,
             objectToArray: objectToArray,
@@ -102,14 +103,15 @@
             return arr.indexOf(item) >= 0 ? true : false;
         }
 
-        function objectToArray(obj) {
-            var rlt=[];
+        function objectToArray(obj, arr, append) {
+            if(!append){
+                arr.length=0;
+            }
             for (var param in obj) {
                 if (typeof (obj[param]) != "function") {
-                    rlt.push({name:param, value:obj[param]});
+                    arr.push({name:param, value:obj[param]});
                 }
             }
-            return rlt;
         }
 
         function copyAttrs(source, target) {
@@ -117,6 +119,14 @@
                 if (typeof (source[param]) != "function") {
                     target[param] = source[param];
                 }
+            }
+        }
+        function copyArray(source, target, append) {
+            if(!append){
+                target.length=0;
+            }
+            for (var i = 0; i < source.length; i++) {
+                target.push(source[i]);
             }
         }
 

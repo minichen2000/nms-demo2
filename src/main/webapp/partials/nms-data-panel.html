@@ -1,7 +1,7 @@
 <div ng-style="ndpBorderStyle" ng-show="ndpToShow">
 
     <!-- /.modal begin -->
-    <div class="modal fade" id="itemPropertiesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <!--<div class="modal fade" id="itemPropertiesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog" style="width: 400px">
             <div class="modal-content panel panel-info">
                 <div class="modal-header panel-heading" style="padding-top:10px;padding-bottom:10px">
@@ -12,22 +12,22 @@
                 </div>
                 <div class="modal-body" style="height: 520px; overflow-y:auto">
                     <nms-properties-panel
-                        npp-title="getSelectedItems()[0].name" 
-                        npp-item="getSelectedItems()[0]"
+                        npp-title="ndpGetSelectedItems()[0].name" 
+                        npp-item="ndpGetSelectedItems()[0]"
                     ></nms-properties-panel>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-    </div>
+    </div>-->
     <!-- /.modal -->
+    
 
 
 
     <div class="row">
         <div class="col col-lg-12" style="margin-bottom:4px">
             <div class="btn-group" uib-dropdown>
-                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#itemPropertiesModal" ng-disabled="getSelectedItems().length<=0">
+                <button type="button" class="btn btn-default btn-sm" ng-click="npdOpenPropertiesDlg()"  ng-disabled="ndpSelectedItemsLength!=1">
                     <i class="fa fa-info-circle fa-fw"></i>
                 </button>
                 <button id="action-button" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle>

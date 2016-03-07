@@ -949,3 +949,20 @@ function NEBoardController($scope, statasticService, logger, $state, commonUtil,
 }
 
 
+angular
+    .module('nmsdemoApp')
+    .controller('NmsPropertiesDlgCtrl', NmsPropertiesDlgCtrl);
+NmsPropertiesDlgCtrl.$inject = ['$uibModalInstance','nppTitle', 'nppItem','nppValueGetterFun','nppNameGetterFun'];
+function NmsPropertiesDlgCtrl($uibModalInstance, nppTitle, nppItem, nppValueGetterFun, nppNameGetterFun) {
+    var vm = this;
+    vm.ok = function () {
+        $uibModalInstance.close();
+    };
+    vm.nppTitle=nppTitle;
+    vm.nppItem=nppItem;
+    vm.nppValueGetterFun=nppValueGetterFun;
+    vm.nppNameGetterFun=nppNameGetterFun;
+
+}
+
+
