@@ -84,9 +84,11 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout, $
         // can be used as attribute or element
         restrict: 'AE',
         scope: {
+            ndpDataTypeName: '=',
             ndpPartialBorder: '=',
             ndpCtrlScope: '=',
             ndpDataArray: '=',
+            ndpDataToPropertiesNvFun: '=?',
             ndpAddtionalFilterFun: '=?',
             ndpDataUpdateOutside: '=?',
             ndpDataChangeTrigger: '=?',
@@ -173,16 +175,15 @@ function NmsDataPanel(logger, commonUtil, serverNotificationService, $timeout, $
                     scope.npdOpenPropertiesDlg = function () {
 
                         $uibModal.open({
-                            animation: false,
+                            animation: true,
                             windowTemplateUrl: './partials/nms_properties_dlg_window_template.html?dummy',
                             templateUrl: './partials/nms_properties_dlg_template.html?dummy',
                             controller: 'NmsPropertiesDlgCtrl',
                             controllerAs: 'vm',
                             resolve: {
-                                nppTitle: function () {return getSelectedItems()[0].name},
+                                nppTitle: function () {return scope.ndpDataTypeName+'('+getSelectedItems()[0].name+')属性'},
                                 nppItem: function () {return getSelectedItems()[0]},
-                                nppValueGetterFun: function () {return undefined},
-                                nppNameGetterFun: function () {return undefined}
+                                nppItemToNvFun: function () {return scope.ndpDataToPropertiesNvFun}
                             }
                         });
                     };
@@ -242,41 +243,18 @@ function NmsPropertiesPanel(commonUtil) {
         scope: {
             nppTitle: '=',
             nppItem: '=',
-            nppValueGetterFun: '=?',
-            nppNameGetterFun: '=?'
+            nppItemToNvFun: '=?'
         },
         // which markup this directive generates
         templateUrl: './partials/nms-properties-panel.html?dummy',
         replace: true,
         link: function (scope, iElement, iAttrs) {
             scope.nppNvArray=[];
-            commonUtil.objectToArray(scope.nppItem, scope.nppNvArray, false);
-            scope.nppNameGetterFun = ((undefined != scope.nppNameGetterFun && null != scope.nppNameGetterFun) ? scope.nppNameGetterFun : function (nv) {
-                return nv.name;
+            scope.nppItemToNvFun = ((undefined != scope.nppItemToNvFun && null != scope.nppItemToNvFun) ? scope.nppItemToNvFun : function (item, nvArray) {
+                console.log("nppItemToNvFun:default");
+                commonUtil.objectToArray(item, nvArray, false);
             });
-            scope.nppValueGetterFun = ((undefined != scope.nppValueGetterFun && null != scope.nppValueGetterFun) ? scope.nppValueGetterFun : function (nv) {
-                return nv.value;
-            });
-        }/*,
-        compile: function (element, attrs) {
-
-            return {
-                pre: function preLink(scope, element, attrs) {
-
-                    scope.getNppItemNVArray = function () {
-                        console.log("scope.nppItem:" + JSON.stringify(scope.nppItem));
-                        return commonUtil.objectToArray(scope.nppItem);
-                    }
-                    scope.nppNameGetterFun = ((undefined != scope.nppNameGetterFun && null != scope.nppNameGetterFun) ? scope.nppNameGetterFun : function (nv) {
-                        return nv.name;
-                    });
-                    scope.nppValueGetterFun = ((undefined != scope.nppValueGetterFun && null != scope.nppValueGetterFun) ? scope.nppValueGetterFun : function (nv) {
-                        return nv.value;
-                    });
-                },
-                post: function postLink(scope, element, attrs) {
-                }
-            }
-        }*/
+            scope.nppItemToNvFun(scope.nppItem, scope.nppNvArray);
+        }
     }
 };

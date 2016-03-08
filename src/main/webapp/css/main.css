@@ -25,6 +25,21 @@
 }
 
 
+.my-modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 9px 27px rgba(0,0,0,.2);
+    box-shadow: 0 9px 27px rgba(0,0,0,.2);
+}
+.my-modal-bg-transparent {
+    filter: alpha(opacity=80);
+    background-color: rgb(255,255,255);
+    background-color: rgba(255,255,255, 0.8);
+}
 
 
 

@@ -436,6 +436,21 @@ function MiddleTrailController($stateParams, additionalFilterFun, retrievedSNCs,
             return item[field];
         }
     }
+    vm.dataToPropertiesNvFun = function (data, nvArray) {
+        for (var param in data) {
+            if (typeof (data[param]) != "function") {
+                if (param === 'aEndPorts') {
+                    nvArray.push({ name: 'aEndNE', value: data[param][0].neName });
+                    nvArray.push({ name: 'aEndTP', value: data[param][0].tpName });
+                } else if (param === 'zEndPorts') {
+                    nvArray.push({ name: 'zEndNE', value: data[param][0].neName });
+                    nvArray.push({ name: 'zEndTP', value: data[param][0].tpName });
+                } else {
+                    nvArray.push({ name: param, value: data[param] });
+                }
+            }
+        }
+    }
 
     vm.columnDefs=[
         {
@@ -952,16 +967,15 @@ function NEBoardController($scope, statasticService, logger, $state, commonUtil,
 angular
     .module('nmsdemoApp')
     .controller('NmsPropertiesDlgCtrl', NmsPropertiesDlgCtrl);
-NmsPropertiesDlgCtrl.$inject = ['$uibModalInstance','nppTitle', 'nppItem','nppValueGetterFun','nppNameGetterFun'];
-function NmsPropertiesDlgCtrl($uibModalInstance, nppTitle, nppItem, nppValueGetterFun, nppNameGetterFun) {
+NmsPropertiesDlgCtrl.$inject = ['$uibModalInstance','nppTitle', 'nppItem','nppItemToNvFun'];
+function NmsPropertiesDlgCtrl($uibModalInstance, nppTitle, nppItem, nppItemToNvFun) {
     var vm = this;
     vm.ok = function () {
         $uibModalInstance.close();
     };
     vm.nppTitle=nppTitle;
     vm.nppItem=nppItem;
-    vm.nppValueGetterFun=nppValueGetterFun;
-    vm.nppNameGetterFun=nppNameGetterFun;
+    vm.nppItemToNvFun=nppItemToNvFun;
 
 }
 

@@ -1,7 +1,7 @@
 
-<table class="table-responsive table-condensed table-hover table-striped" style="width:410px;margin-right:auto;margin-left:auto">
+<table class="table-responsive table-condensed table-hover table-striped" style="width:405px;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
     <tr ng-repeat="nv in nppNvArray">
-        <td style="text-align:left"><b>{{nppNameGetterFun(nv)}}</b></td>
-        <td style="text-align:right">{{nppValueGetterFun(nv)}}</td>
+        <td style="text-align:left"><b>{{nv.name}}</b></td>
+        <td style="text-align:right">{{nv.value}}</td>
     </tr>
 </table>
