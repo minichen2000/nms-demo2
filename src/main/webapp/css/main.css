@@ -38,7 +38,12 @@
 .my-modal-bg-transparent {
     filter: alpha(opacity=80);
     background-color: rgb(255,255,255);
-    background-color: rgba(255,255,255, 0.8);
+    background-color: rgba(255,255,255, 0.6);
+}
+.my-loading-bg-transparent {
+    filter: alpha(opacity=80);
+    background-color: rgb(255,255,255);
+    background-color: rgba(255,255,255, 0.6);
 }
 
 
