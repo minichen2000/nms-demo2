@@ -25,6 +25,18 @@
 }
 
 
+.modal-backdrop {
+  background-color: #fff;
+}
+.modal-backdrop.fade {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.modal-backdrop.in {
+  filter: alpha(opacity=0);
+  opacity: 0.0;
+}
+
 .my-modal-content {
     position: relative;
     background-color: #fff;
@@ -32,18 +44,13 @@
     background-clip: padding-box;
     border-radius: 6px;
     outline: 0;
-    -webkit-box-shadow: 0 9px 27px rgba(0,0,0,.2);
-    box-shadow: 0 9px 27px rgba(0,0,0,.2);
-}
-.my-modal-bg-transparent {
-    filter: alpha(opacity=80);
-    background-color: rgb(255,255,255);
-    background-color: rgba(255,255,255, 0.6);
+    box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
+    -webkit-box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
 }
 .my-loading-bg-transparent {
-    filter: alpha(opacity=80);
+    filter: alpha(opacity=70);
     background-color: rgb(255,255,255);
-    background-color: rgba(255,255,255, 0.6);
+    background-color: rgba(255,255,255, 0.7);
 }
 
 
@@ -63,6 +70,9 @@ body,button, input, select, textarea,a,h1 ,h2, h3, h4, h5, h6 {
 .text-center {
   text-align: center;
 }
+
+
+
 
 
 /*!
