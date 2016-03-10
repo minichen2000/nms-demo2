@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
-    <!--<link rel="stylesheet" href="css/sb-admin-2.css">-->
     <link rel="stylesheet" href="bower_components/ag-grid/dist/styles/ag-grid.css">
     <link rel="stylesheet" href="bower_components/ag-grid/dist/styles/theme-fresh.css">
     <link rel="stylesheet" href="bower_components/ag-grid/dist/styles/theme-dark.css">
@@ -22,31 +21,53 @@
     <link rel="stylesheet" href="css/theme-nms.css">
     <link rel="stylesheet" href="css/main-tree.css">
     <link rel='stylesheet' href='css/my-loading-bar.css' type='text/css' media='all' />
-    
-    
+
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="js/my-ag-grid.js"></script>
+    <script src="scripts/my-ag-grid.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="js/hashmap.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/logger.service.js"></script>
-    <script src="js/commonUtil.service.js"></script>
-    <script src="js/serverNotification.service.js"></script>
-    <script src="js/statastic.service.js "></script>
-    <script src="js/data.service.js "></script>
-    <script src="js/login.service.js "></script>
-    <script src="js/app.config.js "></script>
-    <script src="js/controllers.js "></script>
-    <script src="js/directives.js "></script>
+    <script src="scripts/hashmap.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/services/logger.service.js"></script>
+    <script src="app/services/common-util.service.js"></script>
+    <script src="app/services/server-notification.service.js"></script>
+    <script src="app/services/statastic.service.js "></script>
+    <script src="app/services/data.service.js "></script>
+    <script src="app/services/login.service.js "></script>
+    <script src="app/services/nms-properties-dlg/nms-properties-dlg.service.js "></script>
+    <script src="app/app.config.js "></script>
+    <script src="app/app.run.js "></script>
+    <script src="app/app.routes.js "></script>
+    <script src="app/login/login.controller.js "></script>
+    <script src="app/main/main.controller.js "></script>
+    <script src="app/loading-failed/loadingfailed.controller.js "></script>
+    <script src="app/main-area/list/dashboard/dashboard.controller.js "></script>
+    <script src="app/main-area/list/evc/list-evc.controller.js "></script>
+    <script src="app/main-area/list/map/list-map.controller.js "></script>
+    <script src="app/main-area/list/ne/list-ne.controller.js "></script>
+    <script src="app/main-area/list/path/list-path.controller.js "></script>
+    <script src="app/main-area/list/physicallink/list-physicallink.controller.js "></script>
+    <script src="app/main-area/list/trail/list-trail.controller.js "></script>
+    <script src="app/main-area/single/ne/single-ne.controller.js "></script>
+    <script src="app/main-area/single/trail/single-trail.controller.js "></script>
+    <script src="app/main-area/single/ne-port/ne-port.controller.js "></script>
+    <script src="app/main-area/single/ne-board/ne-board.controller.js "></script>
+    <script src="app/main-area/provisioning/snc/snc-creation.controller.js "></script>
+
+    <script src="app/directives/tree-item.directive.js "></script>
+    <script src="app/directives/main-tree.directive.js "></script>
+    <script src="app/directives/nms-properties-panel.directive.js "></script>
+    <script src="app/directives/nms-data-panel.directive.js "></script>
+    
+
     <script src="bower_components/d3/d3.js "></script>
     <script src="bower_components/nvd3/build/nv.d3.js "></script>
     <script src="bower_components/angular-nvd3/dist/angular-nvd3.js "></script>
-    <script src='js/my-loading-bar.js'></script>
+    <script src='scripts/my-loading-bar.js'></script>
 
     <link rel="stylesheet" href="css/main.css">
 </head>
