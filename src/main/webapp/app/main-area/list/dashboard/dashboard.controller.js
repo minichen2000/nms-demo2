@@ -12,6 +12,13 @@
         vm.neList = statasticService.getNEList();
 
         ///////////////////////////////////////////////
+        vm.neChartClicked=function(){
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'ne' }, false);
+        };
+        vm.trailChartClicked=function(){
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail' }, false);
+        };
+        
         vm.config = {
             visible: true, // default: true
             extended: false, // default: false
@@ -45,8 +52,9 @@
                 donut: true,
                 duration: 1000,
                 labelThreshold: 0.02,
-                showLegend: false,
-                height: 200,
+                showLegend: true,
+                legendPosition: "top",
+                height: 250,
                 pie: {
                     dispatch: {
                         elementClick: function (e) {
@@ -54,11 +62,11 @@
                         }
                     }
                 }
-            }/*,
+            },
         title: {
             enable: true,
-            text: "告警级别统计"
-        }*/
+            text: "告警统计"
+        }
         };
 
         vm.ne_panel_options = {
@@ -82,8 +90,9 @@
                 donut: false,
                 duration: 1000,
                 labelThreshold: 0.02,
-                showLegend: false,
-                height: 200,
+                showLegend: true,
+                legendPosition: "top",
+                height: 250,
                 pie: {
                     dispatch: {
                         elementClick: function (e) {
@@ -92,11 +101,11 @@
                         }
                     }
                 }
-            }/*,
+            },
         title: {
             enable: true,
-            text: "告警级别统计"
-        }*/
+            text: "网元统计"
+        }
         };
 
         vm.conn_panel_options = {
@@ -120,8 +129,9 @@
                 donut: false,
                 duration: 1000,
                 labelThreshold: 0.02,
-                showLegend: false,
-                height: 200,
+                showLegend: true,
+                legendPosition: "top",
+                height: 250,
                 pie: {
                     dispatch: {
                         elementClick: function (e) {
@@ -129,11 +139,11 @@
                         }
                     }
                 }
-            }/*,
+            },
         title: {
             enable: true,
-            text: "告警级别统计"
-        }*/
+            text: "业务统计"
+        }
         };
 
 
