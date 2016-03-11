@@ -1,11 +1,26 @@
 <div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" id="loadingInd">
-        <nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config"></nvd3>
+    <div style="padding-top:50px;padding-left:20px;padding-right:5px;padding-bottom:30px" id="loadingInd">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" >
+            <nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <nvd3 options="vm.ne_panel_options" data="vm.neStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <nvd3 options="vm.pl_panel_options" data="vm.plStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+        </div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <nvd3 options="vm.ne_panel_options" data="vm.neStChartData" config="vm.config"></nvd3>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <nvd3 options="vm.conn_panel_options" data="vm.connStChartData" config="vm.config"></nvd3>
+</div>
+<div class="row">
+    <div style="padding-top:50px;padding-left:20px;padding-right:5px;padding-bottom:30px">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" >
+            <nvd3 options="vm.conn_panel_options" data="vm.connStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <nvd3 options="vm.evc_panel_options" data="vm.evcStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+        </div>
     </div>
 </div>
