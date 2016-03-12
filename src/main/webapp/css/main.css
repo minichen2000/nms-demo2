@@ -24,6 +24,19 @@
   transform:scale3d(1, 1, 1);*/
 }
 
+.dashboard-row-padding{
+    padding-top:50px;
+    padding-left:20px;
+    padding-right:20px;
+    padding-bottom:30px
+}
+.dashboard-grid-hcenter{
+    position: relative;
+    width:300px;
+    left:50%;
+    margin-left:-150px
+}
+
 
 .modal-backdrop {
   background-color: #fff;
@@ -299,6 +312,7 @@ ul.alert-dropdown {
 a:active, a:hover, a:focus {
     outline: none;
     cursor: pointer;
+    text-decoration:none;
 }
 
 

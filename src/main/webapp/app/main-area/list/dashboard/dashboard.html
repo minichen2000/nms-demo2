@@ -1,26 +1,50 @@
 <div class="row">
-    <div style="padding-top:50px;padding-left:20px;padding-right:5px;padding-bottom:30px" id="loadingInd">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" >
-            <nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+    <div class="dashboard-row-padding" id="loadingInd">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="dashboard-grid-hcenter">
+                <div style="text-align:center">
+                    <a><h4>告警统计</h4></a></div>
+                <a><nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config"></nvd3></a>
+            </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <nvd3 options="vm.ne_panel_options" data="vm.neStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+            <div class="dashboard-grid-hcenter">
+                <div style="text-align:center">
+                    <a ng-click="vm.neChartClicked()"><h4>网元统计</h4></a></div>
+                <a><nvd3 options="vm.ne_panel_options" data="vm.neStChartData" config="vm.config"></nvd3></a>
+            </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <nvd3 options="vm.pl_panel_options" data="vm.plStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+            <div class="dashboard-grid-hcenter">
+                <div style="text-align:center">
+                    <a><h4>物理连接统计</h4></a></div>
+                <a><nvd3 options="vm.pl_panel_options" data="vm.plStChartData" config="vm.config"></nvd3></a>
+            </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div style="padding-top:50px;padding-left:20px;padding-right:5px;padding-bottom:30px">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" >
-            <nvd3 options="vm.conn_panel_options" data="vm.connStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+    <div class="dashboard-row-padding">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="dashboard-grid-hcenter">
+                <div style="text-align:center">
+                    <a ng-click="vm.trailChartClicked()"><h4>子网连接统计</h4></a></div>
+                <a><nvd3 options="vm.conn_panel_options" data="vm.connStChartData" config="vm.config"></nvd3></a>
+            </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <nvd3 options="vm.evc_panel_options" data="vm.evcStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+            <div class="dashboard-grid-hcenter">
+                <div style="text-align:center">
+                    <a><h4>以太网业务统计</h4></a></div>
+                <a><nvd3 options="vm.evc_panel_options" data="vm.evcStChartData" config="vm.config"></nvd3></a>
+            </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config" style="margin:0 auto"></nvd3>
+            <div class="dashboard-grid-hcenter">
+                <div style="text-align:center">
+                    <a><h4>告警统计</h4></a></div>
+                <a><nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config"></nvd3></a>
+            </div>
         </div>
     </div>
 </div>

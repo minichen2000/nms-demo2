@@ -65,7 +65,7 @@
                 }
             },
             title: {
-                enable: true,
+                enable: false,
                 text: "告警统计"
             }
         };
@@ -105,7 +105,7 @@
                 }
             },
             title: {
-                enable: true,
+                enable: false,
                 text: "网元统计"
             }
         };
@@ -146,7 +146,7 @@
                 }
             },
             title: {
-                enable: true,
+                enable: false,
                 text: "物理连接统计"
             }
         };
@@ -185,7 +185,7 @@
                 }
             },
             title: {
-                enable: true,
+                enable: false,
                 text: "子网连接统计"
             }
         };
@@ -224,7 +224,7 @@
                 }
             },
             title: {
-                enable: true,
+                enable: false,
                 text: "以太网业务统计"
             }
         };
