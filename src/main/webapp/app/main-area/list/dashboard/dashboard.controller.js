@@ -54,8 +54,8 @@
                 labelThreshold: 0.02,
                 showLegend: true,
                 legendPosition: "top",
-                width: 300,
-                height: 250,
+                width: 280,
+                height: 230,
                 pie: {
                     dispatch: {
                         elementClick: function(e) {
@@ -93,12 +93,11 @@
                 labelThreshold: 0.02,
                 showLegend: true,
                 legendPosition: "top",
-                width: 300,
-                height: 250,
+                width: 280,
+                height: 230,
                 pie: {
                     dispatch: {
                         elementClick: function(e) {
-                            logger.log('click');
                             commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'ne', filterField: 'type', filterValue: e.data.key }, false);
                         }
                     }
@@ -135,8 +134,8 @@
                 labelThreshold: 0.02,
                 showLegend: true,
                 legendPosition: "top",
-                width: 300,
-                height: 250,
+                width: 280,
+                height: 230,
                 pie: {
                     dispatch: {
                         elementClick: function(e) {
@@ -174,12 +173,12 @@
                 labelThreshold: 0.02,
                 showLegend: true,
                 legendPosition: "top",
-                width: 300,
-                height: 250,
+                width: 280,
+                height: 230,
                 pie: {
                     dispatch: {
                         elementClick: function(e) {
-                            logger.log('click');
+                            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail', filterField: 'rate', filterValue: e.data.key }, false);
                         }
                     }
                 }
@@ -213,8 +212,8 @@
                 labelThreshold: 0.02,
                 showLegend: true,
                 legendPosition: "top",
-                width: 300,
-                height: 250,
+                width: 280,
+                height: 230,
                 pie: {
                     dispatch: {
                         elementClick: function(e) {

@@ -76,15 +76,21 @@ public class MDL_SNCServlet extends HttpServlet {
 		}
 	}
 	private String genSNCRate(Random r){
-        switch(r.nextInt(2)){
+        switch(r.nextInt(6)){
             case 0:
-                return "MS";
-            case 1:
                 return "VC4";
+            case 1:
+                return "VC3";
             case 2:
                 return "VC12";
+			case 3:
+                return "VC4C";
+            case 4:
+                return "VC3C";
+            case 5:
+                return "VC12C";
             default:
-                return "1660sm";
+                return "VC4";
         }
     }
 

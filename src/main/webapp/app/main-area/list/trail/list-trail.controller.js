@@ -70,8 +70,8 @@
                 headerName: "层次",
                 width: commonUtil.getW(90),
                 minWidth: commonUtil.getW(90),
-                filter: 'text',
-                filterParams: { newRowsAction: 'keep' }
+                filter: 'set',
+                filterParams: { values: ['VC4', 'VC3', 'VC12', 'VC4C', 'VC3C', 'VC12C'], newRowsAction: 'keep' },
             },
             {
                 field: "protectedType",
