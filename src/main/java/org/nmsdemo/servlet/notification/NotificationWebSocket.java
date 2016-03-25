@@ -1,7 +1,14 @@
 package org.nmsdemo.servlet.notification;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -9,10 +16,13 @@ import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.nmsdemo.model.MDLUtil;
+import org.nmsdemo.model.MDL_Alarm;
 import org.nmsdemo.model.MDL_AlarmPSStatastic;
 import org.nmsdemo.model.MDL_GEN_SNC;
 import org.nmsdemo.model.MDL_NE;
 import org.nmsdemo.model.MDL_TPRef;
+import org.nmsdemo.servlet.model.MDL_AlarmServlet;
+import org.nmsdemo.utils.FileUtils;
 
 public class NotificationWebSocket extends WebSocketAdapter {
 
@@ -22,6 +32,61 @@ public class NotificationWebSocket extends WebSocketAdapter {
 		super.onWebSocketClose(statusCode, reason);
 		System.out.println("onWebSocketClose");
 	}
+	
+	
+	private void sendAlarmsByFile(String file){
+		List<String> lines=FileUtils.readFileToStringArray(file, "#", null);
+		if(null!=lines && lines.size()>0){
+			String line=lines.get(0);
+			System.out.println(line);
+			String[] s1=line.split("=", -1);
+			if(2==s1.length && s1[0].equals("alarmSend")){
+				String[] s2=s1[1].split(",", -1);
+				if(2==s2.length){
+					int seconds=Integer.parseInt(s2[1]);
+					String[] s3=s2[0].split("-", -1);
+					if(2==s3.length){
+						int start=Integer.parseInt(s3[0]);
+						int end=Integer.parseInt(s3[1]);
+						
+						
+						
+						RemoteEndpoint remote = getRemote();
+						try {
+							System.out.println("Start to send:"+start+"-"+end+","+seconds);
+							Random r = new Random();
+							for(int i=start;i<end;i++){
+								String neTime=MDL_AlarmServlet.genAlarmNeTime();
+								String ot = MDL_AlarmServlet.genObjectType(r);
+								boolean isCleared = (i % 9 == 0 ? true : false);
+								boolean isAck = (i % 7 == 0 ? true : false);
+								remote.sendString(MDLUtil.Event_WRAP("alarmCreation",
+										new MDL_Alarm("alarm_" + i, "alarm_" + i, ot
+												.toLowerCase() + i, ot.toLowerCase() + i, ot, MDL_AlarmServlet.genPBC(r),
+												"0", MDL_AlarmServlet.genAlarmType(r), MDL_AlarmServlet.genAlarmPS(r), neTime,
+												neTime, isCleared,
+												isCleared ? neTime : "", isAck,
+												isAck ? neTime : "", "alcatel",
+														MDL_AlarmServlet.genAlarmSA(r), "comments")));
+								
+								Thread.sleep(seconds*1000/(end-start));
+							}
+							
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
+						
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	public void onWebSocketConnect(Session sess) {
@@ -29,6 +94,61 @@ public class NotificationWebSocket extends WebSocketAdapter {
 		super.onWebSocketConnect(sess);
 
 		System.out.println("onWebSocketConnect");
+		
+		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				long lastChange=Calendar.getInstance().getTimeInMillis();
+				try {
+					final String dir="D:/";
+					WatchService watchService = FileSystems.getDefault()
+							.newWatchService();
+					Paths.get(dir).register(watchService,
+							StandardWatchEventKinds.ENTRY_MODIFY);
+
+					while (true) {
+						WatchKey key;
+						key = watchService.take();
+						for (WatchEvent<?> e : key.pollEvents()) {
+							final WatchEvent<?> event=e;
+							long now=Calendar.getInstance().getTimeInMillis();
+							if(now-lastChange>1000){
+								System.out.println(event.context() + "发生了"
+										+ event.kind() + "事件");
+								List<String> lines=FileUtils.readFileToStringArray(dir+event.context(), "#", null);
+								for(String line : lines){
+									System.out.println(line);
+								}
+								
+								new Thread(new Runnable(){
+
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										sendAlarmsByFile(dir+event.context());
+									}}).start();
+							}
+							lastChange=now;
+							
+						}
+						if (!key.reset()) {
+							break;
+						}
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
 
 		(new Thread(new Runnable() {
 

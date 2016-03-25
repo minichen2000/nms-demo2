@@ -2,7 +2,15 @@ package org.nmsdemo.servlet.model;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -16,10 +24,13 @@ import org.nmsdemo.model.MDL_Alarm;
 import org.nmsdemo.model.MDL_AlarmPSStatastic;
 import org.nmsdemo.model.MDL_NE;
 import org.nmsdemo.model.MDL_NEGroup;
+import org.nmsdemo.utils.Utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MDL_AlarmServlet extends HttpServlet {
+
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		resp.setContentType("text/html;charset=utf-8");
@@ -28,40 +39,28 @@ public class MDL_AlarmServlet extends HttpServlet {
 		// req.setCharacterEncoding("utf-8");
 
 		List<MDL_Alarm> alarms = new ArrayList<MDL_Alarm>();
-		int LL = 130000;
+		int LL = 1000;
 
 		Random r = new Random();
 		for (int i = 0; i < LL; i++) {
 
 			String ot = genObjectType(r);
-			boolean isCleared=(i%9==0 ? true:false);
-			boolean isAck=(i%7==0 ? true:false);
-			alarms.add(new MDL_Alarm(
-					"alarm_"+i,
-					"alarm_"+i,
-					ot.toLowerCase()+i,
-					ot.toLowerCase()+i,
-					ot,
-					genPBC(r),
-					"0",
-					genAlarmType(r),
-					genAlarmPS(r),
-					"2016-03-24 15:32:44",
-					"2016-03-24 15:32:51",
-					isCleared,
-					isCleared ? "2016-03-24 15:33:19":"",
-					isAck,
-					isAck ? "2016-03-24 15:33:02":"",
-					"alcatel",
-					genAlarmSA(r),
-					"comments"
-					));
+			String neTime=genAlarmNeTime();
+			boolean isCleared = (i % 9 == 0 ? true : false);
+			boolean isAck = (i % 7 == 0 ? true : false);
+			alarms.add(new MDL_Alarm("alarm_" + i, "alarm_" + i, ot
+					.toLowerCase() + i, ot.toLowerCase() + i, ot, genPBC(r),
+					"0", genAlarmType(r), genAlarmPS(r), neTime,
+					neTime, isCleared,
+					isCleared ? neTime : "", isAck,
+					isAck ? neTime : "", "alcatel",
+					genAlarmSA(r), "comments"));
 		}
 
 		PrintWriter out = resp.getWriter();
 
 		String msg = MDLUtil.Object_WRAP(alarms);
-		//System.out.println(msg);
+		// System.out.println(msg);
 		out.println(msg);
 	}
 
@@ -72,7 +71,7 @@ public class MDL_AlarmServlet extends HttpServlet {
 		doGet(req, resp);
 	}
 
-	private String genObjectType(Random r) {
+	public static String genObjectType(Random r) {
 		switch (r.nextInt(6)) {
 		case 0:
 			return "NODE";
@@ -91,7 +90,7 @@ public class MDL_AlarmServlet extends HttpServlet {
 		}
 	}
 
-	private String genPBC(Random r) {
+	public static String genPBC(Random r) {
 		switch (r.nextInt(5)) {
 		case 0:
 			return "AIS";
@@ -108,7 +107,7 @@ public class MDL_AlarmServlet extends HttpServlet {
 		}
 	}
 
-	private String genAlarmType(Random r) {
+	public static String genAlarmType(Random r) {
 		switch (r.nextInt(5)) {
 		case 0:
 			return "Communications";
@@ -125,7 +124,7 @@ public class MDL_AlarmServlet extends HttpServlet {
 		}
 	}
 
-	private String genAlarmPS(Random r) {
+	public static String genAlarmPS(Random r) {
 		switch (r.nextInt(6)) {
 		case 0:
 			return "indeterminate";
@@ -143,8 +142,8 @@ public class MDL_AlarmServlet extends HttpServlet {
 			return "cleared";
 		}
 	}
-	
-	private String genAlarmSA(Random r) {
+
+	public static String genAlarmSA(Random r) {
 		switch (r.nextInt(3)) {
 		case 0:
 			return "SA";
@@ -155,6 +154,9 @@ public class MDL_AlarmServlet extends HttpServlet {
 		default:
 			return "UNKNOWN";
 		}
+	}
+	public static String genAlarmNeTime() {
+		return Utils.time2str(new Date(), Utils.DATE_FORMAT_SECOND);
 	}
 
 }
