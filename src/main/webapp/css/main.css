@@ -448,94 +448,74 @@ div.form-inputgroup{
     background-color: #EEE
 }
 .table-suppervised{
-    text-align:center;
     background-color: #2ca02c;
     color: white;
-    margin:2px;
 }
 .table-unsuppervised{
-    text-align:center;
     background-color: #EEE;
     color: black;
-    margin:2px;
 }
 .table-available{
-    text-align:center;
     background-color: #2ca02c;
     color: white;
-    margin:2px;
 }
 .table-unavailable{
-    text-align:center;
     background-color: #EEE;
     color: black;
-    margin:2px;
 }
-.table-alarm-critical{
-    text-align:center;
+
+
+.alarm-color-critical{
     background-color: #d62728;
-    color: white;
-    margin:2px;
 }
-.table-alarm-major{
-    text-align:center;
+.alarm-color-major{
     background-color: #ff7f0e;
-    color: white;
-    margin:2px;
 }
-.table-alarm-minor{
-    text-align:center;
+.alarm-color-minor{
     background-color: #ffbb78;
-    color: white;
-    margin:2px;
 }
-.table-alarm-warning{
-    text-align:center;
+.alarm-color-warning{
     background-color: #aec7e8;
-    color: white;
-    margin:2px;
 }
-.table-alarm-indeterminate{
-    text-align:center;
+.alarm-color-indeterminate{
     background-color: #98df8a;
-    color: white;
-    margin:2px;
 }
-.table-alarm-cleared{
-    text-align:center;
+.alarm-color-cleared{
     background-color: #2ca02c;
+}
+
+.table-cell-text-white{
     color: white;
+}
+.table-cell-alarm-ps-text-color{
+    color: white;
+}
+.table-cell-text-center{
+    text-align:center;
+}
+.table-cell-text-margin{
     margin:2px;
 }
+
 .table-snc-protect-protected{
-    text-align:center;
     background-color: #2ca02c;
     color: white;
-    margin:2px;
 }
 .table-snc-protect-unprotected{
-    text-align:center;
     background-color: #EEE;
     color: black;
-    margin:2px;
 }
 .table-snc-state-defined{
-    text-align:center;
     background-color: #EEE;
     color: black;
-    margin:2px;
 }
 .table-snc-state-allocated{
-    text-align:center;
     background-color: #ff7f0e;
     color: white;
-    margin:2px;
 }
 .table-snc-state-implemented{
-    text-align:center;
     background-color: #2ca02c;
     color: white;
-    margin:2px;
 }
 .ag-cell{
     overflow: visible;

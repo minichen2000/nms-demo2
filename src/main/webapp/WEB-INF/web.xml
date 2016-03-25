@@ -97,6 +97,15 @@
     </init-param>
   </servlet>
   
+  <servlet>
+    <servlet-name>retrieve_alarms</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.model.MDL_AlarmServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+  
   
   
   
@@ -133,6 +142,10 @@
   <servlet-mapping>
     <servlet-name>retrieve_alarm_statastic</servlet-name>
     <url-pattern>/retrieve_alarm_statastic/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>retrieve_alarms</servlet-name>
+    <url-pattern>/retrieve_alarms/*</url-pattern>
   </servlet-mapping>
  
 </web-app>

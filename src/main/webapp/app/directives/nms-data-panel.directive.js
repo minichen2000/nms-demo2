@@ -20,6 +20,7 @@
                 ndpDataChangeTrigger: '=?',
                 ndpDataKey: '=?',
                 ndpColumnDefs: '=',
+                ndpRowClassFun: '=?',
                 ndpObjCreationNtType: '=',
                 ndpObjDeletionNtType: '=',
                 ndpObjUpdateNtType: '=',
@@ -132,6 +133,9 @@
 
 
                         };
+                        if(scope.ndpRowClassFun){
+                            scope.ndpGridOptions['getRowClass']=scope.ndpRowClassFun;
+                        }
                         scope.ndpGridOptions['onSelectionChanged'] = function (event) {
                             logger.log('selection changed, ' + event.selectedRows.length + ' rows selected');
 

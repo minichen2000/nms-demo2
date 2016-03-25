@@ -18,6 +18,9 @@
         vm.trailChartClicked = function() {
             commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail' }, false);
         };
+        vm.alarmChartClicked = function() {
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'alarm' }, false);
+        };
 
         vm.config = {
             visible: true, // default: true
@@ -30,6 +33,22 @@
             debounce: 10, // default: 10
 
         };
+        
+        var psFieldMap=function(chartPS){
+            if(chartPS=='严重'){
+                return 'critical';
+            }else if(chartPS=='重要'){
+                return 'major';
+            }else if(chartPS=='次要'){
+                return 'minor';
+            }else if(chartPS=='警告'){
+                return 'warning';
+            }else if(chartPS=='待定'){
+                return 'indeterminate';
+            }else{
+                return 'cleared';
+            }
+        }
 
         vm.alarm_panel_options = {
             chart: {
@@ -59,7 +78,7 @@
                 pie: {
                     dispatch: {
                         elementClick: function(e) {
-                            logger.log('click');
+                            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'alarm', filterField: 'perceivedSeverity', filterValue: psFieldMap(e.data.key) }, false);
                         }
                     }
                 }

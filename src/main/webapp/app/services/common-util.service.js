@@ -1,6 +1,6 @@
-(function () {
+(function() {
     'use strict';
-    
+
     angular
         .module('nmsdemoApp')
         .factory('commonUtil', commonUtil);
@@ -41,7 +41,7 @@
         return service;
 
         ////////////
-        
+
         function treeNavWithLoadingPage($state, $timeout, state, nav_params, isInherit) {
             genericNavWithLoadingPage($state, 'main.treeitem', 'treeItemId', $timeout, state, nav_params, isInherit);
 
@@ -94,12 +94,12 @@
         }
 
         function objectToArray(obj, arr, append) {
-            if(!append){
-                arr.length=0;
+            if (!append) {
+                arr.length = 0;
             }
             for (var param in obj) {
                 if (typeof (obj[param]) != "function") {
-                    arr.push({name:param, value:obj[param]});
+                    arr.push({ name: param, value: obj[param] });
                 }
             }
         }
@@ -112,8 +112,8 @@
             }
         }
         function copyArray(source, target, append) {
-            if(!append){
-                target.length=0;
+            if (!append) {
+                target.length = 0;
             }
             for (var i = 0; i < source.length; i++) {
                 target.push(source[i]);
@@ -123,7 +123,7 @@
         function WatchTrigger() {
             var self = this;
             this.triggered = 0;
-            this.trigger = function () {
+            this.trigger = function() {
                 self.triggered >= 1000 ? self.triggered = 0 : self.triggered++;
             }
             //return this;
@@ -135,7 +135,7 @@
             var minInterval = _minInterval;
             var reloadFun = _reloadFun;
 
-            $scope.$watch(function () { return triggerObj.triggered }, function () {
+            $scope.$watch(function() { return triggerObj.triggered }, function() {
                 if ((new Date()).getTime() - lastReloadTime > minInterval) {
                     reloadFun();
                     lastReloadTime = (new Date()).getTime();
@@ -152,9 +152,9 @@
             this.theFun = _fun;
             this.theScope = _scope;
             this.dontApplyFun = _dontApplyFun;
-            this.fun = function (param) {
+            this.fun = function(param) {
                 if ((null == self.dontApplyFun || !self.dontApplyFun()) && null != self.theScope && (new Date()).getTime() - self.lastApplyTime > self.theInterval) {
-                    self.theScope.$apply(function () {
+                    self.theScope.$apply(function() {
                         self.theFun(param);
                     });
                     self.lastApplyTime = (new Date()).getTime();
@@ -166,12 +166,12 @@
         }
 
         function genDelayScopeApplyEventListener($scope, _filterFun, _eventTypeArr, _eventListener, interval, listenerName, _dontApplyFun) {
-            var filterFun = function (event) {
+            var filterFun = function(event) {
                 var inArr = (undefined != _eventTypeArr && null != _eventTypeArr) ? itemInArray(event.eventType, _eventTypeArr) : true;
                 var filterFunRlt = (undefined != _filterFun && null != _filterFun) ? _filterFun(event) : true;
                 return inArr && filterFunRlt;
             }
-            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function (event) { }, _dontApplyFun)).fun;
+            var listenerFun = (new DelayScopeApply($scope, interval, _eventListener ? _eventListener : function(event) { }, _dontApplyFun)).fun;
             return { name: listenerName, filter: filterFun, fun: listenerFun };
         }
 
@@ -190,20 +190,20 @@
 
 
 
-            this.getArray = function () {
+            this.getArray = function() {
                 return arr;
             }
-            this.has = function (keyValue) {
+            this.has = function(keyValue) {
                 return self.hashMap.has(keyValue);
             }
-            this.get = function (keyValue) {
+            this.get = function(keyValue) {
                 if (self.has(keyValue)) {
                     return self.hashMap.get(keyValue);
                 } else {
                     return undefined;
                 }
             }
-            this.add = function (arrItem) {
+            this.add = function(arrItem) {
                 var idx = -1;
                 var hasItem = self.hashMap.has(arrItem[keyName]);
                 if (!hasItem) {
@@ -216,7 +216,7 @@
                 }
                 return idx;
             }
-            this.remove = function (keyValue) {
+            this.remove = function(keyValue) {
                 var hasItem = self.hashMap.has(keyValue);
                 if (hasItem) {
                     var idx = self.hashMap.get(keyValue);
@@ -241,20 +241,20 @@
             this.hashMap = new HashMap();
             var keyName = _keyName;
 
-            this.has = function (keyValue) {
+            this.has = function(keyValue) {
                 return self.hashMap.has(keyValue);
             }
-            this.get = function (keyValue) {
+            this.get = function(keyValue) {
                 if (self.hashMap.has(keyValue)) {
                     return self.hashMap.get(keyValue);
                 } else {
                     return undefined;
                 }
             }
-            this.add = function (keyValue, index) {
+            this.add = function(keyValue, index) {
                 self.hashMap.set(keyValue, index);
             }
-            this.remove = function (keyValue) {
+            this.remove = function(keyValue) {
                 var hasItem = self.hashMap.has(keyValue);
                 if (hasItem) {
                     self.hashMap.remove(keyValue);
@@ -277,14 +277,14 @@
             this.hashMap = new HashMap();
 
 
-            this.add = function (attrValue) {
+            this.add = function(attrValue) {
                 if (!self.hashMap.has(attrValue)) {
                     self.hashMap.set(attrValue, 1);
                 } else {
                     self.hashMap.set(attrValue, self.hashMap.get(attrValue) + 1);
                 }
             }
-            this.remove = function (attrValue) {
+            this.remove = function(attrValue) {
                 var hasItem = self.hashMap.has(attrValue);
                 if (hasItem) {
                     if (self.hashMap.get(attrValue) > 0) {
@@ -338,11 +338,17 @@
 
         function agGridSelectFilter(filterModel, field, item, fieldValueGetterFun) {
             if (filterModel[field]) {
-                if (filterModel[field].indexOf(item[field].toString()) < 0) {
+                //logger.log("filterModel:"+JSON.stringify(filterModel));
+                //logger.log("item:"+JSON.stringify(item));
+                //logger.log("field:"+field);
+                //logger.log("fieldValueGetterFun:"+fieldValueGetterFun);
+                var fieldValue = (fieldValueGetterFun ? fieldValueGetterFun(item, field) : item[field]);
+                if (filterModel[field].indexOf(fieldValue.toString()) < 0) {
                     return false;
                 } else {
                     return true;
                 }
+
             } else {
                 return true;
             }
@@ -381,7 +387,7 @@
 
         function genAgGridOptions(_columnDefs, _data, _fieldValueGetterFun, _getRows, _addtionalFilterFun) {
             var fieldValueGetterFun = _fieldValueGetterFun;
-            var defaultGetRows = function (params) {
+            var defaultGetRows = function(params) {
                 var dataAfterSortingAndFiltering = sortAndFilter(params.sortModel, params.filterModel, fieldValueGetterFun, _addtionalFilterFun);
                 var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
                 var lastRow = dataAfterSortingAndFiltering.length;
@@ -417,7 +423,7 @@
                 }
                 // do an in memory sort of the data, across all the fields
                 var resultOfSort = data.slice();
-                resultOfSort.sort(function (a, b) {
+                resultOfSort.sort(function(a, b) {
                     for (var k = 0; k < sortModel.length; k++) {
                         var sortColModel = sortModel[k];
                         var valueA = (fieldValueGetterFun ? fieldValueGetterFun(a, sortColModel.colId) : a[sortColModel.colId]);
@@ -461,7 +467,7 @@
         }
 
         function genAgGridWatchDelayReloader(scope, trigger, gridOptions, interval, dontReloadFun) {
-            watchDelayReload(scope, trigger, interval, function () {
+            watchDelayReload(scope, trigger, interval, function() {
                 var scrollIdleFactorMS = 1000;
                 if ((null == dontReloadFun || !dontReloadFun()) && (new Date()).getTime() - gridOptions.api.getLastScrollMS() > scrollIdleFactorMS) {
                     gridOptions.api.refreshCurrentDatasource();

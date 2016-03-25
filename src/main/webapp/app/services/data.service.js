@@ -8,15 +8,21 @@
     function dataService(logger, $q, $http, commonUtil, $timeout) {
 
         var retrieveSNCs_failedCB;
+        var retrieveAlarms_failedCB;
 
         return {
             setRetrieveSNCs_failedCB: setRetrieveSNCs_failedCB,
+            setRetrieveAlarms_failedCB: setRetrieveAlarms_failedCB,
+            retrieveAlarms: retrieveAlarms,
             retrieveSNCs: retrieveSNCs,
             retrievePorts: retrievePorts,
             retrieveCTPs: retrieveCTPs
         }
         function setRetrieveSNCs_failedCB(cb) {
             retrieveSNCs_failedCB = cb;
+        }
+        function setRetrieveAlarms_failedCB(cb) {
+            retrieveAlarms_failedCB = cb;
         }
 
         function retrieveSNCs() {
@@ -32,6 +38,23 @@
                 logger.error("retrieveSNCsKO:" + errorMsg);
                 if (retrieveSNCs_failedCB) {
                     $timeout(function () { retrieveSNCs_failedCB(errorMsg); }, 200);
+                }
+                return $q.reject(rsp);
+            }
+        }
+        function retrieveAlarms() {
+            return $http.get('./retrieve_alarms')
+                .then(OK)
+                .catch(KO);
+            function OK(rsp) {
+                logger.log("retrieveAlarmsOK");
+                return rsp.data;
+            }
+            function KO(rsp) {
+                var errorMsg = "获取Alarm列表失败:" + JSON.stringify(rsp);
+                logger.error("retrieveAlarmsKO:" + errorMsg);
+                if (retrieveAlarms_failedCB) {
+                    $timeout(function () { retrieveAlarms_failedCB(errorMsg); }, 200);
                 }
                 return $q.reject(rsp);
             }

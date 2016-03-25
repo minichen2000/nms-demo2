@@ -1,0 +1,31 @@
+<div ui-view>
+        <div class="row">
+            <div class="col col-lg-12">
+                <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px" id="loadingInd">
+                    <li class="active">告警列表</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-lg-12">
+                    <nms-data-panel
+                    ndp-data-type-name="'告警'" 
+                    ndp-partial-border="false" 
+                    ndp-ctrl-scope="vm.ctrlScope" 
+                    ndp-data-array="vm.dataArray"
+                    ndp-addtional-filter-fun="vm.addtionalFilterFun"
+                    ndp-data-key="'alarmKey'" 
+                    ndp-column-defs="vm.columnDefs"
+                    ndp-row-class-fun="vm.rowClassFun"
+                    ndp-obj-creation-nt-type="'alarmCreation'" 
+                    ndp-obj-deletion-nt-type="'alarmDeletion'" 
+                    ndp-obj-update-nt-type="'alarmUpdate'" 
+                    ndp-notif-filter-fun="vm.notifFilterFun" 
+                    ndp-ctrl-name="'ListAlarmController'" 
+                    ndp-grid-height="475" 
+                    ndp-enable-notif="true"></nms-data-panel>
+            </div>
+        </div>
+
+
+    </div>

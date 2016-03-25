@@ -80,10 +80,11 @@
                 minWidth: commonUtil.getW(110),
                 filter: 'set',
                 filterParams: { values: ['protected', 'unprotected'], newRowsAction: 'keep' },
-                cellRenderer: function (params) {
+                /*cellRenderer: function (params) {
                     var cls = 'table-snc-protect-' + params.value;
                     return "<div class='" + cls + "'>" + params.value + "</div>";
-                }
+                }*/
+                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", 'table-snc-protect-' + params.value];}
             },
             {
                 field: "sncState",
@@ -92,10 +93,11 @@
                 minWidth: commonUtil.getW(110),
                 filter: 'set',
                 filterParams: { values: ['defined', 'allocated', 'implemented'], newRowsAction: 'keep' },
-                cellRenderer: function (params) {
+                /*cellRenderer: function (params) {
                     var cls = 'table-snc-state-' + params.value;
                     return "<div class='" + cls + "'>" + params.value + "</div>";
-                }
+                }*/
+                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", 'table-snc-state-' + params.value];}
             },
             {
                 field: "aEndNE",

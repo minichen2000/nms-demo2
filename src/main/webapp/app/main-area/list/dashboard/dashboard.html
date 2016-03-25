@@ -3,7 +3,7 @@
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="dashboard-grid-hcenter">
                 <div style="text-align:center">
-                    <a><h4>告警统计</h4></a></div>
+                    <a ng-click="vm.alarmChartClicked()"><h4>告警统计</h4></a></div>
                 <a><nvd3 options="vm.alarm_panel_options" data="vm.alarmStChartData" config="vm.config"></nvd3></a>
             </div>
         </div>

@@ -83,10 +83,11 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['suppervised', 'unsuppervised'], newRowsAction: 'keep' },
-                cellRenderer: function (params) {
+                /*cellRenderer: function (params) {
                     var cls = (params.value === 'suppervised' ? 'table-suppervised' : 'table-unsuppervised');
                     return "<div class='" + cls + "'>" + params.value + "</div>";
-                }
+                }*/
+                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", params.value === 'suppervised' ? 'table-suppervised' : 'table-unsuppervised'];}
             },
             {
                 field: "communicationState",
@@ -95,10 +96,11 @@
                 minWidth: commonUtil.getW(110),
                 filter: 'set',
                 filterParams: { values: ['available', 'unavailable'], newRowsAction: 'keep' },
-                cellRenderer: function (params) {
+                /*cellRenderer: function (params) {
                     var cls = (params.value === 'available' ? 'table-available' : 'table-unavailable');
                     return "<div class='" + cls + "'>" + params.value + "</div>";
-                }
+                }*/
+                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", params.value === 'available' ? 'table-available' : 'table-unavailable'];}
             },
             {
                 field: "alarmState",
@@ -107,10 +109,11 @@
                 minWidth: commonUtil.getW(110),
                 filter: 'set',
                 filterParams: { values: ['critical', 'major', 'minor', 'warning', 'indeterminate', 'cleared'], newRowsAction: 'keep' },
-                cellRenderer: function (params) {
-                    var cls = 'table-alarm-' + params.value;
-                    return "<div class='" + cls + "'>" + params.value + "</div>";
-                }
+                /*cellRenderer: function (params) {
+                    var cls = 'alarm-color-' + params.value;
+                    return "<div class='table-cell-alarm-ps-text-color table-cell-text-center " + cls + "'>" + params.value + "</div>";
+                }*/
+                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-white", "table-cell-text-center", "alarm-color-"+params.data.alarmState];}
             },
 
             {
