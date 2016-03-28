@@ -104,7 +104,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 				
 				long lastChange=Calendar.getInstance().getTimeInMillis();
 				try {
-					final String dir="D:/";
+					final String dir="D:/alarm_notif";
 					WatchService watchService = FileSystems.getDefault()
 							.newWatchService();
 					Paths.get(dir).register(watchService,
@@ -119,7 +119,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 							if(now-lastChange>1000){
 								System.out.println(event.context() + "发生了"
 										+ event.kind() + "事件");
-								List<String> lines=FileUtils.readFileToStringArray(dir+event.context(), "#", null);
+								List<String> lines=FileUtils.readFileToStringArray(dir+"/"+event.context(), "#", null);
 								for(String line : lines){
 									System.out.println(line);
 								}
@@ -129,7 +129,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 									@Override
 									public void run() {
 										// TODO Auto-generated method stub
-										sendAlarmsByFile(dir+event.context());
+										sendAlarmsByFile(dir+"/"+event.context());
 									}}).start();
 							}
 							lastChange=now;

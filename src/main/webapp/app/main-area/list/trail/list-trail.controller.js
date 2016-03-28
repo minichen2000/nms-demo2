@@ -55,7 +55,7 @@
                 onCellClicked: function (params) {
                     commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId }, false);
                 },
-                cellClass: 'table-name-field'
+                cellClass: ['table-name-field'],
             },
             {
                 field: "sncId",
@@ -84,7 +84,7 @@
                     var cls = 'table-snc-protect-' + params.value;
                     return "<div class='" + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", 'table-snc-protect-' + params.value];}
+                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-center", 'table-snc-protect-' + params.value];}
             },
             {
                 field: "sncState",
@@ -97,7 +97,7 @@
                     var cls = 'table-snc-state-' + params.value;
                     return "<div class='" + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", 'table-snc-state-' + params.value];}
+                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-center", 'table-snc-state-' + params.value];}
             },
             {
                 field: "aEndNE",
@@ -108,7 +108,7 @@
                 onCellClicked: function (params) {
                     commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId }, false);
                 },
-                cellClass: 'table-name-field',
+                cellClass: ['table-name-field'],
                 width: commonUtil.getW(120),
                 minWidth: commonUtil.getW(120),
                 filter: 'text',
@@ -134,7 +134,7 @@
                 onCellClicked: function (params) {
                     commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId }, false);
                 },
-                cellClass: 'table-name-field',
+                cellClass: ['table-name-field'],
                 width: commonUtil.getW(120),
                 minWidth: commonUtil.getW(120),
                 filter: 'text',

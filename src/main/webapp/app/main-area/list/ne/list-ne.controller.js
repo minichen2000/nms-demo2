@@ -87,7 +87,7 @@
                     var cls = (params.value === 'suppervised' ? 'table-suppervised' : 'table-unsuppervised');
                     return "<div class='" + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", params.value === 'suppervised' ? 'table-suppervised' : 'table-unsuppervised'];}
+                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-center", params.value === 'suppervised' ? 'table-suppervised' : 'table-unsuppervised'];}
             },
             {
                 field: "communicationState",
@@ -100,7 +100,7 @@
                     var cls = (params.value === 'available' ? 'table-available' : 'table-unavailable');
                     return "<div class='" + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-center", params.value === 'available' ? 'table-available' : 'table-unavailable'];}
+                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-center", params.value === 'available' ? 'table-available' : 'table-unavailable'];}
             },
             {
                 field: "alarmState",
@@ -113,7 +113,7 @@
                     var cls = 'alarm-color-' + params.value;
                     return "<div class='table-cell-alarm-ps-text-color table-cell-text-center " + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-text-margin", "table-cell-text-white", "table-cell-text-center", "alarm-color-"+params.data.alarmState];}
+                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-white", "table-cell-text-center", "alarm-color-"+params.data.alarmState];}
             },
 
             {
@@ -122,7 +122,8 @@
                 width: commonUtil.getW(90),
                 minWidth: commonUtil.getW(90),
                 filter: 'set',
-                filterParams: { values: ['q3', 'snmp', 'dex'], newRowsAction: 'keep' }
+                filterParams: { values: ['q3', 'snmp', 'dex'], newRowsAction: 'keep' },
+                cellClass: 'table-cell-text-margin'
             },
             {
                 field: "creationDate",

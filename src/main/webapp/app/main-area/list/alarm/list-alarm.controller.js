@@ -24,8 +24,8 @@
             {
                 field: "neTime",
                 headerName: "时间",
-                width: commonUtil.getW(135),
-                minWidth: commonUtil.getW(135),
+                width: commonUtil.getW(145),
+                minWidth: commonUtil.getW(145),
                 filter: 'text',
                 filterParams: { newRowsAction: 'keep' }
             },
@@ -36,7 +36,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['critical', 'major', 'minor', 'warning', 'indeterminate', 'cleared'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-text-margin",*/"table-cell-text-center", "table-cell-text-white", "alarm-color-"+params.data.perceivedSeverity];}
+                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center", "table-cell-text-white", "alarm-color-"+params.data.perceivedSeverity];}
             },
             {
                 field: "objectName",
@@ -44,7 +44,8 @@
                 width: commonUtil.getW(140),
                 minWidth: commonUtil.getW(140),
                 filter: 'text',
-                filterParams: { newRowsAction: 'keep' }
+                filterParams: { newRowsAction: 'keep' },
+                cellClass: "table-cell-text-margin"
             },
             {
                 field: "objectType",
@@ -53,7 +54,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['NODE', 'PORT', 'BOARD', 'SNC', 'EVC', 'TL'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-text-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
             },
             {
                 field: "alarmType",
@@ -62,7 +63,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['communicationsAlarm', 'environmentalAlarm', 'processingErrorAlarm', 'qualityOfServiceAlarm', 'equipmentAlarm'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-text-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
             },
             {
                 field: "probableCause",
@@ -70,7 +71,8 @@
                 width: commonUtil.getW(140),
                 minWidth: commonUtil.getW(140),
                 filter: 'text',
-                filterParams: { newRowsAction: 'keep' }
+                filterParams: { newRowsAction: 'keep' },
+                cellClass: "table-cell-text-margin"
             },
             {
                 field: "cleared",
@@ -82,7 +84,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: [true, false], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-text-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
             },
             {
                 field: "ack",
@@ -94,7 +96,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: [true, false], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-text-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
             },
             {
                 field: "serviceAffecting",
@@ -103,7 +105,7 @@
                 minWidth: commonUtil.getW(130),
                 filter: 'set',
                 filterParams: { values: ['SA', 'NON_SA','UNKNOWN'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-text-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
             }
         ];
 
