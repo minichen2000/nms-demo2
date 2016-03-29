@@ -5,9 +5,16 @@
         .module('nmsdemoApp')
         .controller('SNCCreationController', SNCCreationController);
 
-    SNCCreationController.$inject = ['$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter'];
-    function SNCCreationController($http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter) {
+    SNCCreationController.$inject = ['$state', '$timeout', '$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter'];
+    function SNCCreationController($state, $timeout, $http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter) {
         var vm = this;
+        vm.getH = commonUtil.getH;
+        
+        vm.breadcrumb = commonUtil.breadcrumb;
+        vm.breadcrumb.chain.splice(0, vm.breadcrumb.chain.length);
+        vm.breadcrumb.add("创建子网连接", function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'creation_snc' }, false);
+        });
         
         ///////////////////////////
         vm.submitSomething=function(){

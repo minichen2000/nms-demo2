@@ -10,8 +10,10 @@
         var vm = this;
         vm.getH = commonUtil.getH;
         vm.message = "" + $stateParams.sncId;
-        vm.backToTrailList = function () {
-            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail' }, false);
-        }
+
+        vm.breadcrumb=commonUtil.breadcrumb;
+        vm.breadcrumb.add(vm.message, function(){
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: $stateParams.sncId }, false);
+        });
     }
 })();

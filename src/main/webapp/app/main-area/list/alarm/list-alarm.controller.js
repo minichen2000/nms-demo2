@@ -1,24 +1,34 @@
-(function () {
+(function() {
     'use strict';
 
     angular
         .module('nmsdemoApp')
         .controller('ListAlarmController', ListAlarmController);
 
-    ListAlarmController.$inject = ['$stateParams', 'additionalFilterFun', 'retrievedAlarms', 'logger', '$state', '$scope', 'commonUtil', 'serverNotificationService', '$timeout'];
-    function ListAlarmController($stateParams, additionalFilterFun, retrievedAlarms, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
+    ListAlarmController.$inject = ['$stateParams', 'additionalFilter', 'retrievedAlarms', 'logger', '$state', '$scope', 'commonUtil', 'serverNotificationService', '$timeout'];
+    function ListAlarmController($stateParams, additionalFilter, retrievedAlarms, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
         var vm = this;
         vm.getH = commonUtil.getH;
+
+
+        vm.breadcrumb = commonUtil.breadcrumb;
+        vm.breadcrumb.chain.splice(0, vm.breadcrumb.chain.length);
+        if (additionalFilter) {
+            vm.breadcrumb.add("告警列表("+additionalFilter.filterField+'='+additionalFilter.filterValue+')', function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'alarm', filterField: additionalFilter.filterField, filterValue: additionalFilter.filterValue }, false);
+            });
+            vm.addtionalFilterFun = additionalFilter.fun;
+        } else {
+            vm.breadcrumb.add("告警列表", function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'alarm' }, false);
+            });
+            vm.addtionalFilterFun = undefined;
+        }
+
+
         vm.ctrlScope = $scope;
         vm.dataArray = retrievedAlarms;
-        vm.addtionalFilterFun = additionalFilterFun;
         vm.notifFilterFun = null;
-        
-        /*vm.rowClassFun=function(params){
-            
-            var c="alarm-color-"+params.data.perceivedSeverity;
-            return c;
-        }*/
 
         vm.columnDefs = [
             {
@@ -36,7 +46,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['critical', 'major', 'minor', 'warning', 'indeterminate', 'cleared'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center", "table-cell-text-white", "alarm-color-"+params.data.perceivedSeverity];}
+                cellClass: function(params) { return [/*"table-cell-select-margin",*/"table-cell-text-center", "table-cell-text-white", "alarm-color-" + params.data.perceivedSeverity]; }
             },
             {
                 field: "objectName",
@@ -54,7 +64,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['NODE', 'PORT', 'BOARD', 'SNC', 'EVC', 'TL'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params) { return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/]; }
             },
             {
                 field: "alarmType",
@@ -63,7 +73,7 @@
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: ['communicationsAlarm', 'environmentalAlarm', 'processingErrorAlarm', 'qualityOfServiceAlarm', 'equipmentAlarm'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params) { return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/]; }
             },
             {
                 field: "probableCause",
@@ -77,26 +87,26 @@
             {
                 field: "cleared",
                 headerName: "是否清除",
-                valueGetter: function (params) {
-                    return params.data.cleared ? "是":"否";
+                valueGetter: function(params) {
+                    return params.data.cleared ? "是" : "否";
                 },
                 width: commonUtil.getW(120),
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: [true, false], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params) { return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/]; }
             },
             {
                 field: "ack",
                 headerName: "是否确认",
-                valueGetter: function (params) {
-                    return params.data.ack ? "是":"否";
+                valueGetter: function(params) {
+                    return params.data.ack ? "是" : "否";
                 },
                 width: commonUtil.getW(120),
                 minWidth: commonUtil.getW(120),
                 filter: 'set',
                 filterParams: { values: [true, false], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                cellClass: function(params) { return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/]; }
             },
             {
                 field: "serviceAffecting",
@@ -104,8 +114,8 @@
                 width: commonUtil.getW(130),
                 minWidth: commonUtil.getW(130),
                 filter: 'set',
-                filterParams: { values: ['SA', 'NON_SA','UNKNOWN'], newRowsAction: 'keep' },
-                cellClass: function(params){return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/];}
+                filterParams: { values: ['SA', 'NON_SA', 'UNKNOWN'], newRowsAction: 'keep' },
+                cellClass: function(params) { return [/*"table-cell-select-margin",*/"table-cell-text-center" /*"alarm-color-"+params.data.perceivedSeverity*/]; }
             }
         ];
 

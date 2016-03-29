@@ -12,6 +12,7 @@
 
         var availHeightFactor = null;
         var availWidthFactor = null;
+        var breadcrumb=new btChain();
         var service = {
             getHeightFactor: getHeightFactor,
             getWidthFactor: getWidthFactor,
@@ -36,7 +37,8 @@
             DelayScopeApply: DelayScopeApply,
             watchDelayReload: watchDelayReload,
             WatchTrigger: WatchTrigger,
-            genDelayScopeApplyEventListener: genDelayScopeApplyEventListener
+            genDelayScopeApplyEventListener: genDelayScopeApplyEventListener,
+            breadcrumb: breadcrumb
         };
         return service;
 
@@ -298,6 +300,30 @@
             }
 
             //return this;
+        }
+
+        function btChain() {
+            var self = this;
+            this.chain = [];
+            this.add = function(_name, _fun) {
+                if (self.chain.length > 0) {
+                    self.chain[self.chain.length - 1].active = false;
+                }
+                self.chain.push({
+                    idx: self.chain.length,
+                    name: _name,
+                    active: true,
+                    fun: function() {
+                        if(!this.active){
+                            _fun();
+                            self.chain.splice(this.idx+1, self.chain.length-(this.idx+1));
+                            this.active = true;
+                        }
+                        
+                    }
+                   
+                });
+            };
         }
 
 

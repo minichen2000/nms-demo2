@@ -22,12 +22,16 @@
             .state('main.treeitem', {
                 url: "main/treeitem/:treeItemId/:filterField/:filterValue",
                 resolve: {
-                    additionalFilterFun: ['$stateParams', 'logger',
+                    additionalFilter: ['$stateParams', 'logger',
                         function($stateParams, logger) {
                             if ($stateParams.filterField && $stateParams.filterValue) {
-                                return function(item) {
-                                    return item[$stateParams.filterField] == $stateParams.filterValue;
-                                }
+                                return {
+                                    filterField: $stateParams.filterField,
+                                    filterValue: $stateParams.filterValue,
+                                    fun: function(item) {
+                                        return item[$stateParams.filterField] == $stateParams.filterValue;
+                                    }
+                                };
 
                             } else {
                                 return undefined;

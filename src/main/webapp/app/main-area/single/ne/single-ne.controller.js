@@ -9,9 +9,11 @@
         var vm = this;
         vm.getH = commonUtil.getH;
         vm.message = $stateParams.neGroupId + "/" + $stateParams.neId;
-        vm.backToNeList = function () {
-            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'ne' }, false);
-        }
+        
+        vm.breadcrumb=commonUtil.breadcrumb;
+        vm.breadcrumb.add(vm.message, function(){
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId }, false);
+        });
 
         vm.tabClicked = function (tabId) {
             if (tabId == 'ports') {

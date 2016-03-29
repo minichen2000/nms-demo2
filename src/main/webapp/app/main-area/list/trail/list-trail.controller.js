@@ -5,13 +5,28 @@
         .module('nmsdemoApp')
         .controller('ListTrailController', ListTrailController);
 
-    ListTrailController.$inject = ['$stateParams', 'additionalFilterFun', 'retrievedSNCs', 'logger', '$state', '$scope', 'commonUtil', 'serverNotificationService', '$timeout'];
-    function ListTrailController($stateParams, additionalFilterFun, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
+    ListTrailController.$inject = ['$stateParams', 'additionalFilter', 'retrievedSNCs', 'logger', '$state', '$scope', 'commonUtil', 'serverNotificationService', '$timeout'];
+    function ListTrailController($stateParams, additionalFilter, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
         var vm = this;
         vm.getH = commonUtil.getH;
+        
+        vm.breadcrumb=commonUtil.breadcrumb;
+        vm.breadcrumb.chain.splice(0, vm.breadcrumb.chain.length);
+        if (additionalFilter) {
+            vm.breadcrumb.add("子网连接列表("+additionalFilter.filterField+'='+additionalFilter.filterValue+')', function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail', filterField: additionalFilter.filterField, filterValue: additionalFilter.filterValue }, false);
+            });
+            vm.addtionalFilterFun = additionalFilter.fun;
+        } else {
+            vm.breadcrumb.add("子网连接列表", function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail' }, false);
+            });
+            vm.addtionalFilterFun = undefined;
+        }
+        
+        
         vm.ctrlScope = $scope;
         vm.dataArray = retrievedSNCs;
-        vm.addtionalFilterFun = additionalFilterFun;
         vm.notifFilterFun = null;
 
         vm.fieldValueGetterFun = function (item, field) {

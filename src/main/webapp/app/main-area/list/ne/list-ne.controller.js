@@ -4,14 +4,29 @@
         .module('nmsdemoApp')
         .controller('ListNEController', ListNEController);
 
-    ListNEController.$inject = ['$scope', 'additionalFilterFun', 'statasticService', 'logger', '$state', 'commonUtil', 'serverNotificationService', '$timeout'];
-    function ListNEController($scope, additionalFilterFun, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
+    ListNEController.$inject = ['$scope', 'additionalFilter', 'statasticService', 'logger', '$state', 'commonUtil', 'serverNotificationService', '$timeout'];
+    function ListNEController($scope, additionalFilter, statasticService, logger, $state, commonUtil, serverNotificationService, $timeout) {
         var vm = this;
         vm.getH = commonUtil.getH;
+        
+        vm.breadcrumb=commonUtil.breadcrumb;
+        vm.breadcrumb.chain.splice(0, vm.breadcrumb.chain.length);
+        if (additionalFilter) {
+            vm.breadcrumb.add("网元列表("+additionalFilter.filterField+'='+additionalFilter.filterValue+')', function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'ne', filterField: additionalFilter.filterField, filterValue: additionalFilter.filterValue }, false);
+            });
+            vm.addtionalFilterFun = additionalFilter.fun;
+        } else {
+            vm.breadcrumb.add("网元列表", function() {
+                commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'ne' }, false);
+            });
+            vm.addtionalFilterFun = undefined;
+        }
+        
+        
         vm.ctrlScope = $scope;
         vm.dataArray = statasticService.getNEList();
         vm.dataChangeTrigger = statasticService.neDataChangeTrigger;
-        vm.addtionalFilterFun = additionalFilterFun;
 
         vm.columnDefs = [
             {
