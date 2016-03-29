@@ -7,7 +7,6 @@
    version="3.1">
    
    
-   
    <servlet>
     <servlet-name>default</servlet-name>
     <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
@@ -24,6 +23,14 @@
 
 
 
+  <servlet>
+    <servlet-name>tester</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.model.TesterServlet</servlet-class>
+	<init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
   
   <servlet>
     <servlet-name>notification</servlet-name>
@@ -110,7 +117,10 @@
   
   
   
-  
+  <servlet-mapping>
+    <servlet-name>tester</servlet-name>
+    <url-pattern>/tester/*</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>notification</servlet-name>
     <url-pattern>/notification/*</url-pattern>

@@ -5,9 +5,38 @@
         .module('nmsdemoApp')
         .controller('SNCCreationController', SNCCreationController);
 
-    SNCCreationController.$inject = ['$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter'];
-    function SNCCreationController($stateParams, statasticService, commonUtil, logger, dataService, $filter) {
+    SNCCreationController.$inject = ['$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter'];
+    function SNCCreationController($http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter) {
         var vm = this;
+        
+        ///////////////////////////
+        vm.submitSomething=function(){
+            return $http({
+                method:'post',
+                url:'./tester?dummy',
+                params1: {name:"code_bunny",id:567,active:true,list:['aa','bb','cc'],alist:[{a:'cc'},{b:'dd'},{c:'ee'}], aclass:{e3:false,bs:"sssss",q9:9}},
+                params: {myNe:vm.neList[0]}
+            })
+                .then(OK)
+                .catch(KO);
+            function OK(rsp) {
+                logger.log("tester http returned.");
+                if (undefined != rsp.data.rlt && rsp.data.rlt == false) {
+                    logger.log("testerKO");
+                    return $q.reject(rsp);
+                } else {
+                    logger.log("testerOK");
+                    return rsp.data;
+                }
+
+            }
+            function KO(rsp) {
+                var errorMsg = "tester失败:" + JSON.stringify(rsp);
+                logger.error("testerKO:" + errorMsg);
+                return $q.reject(rsp);
+            }
+        };
+        ///////////////////////////
         vm.checkBoxClass=function(fun){
             logger.log("checkBoxClass");
             return fun() ? "fa-check checkbox-validated" : "fa-circle-o checkbox-not-validated";
