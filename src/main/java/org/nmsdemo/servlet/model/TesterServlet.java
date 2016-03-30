@@ -4,6 +4,7 @@ package org.nmsdemo.servlet.model;
  
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +20,7 @@ import org.nmsdemo.model.MDL_CTP;
 import org.nmsdemo.model.MDL_NE;
 import org.nmsdemo.model.MDL_NEGroup;
 import org.nmsdemo.model.MDL_Port;
+import org.nmsdemo.utils.DBUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
  
@@ -92,6 +94,8 @@ public class TesterServlet extends HttpServlet
         String msg = MDLUtil.Object_WRAP(ne);
         
         System.out.println("\n\n\nne:\n"+msg);
+        
+        Connection c=DBUtils.getConnection();
         
         try
         {

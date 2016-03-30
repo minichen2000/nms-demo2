@@ -1,0 +1,4 @@
+<ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px" id="loadingInd">
+    <li ng-repeat="item in vm.breadcrumb.chain" ng-class="{'active': item.active}" ng-click="item.fun()">
+        <a ng-if="!item.active" ng-bind="item.name"></a><span ng-if="item.active" ng-bind="item.name"></span></li>
+</ol>

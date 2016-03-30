@@ -316,8 +316,15 @@
                     fun: function() {
                         if(!this.active){
                             _fun();
-                            self.chain.splice(this.idx+1, self.chain.length-(this.idx+1));
-                            this.active = true;
+                            //logger.log("this.idx, self.chain.length="+this.idx+","+self.chain.length);
+                            if(this.idx>0){
+                                self.chain.splice(this.idx, self.chain.length-this.idx);
+                            }else{
+                                self.chain.splice(this.idx+1, self.chain.length-(this.idx+1));
+                                this.active = true;
+                            }
+                            
+                            
                         }
                         
                     }

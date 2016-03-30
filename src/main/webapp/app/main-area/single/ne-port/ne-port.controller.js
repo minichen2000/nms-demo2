@@ -21,7 +21,7 @@
                 filterParams: { newRowsAction: 'keep' },
                 pinned: 'left',
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId }, false);
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', neGroupId: params.data.neGroupId, neId: params.data.neId, portId:params.data.tpId, portName:params.data.name }, false);
                 },
                 cellClass: 'table-name-field'
             },

@@ -49,9 +49,10 @@ public class MDL_PortServlet extends HttpServlet
 	        Random random = new Random();
 	        for (int i = 0; i < LL; i++) {
 	            String neName="node_"+_neGroupId+"/"+_neId;
-	            String key=neName+"_Port"+i;
+	            String tpName="Port"+i;
+	            String key=neName+"/"+tpName;
 	            boolean connected=random.nextInt(9) > 5;
-	            ports.add(new MDL_Port(key, key, key, neName, _neGroupId, _neId,
+	            ports.add(new MDL_Port(key, ""+i, tpName, neName, _neGroupId, _neId,
 	                random.nextInt(9) > 5 ? "STM1" : "STM4", 
 	                        connected, 
 	                        connected ? "PL"+i : ""));

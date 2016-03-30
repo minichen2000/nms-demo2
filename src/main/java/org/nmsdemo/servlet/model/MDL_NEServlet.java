@@ -33,7 +33,7 @@ public class MDL_NEServlet extends HttpServlet {
 		for (int i = 0; i < LL; i++) {
 		    int neGroupId=100 + i / 100;
 		    int neId=i % 100;
-		    String neName="node_"+neGroupId+"/"+neId;
+		    String neName="node"+neGroupId+"/"+neId;
             nes.add(new MDL_NE(neGroupId, 
                 random.nextInt(9) > 5 ? "q3" : "dex", 
                         neId, neName, "ChengDu" + i, 

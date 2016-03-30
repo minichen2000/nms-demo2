@@ -9,22 +9,22 @@
     function ListTrailController($stateParams, additionalFilter, retrievedSNCs, logger, $state, $scope, commonUtil, serverNotificationService, $timeout) {
         var vm = this;
         vm.getH = commonUtil.getH;
-        
-        vm.breadcrumb=commonUtil.breadcrumb;
+
+        vm.breadcrumb = commonUtil.breadcrumb;
         vm.breadcrumb.chain.splice(0, vm.breadcrumb.chain.length);
         if (additionalFilter) {
-            vm.breadcrumb.add("子网连接列表("+additionalFilter.filterField+'='+additionalFilter.filterValue+')', function() {
+            vm.breadcrumb.add("子网连接列表(" + additionalFilter.filterField + '=' + additionalFilter.filterValue + ')', function () {
                 commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail', filterField: additionalFilter.filterField, filterValue: additionalFilter.filterValue }, false);
             });
             vm.addtionalFilterFun = additionalFilter.fun;
         } else {
-            vm.breadcrumb.add("子网连接列表", function() {
+            vm.breadcrumb.add("子网连接列表", function () {
                 commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem', { treeItemId: 'trail' }, false);
             });
             vm.addtionalFilterFun = undefined;
         }
-        
-        
+
+
         vm.ctrlScope = $scope;
         vm.dataArray = retrievedSNCs;
         vm.notifFilterFun = null;
@@ -68,7 +68,7 @@
                 filterParams: { newRowsAction: 'keep' },
                 pinned: 'left',
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId }, false);
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId, sncName: params.data.name }, false);
                 },
                 cellClass: ['table-name-field'],
             },
@@ -99,7 +99,7 @@
                     var cls = 'table-snc-protect-' + params.value;
                     return "<div class='" + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-center", 'table-snc-protect-' + params.value];}
+                cellClass: function (params) { return ["table-cell-select-margin", "table-cell-text-center", 'table-snc-protect-' + params.value]; }
             },
             {
                 field: "sncState",
@@ -112,7 +112,7 @@
                     var cls = 'table-snc-state-' + params.value;
                     return "<div class='" + cls + "'>" + params.value + "</div>";
                 }*/
-                cellClass: function(params){return ["table-cell-select-margin", "table-cell-text-center", 'table-snc-state-' + params.value];}
+                cellClass: function (params) { return ["table-cell-select-margin", "table-cell-text-center", 'table-snc-state-' + params.value]; }
             },
             {
                 field: "aEndNE",
@@ -121,7 +121,10 @@
                     return params.data.aEndPorts[0].neName;
                 },
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId }, false);
+                    vm.breadcrumb.add(params.data.name, function () {
+                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId, sncName: params.data.name }, false);
+                    });
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId, neName: params.data.aEndPorts[0].neName }, false);
                 },
                 cellClass: ['table-name-field'],
                 width: commonUtil.getW(120),
@@ -147,7 +150,10 @@
                     return params.data.zEndPorts[0].neName;
                 },
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId }, false);
+                    vm.breadcrumb.add(params.data.name, function () {
+                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId, sncName: params.data.name }, false);
+                    });
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId, neName: params.data.zEndPorts[0].neName }, false);
                 },
                 cellClass: ['table-name-field'],
                 width: commonUtil.getW(120),

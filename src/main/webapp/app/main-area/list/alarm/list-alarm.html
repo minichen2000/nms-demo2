@@ -1,10 +1,7 @@
 <div ui-view>
         <div class="row">
             <div class="col col-lg-12">
-                <ol class="breadcrumb" style="margin-bottom:6px;padding-left:{{vm.getH(12)}}px" id="loadingInd">
-                    <li ng-repeat="item in vm.breadcrumb.chain" ng-class="{'active': item.active}" ng-click="item.fun()">
-                    <a ng-if="!item.active" ng-bind="item.name"></a><span ng-if="item.active" ng-bind="item.name"></span></li>
-                </ol>
+                <div ng-include="'./app/directives/breadcrumb-tpl.html'"></div>
             </div>
         </div>
         <div class="row">

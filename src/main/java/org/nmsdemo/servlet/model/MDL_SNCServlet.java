@@ -34,10 +34,10 @@ public class MDL_SNCServlet extends HttpServlet {
 
 		for (int i = 0; i < LL; i++) {
 			List<MDL_TPRef> aEnds=new ArrayList<MDL_TPRef>();
-			aEnds.add(new MDL_TPRef("100/"+i, i, 100, "node"+i, "trail"+i+"_aEndTP", "trail"+i+"_aEndTP"));
+			aEnds.add(new MDL_TPRef("100/"+i, i, 100, "node100/"+i, "trail"+i+"_aEndTP", "trail"+i+"_aEndTP"));
 			
 			List<MDL_TPRef> zEnds=new ArrayList<MDL_TPRef>();
-			zEnds.add(new MDL_TPRef("100/"+(i+1), i+1, 100, "node"+(i+1), "trail"+i+"_zEndTP", "trail"+i+"_zEndTP"));
+			zEnds.add(new MDL_TPRef("100/"+(i+1), i+1, 100, "node100/"+(i+1), "trail"+i+"_zEndTP", "trail"+i+"_zEndTP"));
 			
 		    sncs.add(new MDL_GEN_SNC(""+(100 + i), 
 		    ""+(100 + i), 

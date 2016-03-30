@@ -109,22 +109,26 @@
 
             })
             .state('main.treeitem_secondlevel', {
-                url: "main/treeitem_secondlevel/:treeItemId/:neGroupId/:neId:/:sncId",
+                url: "main/treeitem_secondlevel/:treeItemId/:neGroupId/:neId/:neName/:portId/:portName/:sncId/:sncName",
                 templateUrl: function($stateParams) {
                     console.log("$stateParams:" + JSON.stringify($stateParams));
-                    if ($stateParams.treeItemId == 'ne' && $stateParams.neGroupId && $stateParams.neId) {
+                    if ($stateParams.treeItemId == 'ne' && $stateParams.neGroupId && $stateParams.neId && $stateParams.neName) {
                         return "./app/main-area/single/ne/single-ne.html?dummy";
-                    } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId) {
+                    } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId && $stateParams.sncName) {
                         return "./app/main-area/single/trail/single-trail.html?dummy";
+                    } else if ($stateParams.treeItemId == 'port' && $stateParams.neGroupId && $stateParams.neId && $stateParams.portId && $stateParams.portName) {
+                        return "./app/main-area/single/port/single-port.html?dummy";
                     }
 
                 },
                 controllerProvider: function($stateParams) {
                     console.log("$stateParams:" + JSON.stringify($stateParams));
-                    if ($stateParams.treeItemId == 'ne' && $stateParams.neGroupId && $stateParams.neId) {
+                    if ($stateParams.treeItemId == 'ne' && $stateParams.neGroupId && $stateParams.neId && $stateParams.neName) {
                         return "SingleNEController as vm";
-                    } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId) {
+                    } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId && $stateParams.sncName) {
                         return "SingleTrailController as vm";
+                    } else if ($stateParams.treeItemId == 'port' && $stateParams.neGroupId && $stateParams.neId && $stateParams.portId && $stateParams.portName) {
+                        return "SinglePortController as vm";
                     }
 
                 }
