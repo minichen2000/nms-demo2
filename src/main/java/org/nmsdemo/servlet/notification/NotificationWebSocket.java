@@ -98,7 +98,6 @@ public class NotificationWebSocket extends WebSocketAdapter {
 		
 		new Thread(new Runnable() {
 
-			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				
@@ -117,8 +116,8 @@ public class NotificationWebSocket extends WebSocketAdapter {
 							final WatchEvent<?> event=e;
 							long now=Calendar.getInstance().getTimeInMillis();
 							if(now-lastChange>1000){
-								System.out.println(event.context() + "发生了"
-										+ event.kind() + "事件");
+								System.out.println(event.context() + "鍙戠敓浜�"
+										+ event.kind() + "浜嬩欢");
 								List<String> lines=FileUtils.readFileToStringArray(dir+"/"+event.context(), "#", null);
 								for(String line : lines){
 									System.out.println(line);
@@ -126,7 +125,6 @@ public class NotificationWebSocket extends WebSocketAdapter {
 								
 								new Thread(new Runnable(){
 
-									@Override
 									public void run() {
 										// TODO Auto-generated method stub
 										sendAlarmsByFile(dir+"/"+event.context());
@@ -152,7 +150,6 @@ public class NotificationWebSocket extends WebSocketAdapter {
 
 		(new Thread(new Runnable() {
 
-			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				RemoteEndpoint remote = getRemote();

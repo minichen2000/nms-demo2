@@ -1,7 +1,11 @@
 /target/
 .vscode/
+.classpath
+.project
+/.settings/
 logs/
 *.log
+*.iml
 !.gitkeep
 node_modules/
 tmp
