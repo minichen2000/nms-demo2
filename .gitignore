@@ -2,7 +2,7 @@
 .vscode/
 .classpath
 .project
-/.settings/
+.settings
 logs/
 *.log
 *.iml

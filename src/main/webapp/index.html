@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN" ng-app="nmsdemoApp">
+<html lang="zh-CN">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Cache-Control" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <title>NMS demo</title>
 
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -20,7 +17,7 @@
     <link rel="stylesheet" href="bower_components/ag-grid/dist/styles/theme-blue.css">
     <link rel="stylesheet" href="css/theme-nms.css">
     <link rel="stylesheet" href="css/main-tree.css">
-    <link rel='stylesheet' href='css/my-loading-bar.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/my-loading-bar.css' type='text/css' media='all'/>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -64,7 +61,7 @@
     <script src="app/directives/main-tree.directive.js "></script>
     <script src="app/directives/nms-properties-panel.directive.js "></script>
     <script src="app/directives/nms-data-panel.directive.js "></script>
-    
+
 
     <script src="bower_components/d3/d3.js "></script>
     <script src="bower_components/nvd3/build/nv.d3.js "></script>
@@ -74,37 +71,38 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body style="overflow-y:scroll">
-    
+<body style="overflow-y:scroll" ng-app="nmsdemoApp">
+
 <div ui-view>
     <div class="container" ng-controller="LoginController as vm ">
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input class="form-control " placeholder="用户名" type="text " required autofocus ng-model="vm.username ">
-        <input class="form-control " placeholder="密码" type="password" value="" ng-model="vm.password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block " ng-click="vm.login() " ng-disabled="vm.loginInprogress
-    || (!vm.username || !vm.password) ">登录</button>
-    <div class="progress progress-striped loginprogressbar " ng-class="{ 'active': vm.loginInprogress}
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input class="form-control " placeholder="用户名" type="text " required autofocus ng-model="vm.username ">
+            <input class="form-control " placeholder="密码" type="password" value="" ng-model="vm.password" required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block " ng-click="vm.login() " ng-disabled="vm.loginInprogress
+    || (!vm.username || !vm.password) ">登录
+            </button>
+            <div class="progress progress-striped loginprogressbar " ng-class="{ 'active': vm.loginInprogress}
     " ng-if="vm.loginProgress!=100 ">
-                            <div class="progress-bar progress-bar-info " ng-class="{ 'progress-bar-success': vm.loginInprogress||vm.loginOK,
+                <div class="progress-bar progress-bar-info " ng-class="{ 'progress-bar-success': vm.loginInprogress||vm.loginOK,
     'progress-bar-danger': !vm.loginInprogress && !vm.loginOK} "
-                            role="progressbar " aria-valuenow="{{vm.loginProgress}} " aria-valuemin="0
+                     role="progressbar " aria-valuenow="{{vm.loginProgress}} " aria-valuemin="0
     " aria-valuemax="100 "
-                            style="min-width: 70%; width: {{vm.loginProgress}}%; ">
-                                <span>{{vm.loginStepInfo}}</span>
-                            </div>
+                     style="min-width: 70%; width: {{vm.loginProgress}}%; ">
+                    <span>{{vm.loginStepInfo}}</span>
+                </div>
 
-                        </div>
-      </form>
-      
+            </div>
+        </form>
 
-    </div> 
+
     </div>
-  </body>
+</div>
+</body>
 
 </html>

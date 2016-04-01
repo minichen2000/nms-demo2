@@ -36,7 +36,7 @@
             }, 3000);
             return false;
         }
-    };
+    }
     function connectOnce(addr, heartbeat) {
         try {
             console.log("Try to connect to websocket: " + addr);
@@ -80,7 +80,7 @@
             if (!heartbeatLaunched) {
                 heartbeatLaunched = true;
                 setInterval(function () {
-                    if (ws_state == 1) sendMessage("heartbeat: " + (new Date().toString()));
+                    if (ws_state == 1) sendMessage("heartbeat: " + (new Date().toLocaleTimeString()));
                 }, heartbeat);
             }
 
@@ -89,7 +89,7 @@
             console.error("Exception: " + e.message);
             return false;
         }
-    };
+    }
 
     function sendJSON(obj) {
         if (ws_state != 1) {
