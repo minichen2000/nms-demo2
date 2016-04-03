@@ -23,7 +23,8 @@ import org.nmsdemo.model.MDL_Port;
 import org.nmsdemo.utils.DBUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
- 
+import org.nmsdemo.utils.JPAUtils;
+
 public class TesterServlet extends HttpServlet
 {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
@@ -95,7 +96,8 @@ public class TesterServlet extends HttpServlet
         
         System.out.println("\n\n\nne:\n"+msg);
         
-        Connection c=DBUtils.getConnection();
+        //Connection c=DBUtils.getConnection();
+        JPAUtils.testIt();
         
         try
         {
