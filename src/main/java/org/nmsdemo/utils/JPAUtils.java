@@ -1,7 +1,7 @@
 package org.nmsdemo.utils;
 
-import org.nmsdemo.dao.PersonDao;
-import org.nmsdemo.model.Person;
+import org.nmsdemo.dao.MDL_NEDao;
+import org.nmsdemo.model.MDL_NE;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
@@ -11,42 +11,30 @@ import java.util.List;
  */
 public class JPAUtils {
 
-    static public void testIt() {
+
+
+    static public void testNE() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "applicationContext.xml");
-        PersonDao dao = context.getBean(PersonDao.class);
+        MDL_NEDao dao = context.getBean(MDL_NEDao.class);
 
-        Person peter = new Person("Peter", "Sagan");
-        Person nasta = new Person("Nasta", "Kuzminova");
-
+        MDL_NE ne1=new MDL_NE(100L, "Q3", 21L, "node1", "cd", "1660sm", "", "7.1", "", "", "", "suppervised", "available", "cleared");
+        MDL_NE ne2=new MDL_NE(101L, "DEX", 22L, "node2", "cd", "1678mc", "", "7.2", "", "", "", "unsuppervised", "unavailable", "major");
         // Add new Person records
-        dao.save(peter);
-        dao.save(nasta);
+        dao.save(ne1);
+        dao.save(ne2);
 
         // Count Person records
         System.out.println("Count Person records: " + dao.count());
 
         // Print all records
-        List<Person> persons = (List<Person>) dao.findAll();
-        for (Person person : persons) {
-            System.out.println(person);
+        List<MDL_NE> nes = (List<MDL_NE>) dao.findAll();
+        for (MDL_NE ne : nes) {
+            System.out.println(ne);
         }
 
         // Find Person by surname
-        System.out.println("Find by surname 'Sagan': " + dao.findBySurname("Sagan"));
-
-        // Update Person
-        nasta.setName("Barbora");
-        nasta.setSurname("Spotakova");
-        dao.save(nasta);
-
-        System.out.println("Find by id 2: " + dao.findOne(2L));
-
-        // Remove record from Person
-        dao.delete(2L);
-
-        // And finally count records
-        System.out.println("Count Person records: " + dao.count());
+        System.out.println("Find by neGroupId 100 neId 21: " + dao.findByNeIdAndNeGroupId(21L, 100L));
 
         context.close();
     }

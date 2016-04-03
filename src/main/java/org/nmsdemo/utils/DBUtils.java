@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBUtils
 {
     static private Connection c=null;
-    static public Connection getConnection(){
+    /*static public Connection getConnection(){
         if(null!=c) 
             return c;
         try {
@@ -29,6 +29,6 @@ public class DBUtils
         }
 
         
-    }
+    }*/
 
 }

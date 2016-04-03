@@ -95,9 +95,8 @@ public class TesterServlet extends HttpServlet
         String msg = MDLUtil.Object_WRAP(ne);
         
         System.out.println("\n\n\nne:\n"+msg);
-        
-        //Connection c=DBUtils.getConnection();
-        JPAUtils.testIt();
+
+        JPAUtils.testNE();
         
         try
         {

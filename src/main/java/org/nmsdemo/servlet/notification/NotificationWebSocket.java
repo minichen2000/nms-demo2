@@ -163,7 +163,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										random.nextInt(10), random.nextInt(10),
 										random.nextInt(10))));
 						remote.sendString(MDLUtil.Event_WRAP("neCreation",
-								new MDL_NE(999, "q3", 4, "node3_3", "ChengDu",
+								new MDL_NE(999L, "q3", 4L, "node3_3", "ChengDu",
 										"1660sm", "sm", "4.0",
 										"2015-01-20 15:32:22", "10.105.3.10",
 										"N/A", "unsuppervised", "available",
@@ -197,7 +197,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										random.nextInt(10), random.nextInt(10),
 										random.nextInt(10))));
 						remote.sendString(MDLUtil.Event_WRAP("neDeletion",
-								new MDL_NE(999, "q3", 4, "node3_3", "ChengDu",
+								new MDL_NE(999L, "q3", 4L, "node3_3", "ChengDu",
 										"1660sm", "sm", "4.0",
 										"2015-01-20 15:32:22", "10.105.3.10",
 										"N/A", "unsuppervised", "available",
