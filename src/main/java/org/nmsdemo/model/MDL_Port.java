@@ -1,16 +1,19 @@
 package org.nmsdemo.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class MDL_Port
 {
-    private String tpKey;
-    private String tpId;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
     private String neName;
-    private int neGroupId;
-    private int neId;
+    private Long neId;
     private String rate;
     private boolean connected;
-    private String plKey;
+    private Long plId;
     public MDL_Port()
     {
         super();

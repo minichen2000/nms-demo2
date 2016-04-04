@@ -1,18 +1,16 @@
 package org.nmsdemo.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class MDL_NE {
-    private String neKey;
-    private Long neGroupId;
-    private String neGroupType;
 
     @Id
-    /*@GeneratedValue*/
-    private Long neId;
+    private Long id;
+    private int neGroupId;
+    private String neGroupType;
+    private int neId;
     private String name;
     private String location;
     private String type;
@@ -29,12 +27,8 @@ public class MDL_NE {
 
     }
 
-    public MDL_NE(Long neGroupId, String neGroupType, Long neId, String name,
-                  String location, String type, String subtype, String version,
-                  String creationDate, String protocolAddress, String comments,
-                  String suppervisionState, String communicationState,
-                  String alarmState) {
-        super();
+    public MDL_NE(Long id, int neGroupId, String neGroupType, int neId, String name, String location, String type, String subtype, String version, String creationDate, String protocolAddress, String comments, String suppervisionState, String communicationState, String alarmState) {
+        this.id = id;
         this.neGroupId = neGroupId;
         this.neGroupType = neGroupType;
         this.neId = neId;
@@ -49,22 +43,21 @@ public class MDL_NE {
         this.suppervisionState = suppervisionState;
         this.communicationState = communicationState;
         this.alarmState = alarmState;
-        this.neKey = "" + neGroupId + "/" + neId;
     }
 
-    public String getNeKey() {
-        return neKey;
+    public Long getId() {
+        return id;
     }
 
-    public void setNeKey(String neKey) {
-        this.neKey = neKey;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getNeGroupId() {
+    public int getNeGroupId() {
         return neGroupId;
     }
 
-    public void setNeGroupId(Long neGroupId) {
+    public void setNeGroupId(int neGroupId) {
         this.neGroupId = neGroupId;
     }
 
@@ -76,11 +69,11 @@ public class MDL_NE {
         this.neGroupType = neGroupType;
     }
 
-    public Long getNeId() {
+    public int getNeId() {
         return neId;
     }
 
-    public void setNeId(Long neId) {
+    public void setNeId(int neId) {
         this.neId = neId;
     }
 
@@ -172,10 +165,9 @@ public class MDL_NE {
         this.alarmState = alarmState;
     }
 
-
     @Override
     public String toString() {
-        return "MDL_NE [neId=" + neId + ", neGroupId=" + neGroupId + ", name=" + name + ", type=" + type
+        return "MDL_NE [id=" + id+", neId=" + neId + ", neGroupId=" + neGroupId + ", name=" + name + ", type=" + type
                 + "]";
     }
 }

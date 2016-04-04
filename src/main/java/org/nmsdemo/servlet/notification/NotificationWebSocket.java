@@ -20,7 +20,6 @@ import org.nmsdemo.model.MDL_Alarm;
 import org.nmsdemo.model.MDL_AlarmPSStatastic;
 import org.nmsdemo.model.MDL_GEN_SNC;
 import org.nmsdemo.model.MDL_NE;
-import org.nmsdemo.model.MDL_TPRef;
 import org.nmsdemo.servlet.model.MDL_AlarmServlet;
 import org.nmsdemo.utils.FileUtils;
 
@@ -163,7 +162,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										random.nextInt(10), random.nextInt(10),
 										random.nextInt(10))));
 						remote.sendString(MDLUtil.Event_WRAP("neCreation",
-								new MDL_NE(999L, "q3", 4L, "node3_3", "ChengDu",
+								new MDL_NE(999000004L, 999, "q3", 4, "node3_3", "ChengDu",
 										"1660sm", "sm", "4.0",
 										"2015-01-20 15:32:22", "10.105.3.10",
 										"N/A", "unsuppervised", "available",
@@ -197,7 +196,7 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										random.nextInt(10), random.nextInt(10),
 										random.nextInt(10))));
 						remote.sendString(MDLUtil.Event_WRAP("neDeletion",
-								new MDL_NE(999L, "q3", 4L, "node3_3", "ChengDu",
+								new MDL_NE(999000004L, 999, "q3", 4, "node3_3", "ChengDu",
 										"1660sm", "sm", "4.0",
 										"2015-01-20 15:32:22", "10.105.3.10",
 										"N/A", "unsuppervised", "available",

@@ -12,13 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.nmsdemo.model.MDLUtil;
-import org.nmsdemo.model.MDL_AlarmPSStatastic;
 import org.nmsdemo.model.MDL_GEN_SNC;
-import org.nmsdemo.model.MDL_NE;
-import org.nmsdemo.model.MDL_NEGroup;
-import org.nmsdemo.model.MDL_TPRef;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MDL_SNCServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)

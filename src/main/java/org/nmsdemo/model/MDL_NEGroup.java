@@ -1,7 +1,12 @@
 package org.nmsdemo.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class MDL_NEGroup {
-	private int neGroupId;
+	@Id
+	@GeneratedValue
+	private int id;
 	private String neGroupType;
 	public MDL_NEGroup() {
 		super();

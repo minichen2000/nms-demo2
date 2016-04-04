@@ -1,16 +1,20 @@
 package org.nmsdemo.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class MDL_CTP
 {
-    private String tpKey;
-    private String tpId;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
-    private int neGroupId;
-    private int neId;
-    private String parentTPKey;
+    private Long neId;
+    private Long parentTPId;
     private String rate;
     private boolean connected;
-    private String connectedObjKey;
+    private Long sncStartWith;
+    private Long sncEndWith;
     public MDL_CTP()
     {
         super();

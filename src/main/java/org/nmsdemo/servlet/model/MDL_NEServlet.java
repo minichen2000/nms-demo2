@@ -27,14 +27,15 @@ public class MDL_NEServlet extends HttpServlet {
 		// req.setCharacterEncoding("utf-8");
 
 		List<MDL_NE> nes = new ArrayList<MDL_NE>();
-		Long LL = 24L;
+		int LL = 24;
 
 		Random random = new Random();
-		for (Long i = 0L; i < LL; i++) {
-		    Long neGroupId=100 + i / 100;
-		    Long neId=i % 100;
+		for (int i = 0; i < LL; i++) {
+		    int neGroupId=100 + i / 100;
+		    int neId=i % 100;
+			Long id= Long.valueOf(neGroupId*1000000+neId);
 		    String neName="node"+neGroupId+"/"+neId;
-            nes.add(new MDL_NE(neGroupId, 
+            nes.add(new MDL_NE(id, neGroupId,
                 random.nextInt(9) > 5 ? "q3" : "dex", 
                         neId, neName, "ChengDu" + i, 
             genNEType(random),

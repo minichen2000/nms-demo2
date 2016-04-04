@@ -1,21 +1,22 @@
 package org.nmsdemo.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.List;
 
 public class MDL_GEN_SNC
 {
-    private String sncKey;
-    private String sncId;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
     private String rate;
     private String sncState;
     private String protectedType;
-    private List<MDL_TPRef> aEndPorts;
-    private List<MDL_TPRef> zEndPorts;
+    private List<MDL_CTP> aEndTPs;
+    private List<MDL_CTP> zEndTPs;
     public MDL_GEN_SNC()
     {
-        super();
-        // TODO Auto-generated constructor stub
     }
     public MDL_GEN_SNC( String sncKey, String sncId,
             String name, String rate, String sncState, String protectedType,

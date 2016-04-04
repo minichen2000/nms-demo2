@@ -1,10 +1,14 @@
 package org.nmsdemo.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class MDL_Alarm {
-	String alarmKey;
-	String alarmId;
+	@Id
+	@GeneratedValue
+	Long id;
 	String objectName;
-	String objectKey;
+	Long objectId;
 	String objectType;
 	String probableCause;
 	String probableCauseId;
@@ -21,19 +25,10 @@ public class MDL_Alarm {
 	String additionalText;
 
 	public MDL_Alarm() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public MDL_Alarm(String alarmKey, String alarmId, String objectName,
-			String objectKey, String objectType, String probableCause,
-			String probableCauseId, String alarmType, String perceivedSeverity,
-			String neTime, String emsTime, boolean cleared,
-			String clearingTime, boolean ack, String ackTime, String ackUser,
-			String serviceAffecting, String additionalText) {
-		super();
-		this.alarmKey = alarmKey;
-		this.alarmId = alarmId;
+	public MDL_Alarm(Long id, String objectName, String objectKey, String objectType, String probableCause, String probableCauseId, String alarmType, String perceivedSeverity, String neTime, String emsTime, boolean cleared, String clearingTime, boolean ack, String ackTime, String ackUser, String serviceAffecting, String additionalText) {
+		this.id = id;
 		this.objectName = objectName;
 		this.objectKey = objectKey;
 		this.objectType = objectType;
@@ -52,20 +47,12 @@ public class MDL_Alarm {
 		this.additionalText = additionalText;
 	}
 
-	public String getAlarmKey() {
-		return alarmKey;
+	public Long getId() {
+		return id;
 	}
 
-	public void setAlarmKey(String alarmKey) {
-		this.alarmKey = alarmKey;
-	}
-
-	public String getAlarmId() {
-		return alarmId;
-	}
-
-	public void setAlarmId(String alarmId) {
-		this.alarmId = alarmId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getObjectName() {
@@ -195,6 +182,4 @@ public class MDL_Alarm {
 	public void setAdditionalText(String additionalText) {
 		this.additionalText = additionalText;
 	}
-
-	
 }
