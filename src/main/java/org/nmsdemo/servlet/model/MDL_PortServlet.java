@@ -52,10 +52,10 @@ public class MDL_PortServlet extends HttpServlet
 	            String tpName="Port"+i;
 	            String key=neName+"/"+tpName;
 	            boolean connected=random.nextInt(9) > 5;
-	            ports.add(new MDL_Port(key, ""+i, tpName, neName, _neGroupId, _neId,
+	            ports.add(new MDL_Port((long)i, tpName, neName, Long.parseLong(neId),
 	                random.nextInt(9) > 5 ? "STM1" : "STM4", 
 	                        connected, 
-	                        connected ? "PL"+i : ""));
+	                        connected ? 10000L+i : -1L));
 	        }
 
 	        String msg = MDLUtil.Object_WRAP(ports);

@@ -17,97 +17,80 @@ public class MDL_CTP
     private Long sncEndWith;
     public MDL_CTP()
     {
-        super();
-        // TODO Auto-generated constructor stub
     }
-    public MDL_CTP( String tpKey, String tpId, String name, int neGroupId,
-            int neId, String parentTPKey, String rate, boolean connected,
-            String connectedObjKey )
-    {
-        super();
-        this.tpKey = tpKey;
-        this.tpId = tpId;
+
+    public MDL_CTP(Long id, String name, Long neId, Long parentTPId, String rate, boolean connected, Long sncStartWith, Long sncEndWith) {
+        this.id = id;
         this.name = name;
-        this.neGroupId = neGroupId;
         this.neId = neId;
-        this.parentTPKey = parentTPKey;
+        this.parentTPId = parentTPId;
         this.rate = rate;
         this.connected = connected;
-        this.connectedObjKey = connectedObjKey;
+        this.sncStartWith = sncStartWith;
+        this.sncEndWith = sncEndWith;
     }
-    public String getTpKey()
-    {
-        return tpKey;
+
+    public Long getId() {
+        return id;
     }
-    public void setTpKey( String tpKey )
-    {
-        this.tpKey = tpKey;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getTpId()
-    {
-        return tpId;
-    }
-    public void setTpId( String tpId )
-    {
-        this.tpId = tpId;
-    }
-    public String getName()
-    {
+
+    public String getName() {
         return name;
     }
-    public void setName( String name )
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
-    public int getNeGroupId()
-    {
-        return neGroupId;
-    }
-    public void setNeGroupId( int neGroupId )
-    {
-        this.neGroupId = neGroupId;
-    }
-    public int getNeId()
-    {
+
+    public Long getNeId() {
         return neId;
     }
-    public void setNeId( int neId )
-    {
+
+    public void setNeId(Long neId) {
         this.neId = neId;
     }
-    public String getParentTPKey()
-    {
-        return parentTPKey;
+
+    public Long getParentTPId() {
+        return parentTPId;
     }
-    public void setParentTPKey( String parentTPKey )
-    {
-        this.parentTPKey = parentTPKey;
+
+    public void setParentTPId(Long parentTPId) {
+        this.parentTPId = parentTPId;
     }
-    public String getRate()
-    {
+
+    public String getRate() {
         return rate;
     }
-    public void setRate( String rate )
-    {
+
+    public void setRate(String rate) {
         this.rate = rate;
     }
-    public boolean isConnected()
-    {
+
+    public boolean isConnected() {
         return connected;
     }
-    public void setConnected( boolean connected )
-    {
+
+    public void setConnected(boolean connected) {
         this.connected = connected;
     }
-    public String getConnectedObjKey()
-    {
-        return connectedObjKey;
+
+    public Long getSncStartWith() {
+        return sncStartWith;
     }
-    public void setConnectedObjKey( String connectedObjKey )
-    {
-        this.connectedObjKey = connectedObjKey;
+
+    public void setSncStartWith(Long sncStartWith) {
+        this.sncStartWith = sncStartWith;
     }
-    
-    
-      
+
+    public Long getSncEndWith() {
+        return sncEndWith;
+    }
+
+    public void setSncEndWith(Long sncEndWith) {
+        this.sncEndWith = sncEndWith;
+    }
 }

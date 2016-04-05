@@ -16,97 +16,72 @@ public class MDL_Port
     private Long plId;
     public MDL_Port()
     {
-        super();
-        // TODO Auto-generated constructor stub
+
     }
-    public MDL_Port( String tpKey, String tpId, String name, String neName, int neGroupId,
-            int neId, String rate, boolean connected, String plKey )
-    {
-        super();
-        this.tpKey = tpKey;
-        this.tpId = tpId;
+
+    public MDL_Port(Long id, String name, String neName, Long neId, String rate, boolean connected, Long plId) {
+        this.id = id;
         this.name = name;
-        this.neName=neName;
-        this.neGroupId = neGroupId;
+        this.neName = neName;
         this.neId = neId;
         this.rate = rate;
         this.connected = connected;
-        this.plKey = plKey;
+        this.plId = plId;
     }
-    
-    
-    public String getNeName()
-    {
-        return neName;
+
+    public Long getId() {
+        return id;
     }
-    public void setNeName( String neName )
-    {
-        this.neName = neName;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getTpKey()
-    {
-        return tpKey;
-    }
-    public void setTpKey( String tpKey )
-    {
-        this.tpKey = tpKey;
-    }
-    public String getTpId()
-    {
-        return tpId;
-    }
-    public void setTpId( String tpId )
-    {
-        this.tpId = tpId;
-    }
-    public String getName()
-    {
+
+    public String getName() {
         return name;
     }
-    public void setName( String name )
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
-    public int getNeGroupId()
-    {
-        return neGroupId;
+
+    public String getNeName() {
+        return neName;
     }
-    public void setNeGroupId( int neGroupId )
-    {
-        this.neGroupId = neGroupId;
+
+    public void setNeName(String neName) {
+        this.neName = neName;
     }
-    public int getNeId()
-    {
+
+    public Long getNeId() {
         return neId;
     }
-    public void setNeId( int neId )
-    {
+
+    public void setNeId(Long neId) {
         this.neId = neId;
     }
-    public String getRate()
-    {
+
+    public String getRate() {
         return rate;
     }
-    public void setRate( String rate )
-    {
+
+    public void setRate(String rate) {
         this.rate = rate;
     }
-    public boolean isConnected()
-    {
+
+    public boolean isConnected() {
         return connected;
     }
-    public void setConnected( boolean connected )
-    {
+
+    public void setConnected(boolean connected) {
         this.connected = connected;
     }
-    public String getPlKey()
-    {
-        return plKey;
+
+    public Long getPlId() {
+        return plId;
     }
-    public void setPlKey( String plKey )
-    {
-        this.plKey = plKey;
+
+    public void setPlId(Long plId) {
+        this.plId = plId;
     }
-    
-    
 }

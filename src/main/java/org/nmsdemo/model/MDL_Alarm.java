@@ -27,10 +27,10 @@ public class MDL_Alarm {
 	public MDL_Alarm() {
 	}
 
-	public MDL_Alarm(Long id, String objectName, String objectKey, String objectType, String probableCause, String probableCauseId, String alarmType, String perceivedSeverity, String neTime, String emsTime, boolean cleared, String clearingTime, boolean ack, String ackTime, String ackUser, String serviceAffecting, String additionalText) {
+	public MDL_Alarm(Long id, String objectName, Long objectId, String objectType, String probableCause, String probableCauseId, String alarmType, String perceivedSeverity, String neTime, String emsTime, boolean cleared, String clearingTime, boolean ack, String ackTime, String ackUser, String serviceAffecting, String additionalText) {
 		this.id = id;
 		this.objectName = objectName;
-		this.objectKey = objectKey;
+		this.objectId = objectId;
 		this.objectType = objectType;
 		this.probableCause = probableCause;
 		this.probableCauseId = probableCauseId;
@@ -63,12 +63,12 @@ public class MDL_Alarm {
 		this.objectName = objectName;
 	}
 
-	public String getObjectKey() {
-		return objectKey;
+	public Long getObjectId() {
+		return objectId;
 	}
 
-	public void setObjectKey(String objectKey) {
-		this.objectKey = objectKey;
+	public void setObjectId(Long objectId) {
+		this.objectId = objectId;
 	}
 
 	public String getObjectType() {

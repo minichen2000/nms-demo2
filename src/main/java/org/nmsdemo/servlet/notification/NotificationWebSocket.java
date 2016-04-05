@@ -15,11 +15,7 @@ import java.util.Random;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.nmsdemo.model.MDLUtil;
-import org.nmsdemo.model.MDL_Alarm;
-import org.nmsdemo.model.MDL_AlarmPSStatastic;
-import org.nmsdemo.model.MDL_GEN_SNC;
-import org.nmsdemo.model.MDL_NE;
+import org.nmsdemo.model.*;
 import org.nmsdemo.servlet.model.MDL_AlarmServlet;
 import org.nmsdemo.utils.FileUtils;
 
@@ -60,8 +56,8 @@ public class NotificationWebSocket extends WebSocketAdapter {
 								boolean isCleared = (i % 9 == 0 ? true : false);
 								boolean isAck = (i % 7 == 0 ? true : false);
 								remote.sendString(MDLUtil.Event_WRAP("alarmCreation",
-										new MDL_Alarm("alarm_" + i, "alarm_" + i, ot
-												.toLowerCase() + i, ot.toLowerCase() + i, ot, MDL_AlarmServlet.genPBC(r),
+										new MDL_Alarm((long)i,  ot
+												.toLowerCase() + i, (long)i, ot, MDL_AlarmServlet.genPBC(r),
 												"0", MDL_AlarmServlet.genAlarmType(r), MDL_AlarmServlet.genAlarmPS(r), neTime,
 												neTime, isCleared,
 												isCleared ? neTime : "", isAck,
@@ -170,16 +166,15 @@ public class NotificationWebSocket extends WebSocketAdapter {
 						
 						
 						
-						List<MDL_TPRef> aEnds=new ArrayList<MDL_TPRef>();
-						aEnds.add(new MDL_TPRef("100/1", 1, 100, "nodeA", "trail3_3_aEndTP", "trail3_3_aEndTP"));
-						
-						List<MDL_TPRef> zEnds=new ArrayList<MDL_TPRef>();
-						zEnds.add(new MDL_TPRef("100/1", 1, 100, "nodeZ", "trail3_3_zEndTP", "trail3_3_zEndTP"));
+						List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
+						aEnds.add(new MDL_CTP((long)3, "trail"+3+"_aEndTP", (long)3, (long)3, "", true, (long)3, (long)3));
+
+						List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
+						zEnds.add(new MDL_CTP((long)3, "trail"+3+"_zEndTP", (long)3, (long)3, "", true, (long)3, (long)3));
 						
 						remote.sendString(MDLUtil.Event_WRAP("sncCreation",
-								new MDL_GEN_SNC(""+999999, 
-									    ""+999999, 
-										"trail3_3", 
+								new MDL_GEN_SNC(999999L,
+										"trail3_3",
 										"VC4",
 										"implemented",
 										"unprotected",
@@ -203,16 +198,16 @@ public class NotificationWebSocket extends WebSocketAdapter {
 										"major")));
 						
 						
-						aEnds=new ArrayList<MDL_TPRef>();
-						aEnds.add(new MDL_TPRef("100/1", 1, 100, "nodeA", "trail3_3_aEndTP", "trail3_3_aEndTP"));
+						aEnds=new ArrayList<MDL_CTP>();
+						aEnds.add(new MDL_CTP((long)3, "trail"+3+"_aEndTP", (long)3, (long)3, "", true, (long)3, (long)3));
+
 						
-						zEnds=new ArrayList<MDL_TPRef>();
-						zEnds.add(new MDL_TPRef("100/1", 1, 100, "nodeZ", "trail3_3_zEndTP", "trail3_3_zEndTP"));
+						zEnds=new ArrayList<MDL_CTP>();
+						zEnds.add(new MDL_CTP((long)3, "trail"+3+"_zEndTP", (long)3, (long)3, "", true, (long)3, (long)3));
 						
 						remote.sendString(MDLUtil.Event_WRAP("sncDeletion",
-								new MDL_GEN_SNC(""+999999, 
-									    ""+999999, 
-										"trail3_3", 
+								new MDL_GEN_SNC(999999L,
+										"trail3_3",
 										"VC4",
 										"implemented",
 										"unprotected",

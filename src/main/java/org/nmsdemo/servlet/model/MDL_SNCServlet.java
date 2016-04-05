@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.nmsdemo.model.MDLUtil;
+import org.nmsdemo.model.MDL_CTP;
 import org.nmsdemo.model.MDL_GEN_SNC;
 
 public class MDL_SNCServlet extends HttpServlet {
@@ -27,14 +28,13 @@ public class MDL_SNCServlet extends HttpServlet {
 		Random random = new Random();
 
 		for (int i = 0; i < LL; i++) {
-			List<MDL_TPRef> aEnds=new ArrayList<MDL_TPRef>();
-			aEnds.add(new MDL_TPRef("100/"+i, i, 100, "node100/"+i, "trail"+i+"_aEndTP", "trail"+i+"_aEndTP"));
+			List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
+			aEnds.add(new MDL_CTP((long)i, "trail"+i+"_aEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
 			
-			List<MDL_TPRef> zEnds=new ArrayList<MDL_TPRef>();
-			zEnds.add(new MDL_TPRef("100/"+(i+1), i+1, 100, "node100/"+(i+1), "trail"+i+"_zEndTP", "trail"+i+"_zEndTP"));
+			List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
+			zEnds.add(new MDL_CTP((long)i, "trail"+i+"_zEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
 			
-		    sncs.add(new MDL_GEN_SNC(""+(100 + i), 
-		    ""+(100 + i), 
+		    sncs.add(new MDL_GEN_SNC((long)i,
 			"trail" + i, 
 			genSNCRate(random),
 			genSNCState(random),

@@ -21,7 +21,9 @@ import org.nmsdemo.model.MDL_NEGroup;
 import org.nmsdemo.model.MDL_Port;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
- 
+
+import static java.lang.Long.parseLong;
+
 public class MDL_CTPServlet extends HttpServlet
 {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
@@ -52,10 +54,10 @@ public class MDL_CTPServlet extends HttpServlet
 	        for (int i = 0; i < LL; i++) {
 	            String key=portKey+"/"+i;
 	            boolean connected=i%3<1;
-	            ctps.add(new MDL_CTP(key, key, key, _neGroupId, _neId, portKey,
+	            ctps.add(new MDL_CTP((long)i, key, parseLong(neId), parseLong(portKey),
 	                i%2<1 ? "VC12" : "VC4", 
 	                        connected,
-	                        connected ? "trail"+i : ""));
+	                        -1L, -1L));
 	        }
 
 	        String msg = MDLUtil.Object_WRAP(ctps);

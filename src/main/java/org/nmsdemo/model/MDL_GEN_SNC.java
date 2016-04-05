@@ -18,84 +18,70 @@ public class MDL_GEN_SNC
     public MDL_GEN_SNC()
     {
     }
-    public MDL_GEN_SNC( String sncKey, String sncId,
-            String name, String rate, String sncState, String protectedType,
-            List<MDL_TPRef> aEndPorts, List<MDL_TPRef> zEndPorts )
-    {
-        super();
-        this.sncKey = sncKey;
-        this.sncId = sncId;
+
+    public MDL_GEN_SNC(Long id, String name, String rate, String sncState, String protectedType, List<MDL_CTP> aEndTPs, List<MDL_CTP> zEndTPs) {
+        this.id = id;
         this.name = name;
         this.rate = rate;
         this.sncState = sncState;
         this.protectedType = protectedType;
-        this.aEndPorts = aEndPorts;
-        this.zEndPorts = zEndPorts;
+        this.aEndTPs = aEndTPs;
+        this.zEndTPs = zEndTPs;
     }
-    public String getSncKey()
-    {
-        return sncKey;
+
+    public Long getId() {
+        return id;
     }
-    public void setSncKey( String sncKey )
-    {
-        this.sncKey = sncKey;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getSncId()
-    {
-        return sncId;
-    }
-    public void setSncId( String sncId )
-    {
-        this.sncId = sncId;
-    }
-    public String getName()
-    {
+
+    public String getName() {
         return name;
     }
-    public void setName( String name )
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
-    public String getRate()
-    {
+
+    public String getRate() {
         return rate;
     }
-    public void setRate( String rate )
-    {
+
+    public void setRate(String rate) {
         this.rate = rate;
     }
-    public String getSncState()
-    {
+
+    public String getSncState() {
         return sncState;
     }
-    public void setSncState( String sncState )
-    {
+
+    public void setSncState(String sncState) {
         this.sncState = sncState;
     }
-    public String getProtectedType()
-    {
+
+    public String getProtectedType() {
         return protectedType;
     }
-    public void setProtectedType( String protectedType )
-    {
+
+    public void setProtectedType(String protectedType) {
         this.protectedType = protectedType;
     }
-    public List<MDL_TPRef> getaEndPorts()
-    {
-        return aEndPorts;
+
+    public List<MDL_CTP> getaEndTPs() {
+        return aEndTPs;
     }
-    public void setaEndPorts( List<MDL_TPRef> aEndPorts )
-    {
-        this.aEndPorts = aEndPorts;
+
+    public void setaEndTPs(List<MDL_CTP> aEndTPs) {
+        this.aEndTPs = aEndTPs;
     }
-    public List<MDL_TPRef> getzEndPorts()
-    {
-        return zEndPorts;
+
+    public List<MDL_CTP> getzEndTPs() {
+        return zEndTPs;
     }
-    public void setzEndPorts( List<MDL_TPRef> zEndPorts )
-    {
-        this.zEndPorts = zEndPorts;
+
+    public void setzEndTPs(List<MDL_CTP> zEndTPs) {
+        this.zEndTPs = zEndTPs;
     }
-    
-    
 }

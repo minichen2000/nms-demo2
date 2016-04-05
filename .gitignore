@@ -14,3 +14,4 @@ tmp
 .DS_Store
 bower_components/
 /src/main/bin/
+~*
