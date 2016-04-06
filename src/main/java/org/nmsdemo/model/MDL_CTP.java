@@ -1,12 +1,13 @@
 package org.nmsdemo.model;
 
+import org.nmsdemo.utils.Utils;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 public class MDL_CTP
 {
     @Id
-    @GeneratedValue
     private Long id;
     private String name;
     private Long neId;
@@ -20,6 +21,7 @@ public class MDL_CTP
     }
 
     public MDL_CTP(Long id, String name, Long neId, Long parentTPId, String rate, boolean connected, Long sncStartWith, Long sncEndWith) {
+        id= id<0 ? Utils.genNewId(2) : id;
         this.id = id;
         this.name = name;
         this.neId = neId;

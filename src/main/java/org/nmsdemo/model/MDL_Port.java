@@ -1,12 +1,13 @@
 package org.nmsdemo.model;
 
+import org.nmsdemo.utils.Utils;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 public class MDL_Port
 {
     @Id
-    @GeneratedValue
     private Long id;
     private String name;
     private String neName;
@@ -20,6 +21,7 @@ public class MDL_Port
     }
 
     public MDL_Port(Long id, String name, String neName, Long neId, String rate, boolean connected, Long plId) {
+        id= id<0 ? Utils.genNewId(1) : id;
         this.id = id;
         this.name = name;
         this.neName = neName;

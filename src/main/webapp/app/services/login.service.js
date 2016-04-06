@@ -98,6 +98,7 @@
 
             function OK(rsp) {
                 logger.log("retrieveNEsOK");
+                //logger.log("rsp.data=\n"+JSON.stringify(rsp.data));
                 statasticService.setNEList(rsp.data);
                 if (lpcb) {
                     lpcb(true, progress, "获取网元列表成功");

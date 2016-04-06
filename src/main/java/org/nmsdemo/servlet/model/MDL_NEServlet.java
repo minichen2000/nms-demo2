@@ -17,6 +17,7 @@ import org.nmsdemo.model.MDL_NE;
 import org.nmsdemo.model.MDL_NEGroup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.nmsdemo.utils.Utils;
 
 public class MDL_NEServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -33,8 +34,8 @@ public class MDL_NEServlet extends HttpServlet {
 		for (int i = 0; i < LL; i++) {
 		    int neGroupId=100 + i / 100;
 		    int neId=i % 100;
-			Long id= Long.valueOf(neGroupId*1000000+neId);
-		    String neName="node"+neGroupId+"/"+neId;
+			Long id= Utils.genNEFullId(neGroupId, neId);
+			String neName="node"+neGroupId+"/"+neId;
             nes.add(new MDL_NE(id, neGroupId,
                 random.nextInt(9) > 5 ? "q3" : "dex", 
                         neId, neName, "ChengDu" + i, 
@@ -53,7 +54,7 @@ public class MDL_NEServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 
 		String msg = MDLUtil.Object_WRAP(nes);
-		// System.out.println(msg);
+		System.out.println(msg);
 		out.println(msg);
 	}
 

@@ -54,7 +54,7 @@ public class MDL_CTPServlet extends HttpServlet
 	        for (int i = 0; i < LL; i++) {
 	            String key=portKey+"/"+i;
 	            boolean connected=i%3<1;
-	            ctps.add(new MDL_CTP((long)i, key, parseLong(neId), parseLong(portKey),
+	            ctps.add(new MDL_CTP(-1L, key, parseLong(neId), parseLong(portKey),
 	                i%2<1 ? "VC12" : "VC4", 
 	                        connected,
 	                        -1L, -1L));

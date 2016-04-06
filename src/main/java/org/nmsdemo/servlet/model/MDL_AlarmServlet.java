@@ -48,7 +48,7 @@ public class MDL_AlarmServlet extends HttpServlet {
 			String neTime=genAlarmNeTime();
 			boolean isCleared = (i % 9 == 0 ? true : false);
 			boolean isAck = (i % 7 == 0 ? true : false);
-			alarms.add(new MDL_Alarm((long)i, ot.toLowerCase() + i, (long)i, ot, genPBC(r),
+			alarms.add(new MDL_Alarm(-1L, ot.toLowerCase() + i, (long)i, ot, genPBC(r),
 					"0", genAlarmType(r), genAlarmPS(r), neTime,
 					neTime, isCleared,
 					isCleared ? neTime : "", isAck,

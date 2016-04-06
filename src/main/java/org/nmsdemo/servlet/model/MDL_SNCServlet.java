@@ -29,12 +29,12 @@ public class MDL_SNCServlet extends HttpServlet {
 
 		for (int i = 0; i < LL; i++) {
 			List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
-			aEnds.add(new MDL_CTP((long)i, "trail"+i+"_aEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
+			aEnds.add(new MDL_CTP(-1L, "trail"+i+"_aEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
 			
 			List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
-			zEnds.add(new MDL_CTP((long)i, "trail"+i+"_zEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
+			zEnds.add(new MDL_CTP(-1L, "trail"+i+"_zEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
 			
-		    sncs.add(new MDL_GEN_SNC((long)i,
+		    sncs.add(new MDL_GEN_SNC(-1L,
 			"trail" + i, 
 			genSNCRate(random),
 			genSNCState(random),

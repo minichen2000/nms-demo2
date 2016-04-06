@@ -5,7 +5,6 @@ import javax.persistence.Id;
 
 public class MDL_NEGroup {
 	@Id
-	@GeneratedValue
 	private int id;
 	private String neGroupType;
 	public MDL_NEGroup() {

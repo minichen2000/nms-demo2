@@ -1,11 +1,12 @@
 package org.nmsdemo.model;
 
+import org.nmsdemo.utils.Utils;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 public class MDL_Alarm {
 	@Id
-	@GeneratedValue
 	Long id;
 	String objectName;
 	Long objectId;
@@ -28,6 +29,7 @@ public class MDL_Alarm {
 	}
 
 	public MDL_Alarm(Long id, String objectName, Long objectId, String objectType, String probableCause, String probableCauseId, String alarmType, String perceivedSeverity, String neTime, String emsTime, boolean cleared, String clearingTime, boolean ack, String ackTime, String ackUser, String serviceAffecting, String additionalText) {
+		id= id<0 ? Utils.genNewId(11) : id;
 		this.id = id;
 		this.objectName = objectName;
 		this.objectId = objectId;
