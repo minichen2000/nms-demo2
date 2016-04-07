@@ -38,7 +38,8 @@
                 filterParams: { newRowsAction: 'keep' },
                 pinned: 'left',
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.neGroupId, neId: params.data.neId, neName: params.data.name }, false);
+                    logger.log("ne:\n"+JSON.stringify(params.data));
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', fullNeId: params.data.id, neName: params.data.name }, false);
                 },
                 cellClass: 'table-name-field'
             },

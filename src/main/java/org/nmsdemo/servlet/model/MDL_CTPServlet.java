@@ -32,29 +32,26 @@ public class MDL_CTPServlet extends HttpServlet
 		resp.setHeader("Cache-Control","no-cache");
 		resp.setStatus(HttpServletResponse.SC_OK);
 		req.setCharacterEncoding("utf-8");
-		String neGroupId=req.getParameter("neGroupId");
-		String neId=req.getParameter("neId");
-		String portKey=req.getParameter("portKey");
-		
-		System.out.println("neGroupId:"+neGroupId+"  neId:"+neId+" portKey:"+portKey);
+		Long fullNeId=Long.parseLong(req.getParameter("fullNeId"));
+		Long portId=Long.parseLong(req.getParameter("portId"));
+
+		System.out.println("fullNeId:"+fullNeId+" portId:"+portId);
 		
 		PrintWriter out = resp.getWriter();
 		
 		
-		if(null==neGroupId || null==neId || null==portKey || neGroupId.isEmpty() || neId.isEmpty() || portKey.isEmpty()){
+		if(null==fullNeId || null==portId || 0>fullNeId || 0>portId){
 			System.out.println(MDLUtil.rlt_json(false));
 			out.println(MDLUtil.rlt_json(false));
 		}else{
-		    int _neGroupId=Integer.parseInt( neGroupId );
-		    int _neId=Integer.parseInt( neId );
 		    List<MDL_CTP> ctps = new ArrayList<MDL_CTP>();
 	        int LL = 22;
 
 	        //Random random = new Random();
 	        for (int i = 0; i < LL; i++) {
-	            String key=portKey+"/"+i;
+	            String name=""+portId+"/"+i;
 	            boolean connected=i%3<1;
-	            ctps.add(new MDL_CTP(-1L, key, parseLong(neId), parseLong(portKey),
+	            ctps.add(new MDL_CTP(-1L, name, fullNeId, "node"+fullNeId, portId,
 	                i%2<1 ? "VC12" : "VC4", 
 	                        connected,
 	                        -1L, -1L));

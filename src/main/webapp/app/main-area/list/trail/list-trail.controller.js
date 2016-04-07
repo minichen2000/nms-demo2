@@ -31,13 +31,13 @@
 
         vm.fieldValueGetterFun = function (item, field) {
             if (field === 'aEndNE') {
-                return item.aEndPorts[0].neName;
+                return item.aEndTPs[0].neName;
             } else if (field === 'aEndTP') {
-                return item.aEndPorts[0].tpName;
+                return item.aEndTPs[0].name;
             } else if (field === 'zEndNE') {
-                return item.zEndPorts[0].neName;
+                return item.zEndTPs[0].neName;
             } else if (field === 'zEndTP') {
-                return item.zEndPorts[0].tpName;
+                return item.zEndTPs[0].name;
             } else {
                 return item[field];
             }
@@ -45,12 +45,12 @@
         vm.dataToPropertiesNvFun = function (data, nvArray) {
             for (var param in data) {
                 if (typeof (data[param]) != "function") {
-                    if (param === 'aEndPorts') {
+                    if (param === 'aEndTPs') {
                         nvArray.push({ name: 'aEndNE', value: data[param][0].neName });
-                        nvArray.push({ name: 'aEndTP', value: data[param][0].tpName });
-                    } else if (param === 'zEndPorts') {
+                        nvArray.push({ name: 'aEndTP', value: data[param][0].name });
+                    } else if (param === 'zEndTPs') {
                         nvArray.push({ name: 'zEndNE', value: data[param][0].neName });
-                        nvArray.push({ name: 'zEndTP', value: data[param][0].tpName });
+                        nvArray.push({ name: 'zEndTP', value: data[param][0].name });
                     } else {
                         nvArray.push({ name: param, value: data[param] });
                     }
@@ -68,12 +68,12 @@
                 filterParams: { newRowsAction: 'keep' },
                 pinned: 'left',
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId, sncName: params.data.name }, false);
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.id, sncName: params.data.name }, false);
                 },
                 cellClass: ['table-name-field'],
             },
             {
-                field: "sncId",
+                field: "id",
                 headerName: "子网连接ID",
                 width: commonUtil.getW(125),
                 minWidth: commonUtil.getW(125),
@@ -118,13 +118,13 @@
                 field: "aEndNE",
                 headerName: "A端网元",
                 valueGetter: function (params) {
-                    return params.data.aEndPorts[0].neName;
+                    return params.data.aEndTPs[0].neName;
                 },
                 onCellClicked: function (params) {
                     vm.breadcrumb.add(params.data.name, function () {
-                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId, sncName: params.data.name }, false);
+                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.id, sncName: params.data.name }, false);
                     });
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.aEndPorts[0].neGroupId, neId: params.data.aEndPorts[0].neId, neName: params.data.aEndPorts[0].neName }, false);
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', fullNeId: params.data.aEndTPs[0].neId, neName: params.data.aEndTPs[0].neName }, false);
                 },
                 cellClass: ['table-name-field'],
                 width: commonUtil.getW(120),
@@ -136,7 +136,7 @@
                 field: "aEndTP",
                 headerName: "A端TP",
                 valueGetter: function (params) {
-                    return params.data.aEndPorts[0].tpName;
+                    return params.data.aEndTPs[0].name;
                 },
                 width: commonUtil.getW(120),
                 minWidth: commonUtil.getW(120),
@@ -147,13 +147,13 @@
                 field: "zEndNE",
                 headerName: "Z端网元",
                 valueGetter: function (params) {
-                    return params.data.zEndPorts[0].neName;
+                    return params.data.zEndTPs[0].neName;
                 },
                 onCellClicked: function (params) {
                     vm.breadcrumb.add(params.data.name, function () {
-                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.sncId, sncName: params.data.name }, false);
+                        commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'trail', sncId: params.data.id, sncName: params.data.name }, false);
                     });
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', neGroupId: params.data.zEndPorts[0].neGroupId, neId: params.data.zEndPorts[0].neId, neName: params.data.zEndPorts[0].neName }, false);
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'ne', fullNeId: params.data.zEndTPs[0].neId, neName: params.data.zEndTPs[0].neName }, false);
                 },
                 cellClass: ['table-name-field'],
                 width: commonUtil.getW(120),
@@ -165,7 +165,7 @@
                 field: "zEndTP",
                 headerName: "Z端TP",
                 valueGetter: function (params) {
-                    return params.data.zEndPorts[0].tpName;
+                    return params.data.zEndTPs[0].name;
                 },
                 width: commonUtil.getW(120),
                 minWidth: commonUtil.getW(120),

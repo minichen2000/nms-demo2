@@ -27,6 +27,11 @@ public class MDL_NE {
 
     }
 
+    public void createPort(){
+
+    }
+
+
     public MDL_NE(Long id, int neGroupId, String neGroupType, int neId, String name, String location, String type, String subtype, String version, String creationDate, String protocolAddress, String comments, String suppervisionState, String communicationState, String alarmState) {
         this.id = id;
         this.neGroupId = neGroupId;

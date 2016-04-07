@@ -20,6 +20,10 @@ public class MDL_Port
 
     }
 
+    public void createCTP(){
+
+    }
+
     public MDL_Port(Long id, String name, String neName, Long neId, String rate, boolean connected, Long plId) {
         id= id<0 ? Utils.genNewId(1) : id;
         this.id = id;

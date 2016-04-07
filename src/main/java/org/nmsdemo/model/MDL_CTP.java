@@ -11,6 +11,7 @@ public class MDL_CTP
     private Long id;
     private String name;
     private Long neId;
+    private String neName;
     private Long parentTPId;
     private String rate;
     private boolean connected;
@@ -20,11 +21,11 @@ public class MDL_CTP
     {
     }
 
-    public MDL_CTP(Long id, String name, Long neId, Long parentTPId, String rate, boolean connected, Long sncStartWith, Long sncEndWith) {
-        id= id<0 ? Utils.genNewId(2) : id;
+    public MDL_CTP(Long id, String name, Long neId, String neName, Long parentTPId, String rate, boolean connected, Long sncStartWith, Long sncEndWith) {
         this.id = id;
         this.name = name;
         this.neId = neId;
+        this.neName = neName;
         this.parentTPId = parentTPId;
         this.rate = rate;
         this.connected = connected;
@@ -54,6 +55,14 @@ public class MDL_CTP
 
     public void setNeId(Long neId) {
         this.neId = neId;
+    }
+
+    public String getNeName() {
+        return neName;
+    }
+
+    public void setNeName(String neName) {
+        this.neName = neName;
     }
 
     public Long getParentTPId() {

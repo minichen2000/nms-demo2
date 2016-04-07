@@ -20,7 +20,8 @@ import org.nmsdemo.model.MDL_NEGroup;
 import org.nmsdemo.model.MDL_Port;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
- 
+import org.nmsdemo.utils.Utils;
+
 public class MDL_PortServlet extends HttpServlet
 {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
@@ -29,20 +30,19 @@ public class MDL_PortServlet extends HttpServlet
 		resp.setHeader("Cache-Control","no-cache");
 		resp.setStatus(HttpServletResponse.SC_OK);
 		req.setCharacterEncoding("utf-8");
-		String neGroupId=req.getParameter("neGroupId");
-		String neId=req.getParameter("neId");
-		
-		System.out.println("neGroupId:"+neGroupId+"  neId:"+neId);
+		Long fullNeId=Long.parseLong(req.getParameter("fullNeId"));
+
+		System.out.println("fullNeId:"+fullNeId);
 		
 		PrintWriter out = resp.getWriter();
 		
 		
-		if(null==neGroupId || null==neId || neGroupId.isEmpty() || neId.isEmpty()){
+		if(null==fullNeId || 0>fullNeId){
 			System.out.println(MDLUtil.rlt_json(false));
 			out.println(MDLUtil.rlt_json(false));
 		}else{
-		    int _neGroupId=Integer.parseInt( neGroupId );
-		    int _neId=Integer.parseInt( neId );
+		    int _neGroupId= Utils.extractNeGroupId(fullNeId);
+			long _neId=Utils.extractNeId(fullNeId);
 		    List<MDL_Port> ports = new ArrayList<MDL_Port>();
 	        int LL = 22;
 
@@ -50,9 +50,8 @@ public class MDL_PortServlet extends HttpServlet
 	        for (int i = 0; i < LL; i++) {
 	            String neName="node_"+_neGroupId+"/"+_neId;
 	            String tpName="Port"+i;
-	            String key=neName+"/"+tpName;
 	            boolean connected=random.nextInt(9) > 5;
-	            ports.add(new MDL_Port(-1L, tpName, neName, Long.parseLong(neId),
+	            ports.add(new MDL_Port(-1L, tpName, neName, fullNeId,
 	                random.nextInt(9) > 5 ? "STM1" : "STM4", 
 	                        connected, 
 	                        connected ? 10000L+i : -1L));

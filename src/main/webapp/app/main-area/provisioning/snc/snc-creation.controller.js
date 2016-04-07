@@ -150,10 +150,9 @@
                     return $filter('filter')(vm.AEndPortNameManager.portMgr.getArray(),{name:nameFilter});
                 }else{
                     var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
-                    var neGroupId=ne.neGroupId;
-                    var neId=ne.neId;
+                    var fullNeId=ne.id;
                     logger.log("getAEndPortNameList:http");
-                    return dataService.retrievePorts(neGroupId, neId)
+                    return dataService.retrievePorts(fullNeId)
                     .then(function(data){
                         //logger.log("data:\n"+JSON.stringify(data));
                         vm.AEndPortNameManager.neName=getName(vm.AEndNESelected);
@@ -204,11 +203,11 @@
                     return $filter('filter')(vm.AEndCTPNameManager.ctpMgr.getArray(),{name:nameFilter});
                 }else{
                     var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
-                    var neGroupId=ne.neGroupId;
-                    var neId=ne.neId;
-                    var portKey=getName(vm.AEndPortSelected);
+                    var fullNeId=ne.id;
+                    var portName=getName(vm.AEndPortSelected);
+                    var portId=vm.AEndPortNameManager.portMgr.getArray()[vm.AEndPortNameManager.portMgr.get(portName)].id;
                     logger.log("getAEndCTPNameList:http");
-                    return dataService.retrieveCTPs(neGroupId, neId, portKey)
+                    return dataService.retrieveCTPs(fullNeId, portId)
                     .then(function(data){
                         //logger.log("data:\n"+JSON.stringify(data));
                         vm.AEndCTPNameManager.portName=getName(vm.AEndPortSelected);

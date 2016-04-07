@@ -62,37 +62,34 @@ public class Utils {
     }
 
     public static int extractType(long fullId) {
-        return (int) (fullId / 1000000000000L - 100);
+        return Integer.parseInt((""+fullId).substring(1,3));
     }
 
     public static long extractId(long fullId) {
-        return fullId - (fullId / 1000000000000L) * 1000000000000L;
+        return Long.parseLong((""+fullId).substring(3));
     }
 
-    public static long genObjectId12(long ori) {
-        return ori >= 1000000000000L ? -1 : ori;
-    }
 
     public static long genObjectFullId(int type, long id) {
         if (type > 99) return -1;
-        long id12 = genObjectId12(id);
-        return id12 < 0 ? -1 : (100 + type) * 1000000000000L + id12;
+
+        return Long.parseLong(""+(100 + type)+""+id);
     }
 
-    public static long genNEFullId(int neGroupId, int neId) {
+    public static long genNEFullId(int neGroupId, long neId) {
         if (neGroupId > 999 || neId >= 1000000000L) {
             return -1;
         }
-        return 100000000000000L + neGroupId * 1000000000L + neId;
+        return Long.parseLong("100"+neGroupId+""+neId);
     }
 
-    public static int extractNeId(long fullNeId) {
+    public static long extractNeId(long fullNeId) {
         int type = extractType(fullNeId);
         if (0 != type) {
             return -1;
         } else {
             long idPart = extractId(fullNeId);
-            return (int) (idPart - (idPart / 1000000000L) * 1000000000L);
+            return Long.parseLong((""+idPart).substring(3));
         }
     }
 
@@ -102,7 +99,7 @@ public class Utils {
             return -1;
         } else {
             long idPart = extractId(fullNeId);
-            return (int) (idPart / 1000000000L);
+            return Integer.parseInt((""+idPart).substring(0,3));
         }
     }
 

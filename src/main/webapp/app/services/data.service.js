@@ -48,6 +48,7 @@
                 .catch(KO);
             function OK(rsp) {
                 logger.log("retrieveAlarmsOK");
+                //logger.log("rsp.data:\n"+JSON.stringify(rsp.data));
                 return rsp.data;
             }
             function KO(rsp) {
@@ -59,8 +60,8 @@
                 return $q.reject(rsp);
             }
         }
-        function retrievePorts(neGroupId, neId) {
-            return $http.get("./retrieve_ports" + "?neGroupId=" + neGroupId + "&neId=" + neId)
+        function retrievePorts(fullNeId) {
+            return $http.get("./retrieve_ports" + "?fullNeId=" + fullNeId)
                 .then(OK)
                 .catch(KO);
             function OK(rsp) {
@@ -81,8 +82,8 @@
             }
         }
 
-        function retrieveCTPs(neGroupId, neId, portKey) {
-            return $http.get("./retrieve_ctps" + "?neGroupId=" + neGroupId + "&neId=" + neId + "&portKey=" + portKey)
+        function retrieveCTPs(fullNeId, portId) {
+            return $http.get("./retrieve_ctps" + "?fullNeId=" + fullNeId + "&portId=" + portId)
                 .then(OK)
                 .catch(KO);
             function OK(rsp) {

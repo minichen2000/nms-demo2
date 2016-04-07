@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.nmsdemo.model.MDLUtil;
 import org.nmsdemo.model.MDL_CTP;
 import org.nmsdemo.model.MDL_GEN_SNC;
+import org.nmsdemo.utils.Utils;
 
 public class MDL_SNCServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -29,10 +30,14 @@ public class MDL_SNCServlet extends HttpServlet {
 
 		for (int i = 0; i < LL; i++) {
 			List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
-			aEnds.add(new MDL_CTP(-1L, "trail"+i+"_aEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
+			long fullNeId=Utils.genNEFullId(100, Utils.genNewNeId(100));
+			long portId=Utils.genNewId(1);
+			aEnds.add(new MDL_CTP(-1L, "trail"+i+"_aEndTP", fullNeId, "node"+fullNeId, portId, "", true, (long)i, (long)i));
 			
 			List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
-			zEnds.add(new MDL_CTP(-1L, "trail"+i+"_zEndTP", (long)i, (long)i, "", true, (long)i, (long)i));
+			fullNeId=Utils.genNEFullId(100, Utils.genNewNeId(100));
+			portId=Utils.genNewId(1);
+			zEnds.add(new MDL_CTP(-1L, "trail"+i+"_zEndTP", fullNeId, "node"+fullNeId, portId, "", true, (long)i, (long)i));
 			
 		    sncs.add(new MDL_GEN_SNC(-1L,
 			"trail" + i, 

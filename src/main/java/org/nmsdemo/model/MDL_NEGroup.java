@@ -10,6 +10,12 @@ public class MDL_NEGroup {
 	public MDL_NEGroup() {
 	}
 
+
+	public void createNe(){
+
+	}
+
+
 	public MDL_NEGroup(int id, String neGroupType) {
 		this.id = id;
 		this.neGroupType = neGroupType;

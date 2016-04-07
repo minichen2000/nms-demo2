@@ -12,7 +12,7 @@
         
         vm.breadcrumb=commonUtil.breadcrumb;
         vm.breadcrumb.add(vm.message, function(){
-            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId, portId: $stateParams.portId, portName: $stateParams.portName }, false);
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', fullNeId: $stateParams.fullNeId, portId: $stateParams.portId, portName: $stateParams.portName }, false);
         });
 
         vm.tabClicked = function (tabId) {

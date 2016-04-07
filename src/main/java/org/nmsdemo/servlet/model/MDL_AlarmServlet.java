@@ -59,7 +59,7 @@ public class MDL_AlarmServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 
 		String msg = MDLUtil.Object_WRAP(alarms);
-		// System.out.println(msg);
+		//System.out.println(msg);
 		out.println(msg);
 	}
 
