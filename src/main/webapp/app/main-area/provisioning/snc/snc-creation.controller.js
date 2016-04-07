@@ -202,12 +202,10 @@
                     
                     return $filter('filter')(vm.AEndCTPNameManager.ctpMgr.getArray(),{name:nameFilter});
                 }else{
-                    var ne=statasticService.getNEList()[statasticService.getNeNameSearchMap().get(getName(vm.AEndNESelected))];
-                    var fullNeId=ne.id;
                     var portName=getName(vm.AEndPortSelected);
                     var portId=vm.AEndPortNameManager.portMgr.getArray()[vm.AEndPortNameManager.portMgr.get(portName)].id;
                     logger.log("getAEndCTPNameList:http");
-                    return dataService.retrieveCTPs(fullNeId, portId)
+                    return dataService.retrieveCTPs(portId)
                     .then(function(data){
                         //logger.log("data:\n"+JSON.stringify(data));
                         vm.AEndCTPNameManager.portName=getName(vm.AEndPortSelected);
@@ -217,6 +215,7 @@
                         return arr;
                 })
                 .catch(function(data){
+                    //logger.error("data:\n"+JSON.stringify(data));
                     vm.AEndCTPNameManager.portName=undefined;
                     vm.AEndCTPNameManager.ctpMgr=undefined;
                     return [];

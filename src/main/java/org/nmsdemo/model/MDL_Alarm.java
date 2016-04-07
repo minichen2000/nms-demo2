@@ -2,9 +2,11 @@ package org.nmsdemo.model;
 
 import org.nmsdemo.utils.Utils;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Entity
 public class MDL_Alarm {
 	@Id
 	Long id;

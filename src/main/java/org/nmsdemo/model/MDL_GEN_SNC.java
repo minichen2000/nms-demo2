@@ -2,10 +2,10 @@ package org.nmsdemo.model;
 
 import org.nmsdemo.utils.Utils;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class MDL_GEN_SNC
 {
     @Id
@@ -14,7 +14,9 @@ public class MDL_GEN_SNC
     private String rate;
     private String sncState;
     private String protectedType;
+    @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="sncAEndWith")
     private List<MDL_CTP> aEndTPs;
+    @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="sncZEndWith")
     private List<MDL_CTP> zEndTPs;
     public MDL_GEN_SNC()
     {

@@ -1,10 +1,15 @@
 package org.nmsdemo.model;
 
+import org.nmsdemo.dao.MDL_CTPDao;
+import org.nmsdemo.utils.JPAUtils;
 import org.nmsdemo.utils.Utils;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Random;
 
+@Entity
 public class MDL_Port
 {
     @Id
@@ -20,8 +25,19 @@ public class MDL_Port
 
     }
 
-    public void createCTP(){
+    public void createCTPs(){
+        MDL_CTPDao dao = JPAUtils.getJPAXMLCtx().getBean(MDL_CTPDao.class);
 
+        int LL = 4;
+        Random random = new Random();
+        for (int i = 0; i < LL; i++) {
+            String ctpName=name+"/"+i;
+            boolean connected=i%3<1;
+            dao.save(new MDL_CTP(-1L, ctpName, neId, neName, id,
+                    i%2<1 ? "VC12" : "VC4",
+                    connected,
+                    null, null));
+        }
     }
 
     public MDL_Port(Long id, String name, String neName, Long neId, String rate, boolean connected, Long plId) {

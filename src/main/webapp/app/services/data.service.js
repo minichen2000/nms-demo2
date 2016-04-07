@@ -82,8 +82,8 @@
             }
         }
 
-        function retrieveCTPs(fullNeId, portId) {
-            return $http.get("./retrieve_ctps" + "?fullNeId=" + fullNeId + "&portId=" + portId)
+        function retrieveCTPs(portId) {
+            return $http.get("./retrieve_ctps" + "?portId=" + portId)
                 .then(OK)
                 .catch(KO);
             function OK(rsp) {

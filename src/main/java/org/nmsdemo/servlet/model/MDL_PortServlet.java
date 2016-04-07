@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.nmsdemo.dao.MDL_NEDao;
+import org.nmsdemo.dao.MDL_PortDao;
 import org.nmsdemo.model.MDLUtil;
 import org.nmsdemo.model.MDL_AlarmPSStatastic;
 import org.nmsdemo.model.MDL_NE;
@@ -20,6 +22,8 @@ import org.nmsdemo.model.MDL_NEGroup;
 import org.nmsdemo.model.MDL_Port;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.nmsdemo.utils.DBUtils;
+import org.nmsdemo.utils.JPAUtils;
 import org.nmsdemo.utils.Utils;
 
 public class MDL_PortServlet extends HttpServlet
@@ -41,23 +45,9 @@ public class MDL_PortServlet extends HttpServlet
 			System.out.println(MDLUtil.rlt_json(false));
 			out.println(MDLUtil.rlt_json(false));
 		}else{
-		    int _neGroupId= Utils.extractNeGroupId(fullNeId);
-			long _neId=Utils.extractNeId(fullNeId);
-		    List<MDL_Port> ports = new ArrayList<MDL_Port>();
-	        int LL = 22;
-
-	        Random random = new Random();
-	        for (int i = 0; i < LL; i++) {
-	            String neName="node_"+_neGroupId+"/"+_neId;
-	            String tpName="Port"+i;
-	            boolean connected=random.nextInt(9) > 5;
-	            ports.add(new MDL_Port(-1L, tpName, neName, fullNeId,
-	                random.nextInt(9) > 5 ? "STM1" : "STM4", 
-	                        connected, 
-	                        connected ? 10000L+i : -1L));
-	        }
-
-	        String msg = MDLUtil.Object_WRAP(ports);
+			DBUtils.initDB();
+			MDL_PortDao dao= JPAUtils.getJPAXMLCtx().getBean(MDL_PortDao.class);
+	        String msg = MDLUtil.Object_WRAP(dao.findByNeId(fullNeId));
 	        // System.out.println(msg);
 	        out.println(msg);
 		}

@@ -168,10 +168,10 @@ public class NotificationWebSocket extends WebSocketAdapter {
 						
 						
 						List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
-						aEnds.add(new MDL_CTP(-1L, "trail"+3+"_aEndTP", (long)3, "node3", (long)3, "", true, (long)3, (long)3));
+						aEnds.add(new MDL_CTP(-1L, "trail"+3+"_aEndTP", (long)3, "node3", (long)3, "", true, null, null));
 
 						List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
-						zEnds.add(new MDL_CTP(-1L, "trail"+3+"_zEndTP", (long)3, "node3", (long)3, "", true, (long)3, (long)3));
+						zEnds.add(new MDL_CTP(-1L, "trail"+3+"_zEndTP", (long)3, "node3", (long)3, "", true, null, null));
 						
 						remote.sendString(MDLUtil.Event_WRAP("sncCreation",
 								new MDL_GEN_SNC(Utils.genObjectFullId(7, 999999L),
@@ -200,11 +200,11 @@ public class NotificationWebSocket extends WebSocketAdapter {
 						
 						
 						aEnds=new ArrayList<MDL_CTP>();
-						aEnds.add(new MDL_CTP(Utils.genObjectFullId(2,3), "trail"+3+"_aEndTP", (long)3, "node3", (long)3, "", true, (long)3, (long)3));
+						aEnds.add(new MDL_CTP(Utils.genObjectFullId(2,3), "trail"+3+"_aEndTP", (long)3, "node3", (long)3, "", true, null, null));
 
 						
 						zEnds=new ArrayList<MDL_CTP>();
-						zEnds.add(new MDL_CTP(Utils.genObjectFullId(2,3), "trail"+3+"_zEndTP", (long)3, "node3", (long)3, "", true, (long)3, (long)3));
+						zEnds.add(new MDL_CTP(Utils.genObjectFullId(2,3), "trail"+3+"_zEndTP", (long)3, "node3", (long)3, "", true, null, null));
 						
 						remote.sendString(MDLUtil.Event_WRAP("sncDeletion",
 								new MDL_GEN_SNC(Utils.genObjectFullId(7, 999999L),

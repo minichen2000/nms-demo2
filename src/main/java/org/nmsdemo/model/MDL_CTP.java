@@ -2,9 +2,9 @@ package org.nmsdemo.model;
 
 import org.nmsdemo.utils.Utils;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class MDL_CTP
 {
     @Id
@@ -15,13 +15,20 @@ public class MDL_CTP
     private Long parentTPId;
     private String rate;
     private boolean connected;
-    private Long sncStartWith;
-    private Long sncEndWith;
+
+    @ManyToOne(cascade= CascadeType.ALL,optional = true)
+    @JoinColumn(name="sncAEndWith_id")
+    private MDL_GEN_SNC sncAEndWith;
+
+    @ManyToOne(cascade= CascadeType.ALL,optional = true)
+    @JoinColumn(name="sncZEndWith_id")
+    private MDL_GEN_SNC sncZEndWith;
     public MDL_CTP()
     {
     }
 
-    public MDL_CTP(Long id, String name, Long neId, String neName, Long parentTPId, String rate, boolean connected, Long sncStartWith, Long sncEndWith) {
+    public MDL_CTP(Long id, String name, Long neId, String neName, Long parentTPId, String rate, boolean connected, MDL_GEN_SNC sncAEndWith, MDL_GEN_SNC sncZEndWith) {
+        id= id<0 ? Utils.genNewId(2) : id;
         this.id = id;
         this.name = name;
         this.neId = neId;
@@ -29,8 +36,8 @@ public class MDL_CTP
         this.parentTPId = parentTPId;
         this.rate = rate;
         this.connected = connected;
-        this.sncStartWith = sncStartWith;
-        this.sncEndWith = sncEndWith;
+        this.sncAEndWith = sncAEndWith;
+        this.sncZEndWith = sncZEndWith;
     }
 
     public Long getId() {
@@ -89,19 +96,19 @@ public class MDL_CTP
         this.connected = connected;
     }
 
-    public Long getSncStartWith() {
-        return sncStartWith;
+    public MDL_GEN_SNC getSncAEndWith() {
+        return sncAEndWith;
     }
 
-    public void setSncStartWith(Long sncStartWith) {
-        this.sncStartWith = sncStartWith;
+    public void setSncAEndWith(MDL_GEN_SNC sncAEndWith) {
+        this.sncAEndWith = sncAEndWith;
     }
 
-    public Long getSncEndWith() {
-        return sncEndWith;
+    public MDL_GEN_SNC getSncZEndWith() {
+        return sncZEndWith;
     }
 
-    public void setSncEndWith(Long sncEndWith) {
-        this.sncEndWith = sncEndWith;
+    public void setSncZEndWith(MDL_GEN_SNC sncZEndWith) {
+        this.sncZEndWith = sncZEndWith;
     }
 }

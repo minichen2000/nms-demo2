@@ -30,6 +30,7 @@ public class Utils {
             typeIds.put(9, 0L);
             typeIds.put(10, 0L);
             typeIds.put(11, 0L);
+            typeIds.put(12, 0L);
         }
         Long v = typeIds.get(type);
         if (null == v) {

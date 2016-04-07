@@ -1,7 +1,12 @@
 package org.nmsdemo.model;
 
+import org.nmsdemo.dao.MDL_PortDao;
+import org.nmsdemo.utils.JPAUtils;
+import org.nmsdemo.utils.Utils;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Random;
 
 @Entity
 public class MDL_NE {
@@ -10,7 +15,7 @@ public class MDL_NE {
     private Long id;
     private int neGroupId;
     private String neGroupType;
-    private int neId;
+    private long neId;
     private String name;
     private String location;
     private String type;
@@ -27,12 +32,40 @@ public class MDL_NE {
 
     }
 
-    public void createPort(){
+    public void createPorts(){
+        MDL_PortDao dao = JPAUtils.getJPAXMLCtx().getBean(MDL_PortDao.class);
 
+        int LL = 1;
+        Random random = new Random();
+        for (int i = 0; i < LL; i++) {
+            String neName=name;
+            long fullNeId=id;
+            String tpName="Port"+i;
+            boolean connected=random.nextInt(9) > 5;
+            dao.save(new MDL_Port(-1L, tpName, neName, fullNeId,
+                    random.nextInt(9) > 5 ? "STM1" : "STM4",
+                    connected,
+                    connected ? 10000L+i : -1L));
+        }
+    }
+
+    public static String genNEType(Random r){
+        switch(r.nextInt(3)){
+            case 0:
+                return "1660sm";
+            case 1:
+                return "1678mc";
+            case 2:
+                return "es16";
+            case 3:
+                return "1662smc";
+            default:
+                return "1660sm";
+        }
     }
 
 
-    public MDL_NE(Long id, int neGroupId, String neGroupType, int neId, String name, String location, String type, String subtype, String version, String creationDate, String protocolAddress, String comments, String suppervisionState, String communicationState, String alarmState) {
+    public MDL_NE(Long id, int neGroupId, String neGroupType, long neId, String name, String location, String type, String subtype, String version, String creationDate, String protocolAddress, String comments, String suppervisionState, String communicationState, String alarmState) {
         this.id = id;
         this.neGroupId = neGroupId;
         this.neGroupType = neGroupType;
@@ -74,11 +107,11 @@ public class MDL_NE {
         this.neGroupType = neGroupType;
     }
 
-    public int getNeId() {
+    public long getNeId() {
         return neId;
     }
 
-    public void setNeId(int neId) {
+    public void setNeId(long neId) {
         this.neId = neId;
     }
 

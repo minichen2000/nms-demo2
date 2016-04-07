@@ -32,12 +32,12 @@ public class MDL_SNCServlet extends HttpServlet {
 			List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
 			long fullNeId=Utils.genNEFullId(100, Utils.genNewNeId(100));
 			long portId=Utils.genNewId(1);
-			aEnds.add(new MDL_CTP(-1L, "trail"+i+"_aEndTP", fullNeId, "node"+fullNeId, portId, "", true, (long)i, (long)i));
+			aEnds.add(new MDL_CTP(-1L, "trail"+i+"_aEndTP", fullNeId, "node"+fullNeId, portId, "", true, null, null));
 			
 			List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
 			fullNeId=Utils.genNEFullId(100, Utils.genNewNeId(100));
 			portId=Utils.genNewId(1);
-			zEnds.add(new MDL_CTP(-1L, "trail"+i+"_zEndTP", fullNeId, "node"+fullNeId, portId, "", true, (long)i, (long)i));
+			zEnds.add(new MDL_CTP(-1L, "trail"+i+"_zEndTP", fullNeId, "node"+fullNeId, portId, "", true, null, null));
 			
 		    sncs.add(new MDL_GEN_SNC(-1L,
 			"trail" + i, 
