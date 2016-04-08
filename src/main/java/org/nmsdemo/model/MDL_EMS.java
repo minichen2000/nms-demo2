@@ -45,44 +45,56 @@ public class MDL_EMS {
 
         ctp=ctpDao.findByNeNameAndName("node-100-1", "port1/1");
         ctp.setSncAEndWith(sncDao.findByName("trail-1"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
         ctp=ctpDao.findByNeNameAndName("node-101-1", "port1/1");
         ctp.setSncZEndWith(sncDao.findByName("trail-1"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
 
-        ctp=ctpDao.findByNeNameAndName("node-101-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-101-1", "port1/2");
         ctp.setSncAEndWith(sncDao.findByName("trail-2"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
-        ctp=ctpDao.findByNeNameAndName("node-102-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-102-1", "port1/2");
         ctp.setSncZEndWith(sncDao.findByName("trail-2"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
 
-        ctp=ctpDao.findByNeNameAndName("node-102-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-102-1", "port2/1");
         ctp.setSncAEndWith(sncDao.findByName("trail-3"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
-        ctp=ctpDao.findByNeNameAndName("node-103-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-103-1", "port2/1");
         ctp.setSncZEndWith(sncDao.findByName("trail-3"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
 
-        ctp=ctpDao.findByNeNameAndName("node-103-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-103-1", "port2/2");
         ctp.setSncAEndWith(sncDao.findByName("trail-4"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
-        ctp=ctpDao.findByNeNameAndName("node-104-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-104-1", "port2/2");
         ctp.setSncZEndWith(sncDao.findByName("trail-4"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
 
-        ctp=ctpDao.findByNeNameAndName("node-104-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-104-1", "port3/1");
         ctp.setSncAEndWith(sncDao.findByName("trail-5"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
-        ctp=ctpDao.findByNeNameAndName("node-105-1", "port1/1");
+        ctp=ctpDao.findByNeNameAndName("node-105-1", "port3/1");
         ctp.setSncZEndWith(sncDao.findByName("trail-5"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
 
         ctp=ctpDao.findByNeNameAndName("node-100-1", "port3/1");
         ctp.setSncAEndWith(sncDao.findByName("trail-6"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
         ctp=ctpDao.findByNeNameAndName("node-105-1", "port4/4");
         ctp.setSncZEndWith(sncDao.findByName("trail-6"));
+        ctp.setConnected(true);
         ctpDao.save(ctp);
 
     }

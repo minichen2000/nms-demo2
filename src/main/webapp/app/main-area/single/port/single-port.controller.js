@@ -12,17 +12,17 @@
         
         vm.breadcrumb=commonUtil.breadcrumb;
         vm.breadcrumb.add(vm.message, function(){
-            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', fullNeId: $stateParams.fullNeId, portId: $stateParams.portId, portName: $stateParams.portName }, false);
+            commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', portId: $stateParams.portId, portName: $stateParams.portName }, false);
         });
 
         vm.tabClicked = function (tabId) {
-            /*if (tabId == 'ports') {
-                commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'ports', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId }, true);
-            } else if (tabId == 'boards') {
+            if (tabId == 'ctps') {
+                commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.port_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.port_tabs', { tabId: 'ctps', portId: $stateParams.portId}, true);
+            } else if (tabId == 'tls') {
                 commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'boards', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId }, true);
-            } else if (tabId == 'alarms') {
+            } else if (tabId == 'sncs') {
                 commonUtil.genericNavWithLoadingPage($state, 'main.treeitem_secondlevel.ne_tabs', 'tabId', $timeout, 'main.treeitem_secondlevel.ne_tabs', { tabId: 'alarms', neGroupId: $stateParams.neGroupId, neId: $stateParams.neId }, true);
-            }*/
+            }
         }
     }
 })();

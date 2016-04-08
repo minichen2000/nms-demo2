@@ -21,7 +21,7 @@
                 filterParams: { newRowsAction: 'keep' },
                 pinned: 'left',
                 onCellClicked: function (params) {
-                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', fullNeId: params.data.neId, portId:params.data.id, portName:params.data.name }, false);
+                    commonUtil.treeNavWithLoadingPage($state, $timeout, 'main.treeitem_secondlevel', { treeItemId: 'port', portId:params.data.id, portName:params.data.name }, false);
                 },
                 cellClass: 'table-name-field'
             },
@@ -36,14 +36,17 @@
             },
             {
                 field: "connected",
-                headerName: "连接状态",
-                width: commonUtil.getW(120),
-                minWidth: commonUtil.getW(120),
+                headerName: "连接",
+                valueGetter: function(params) {
+                    return params.data.connected ? "是" : "否";
+                },
+                width: commonUtil.getW(90),
+                minWidth: commonUtil.getW(90),
                 filter: 'set',
-                filterParams: { values: ['connected', 'not connected'], newRowsAction: 'keep' },
+                filterParams: { values: [true, false], newRowsAction: 'keep' },
                 cellRenderer: function (params) {
-                    var cls = (params.value === true ? 'table-suppervised' : 'table-unsuppervised');
-                    return "<div class='" + cls + "'>" + params.value + "</div>";
+                    var cls = (params.data.connected === true ? 'table-suppervised' : 'table-unsuppervised');
+                    return "<div class='table-cell-text-center " + cls + "'>" + params.value + "</div>";
                 }
             },
             {

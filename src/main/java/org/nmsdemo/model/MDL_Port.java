@@ -33,10 +33,9 @@ public class MDL_Port
         Random random = new Random();
         for (int i = 0; i < LL; i++) {
             String ctpName=name+"/"+(i+1);
-            boolean connected=i%3<1;
             ctpDao.save(new MDL_CTP(-1L, ctpName, neId, neName, id,
                     i%2<1 ? "VC12" : "VC4",
-                    connected,
+                    false,
                     null, null));//new MDL_GEN_SNC(-1L,null,null,null,null,null,null)
         }
     }

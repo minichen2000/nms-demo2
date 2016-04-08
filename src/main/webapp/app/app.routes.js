@@ -116,7 +116,7 @@
                         return "./app/main-area/single/ne/single-ne.html?dummy";
                     } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId && $stateParams.sncName) {
                         return "./app/main-area/single/trail/single-trail.html?dummy";
-                    } else if ($stateParams.treeItemId == 'port' && $stateParams.fullNeId && $stateParams.portId && $stateParams.portName) {
+                    } else if ($stateParams.treeItemId == 'port' && $stateParams.portId && $stateParams.portName) {
                         return "./app/main-area/single/port/single-port.html?dummy";
                     }
 
@@ -127,7 +127,7 @@
                         return "SingleNEController as vm";
                     } else if ($stateParams.treeItemId == 'trail' && $stateParams.sncId && $stateParams.sncName) {
                         return "SingleTrailController as vm";
-                    } else if ($stateParams.treeItemId == 'port' && $stateParams.fullNeId && $stateParams.portId && $stateParams.portName) {
+                    } else if ($stateParams.treeItemId == 'port' && $stateParams.portId && $stateParams.portName) {
                         return "SinglePortController as vm";
                     }
 
@@ -173,7 +173,7 @@
                             if ($stateParams.tabId != 'ctps') {
                                 return;
                             } else {
-                                return dataService.retrievedCTPs($stateParams.portId);
+                                return dataService.retrieveCTPs($stateParams.portId);
                             }
                         }]
                 },
@@ -181,7 +181,7 @@
                     if ($stateParams.tabId == 'loadingFailed') {
                         return "./app/loading-failed/loadingfailed.html?dummy";
                     } else if ($stateParams.tabId == 'ctps') {
-                        return "./app/main-area/single/port-ctps/port-ctps.html?dummy";
+                        return "./app/main-area/single/port-ctp/port-ctp.html?dummy";
                     }
                 },
                 controllerProvider: function($stateParams) {
