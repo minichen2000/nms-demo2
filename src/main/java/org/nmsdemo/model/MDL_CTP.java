@@ -1,5 +1,7 @@
 package org.nmsdemo.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.nmsdemo.utils.Utils;
 
 import javax.persistence.*;
@@ -18,17 +20,21 @@ public class MDL_CTP
 
     @ManyToOne(cascade= CascadeType.ALL,optional = true)
     @JoinColumn(name="sncAEndWith_id")
+    @JsonSerialize(using = MDLUtil.MDL_GEN_SNCJsonSerializer.class)
+    @JsonDeserialize(using=MDLUtil.MDL_GEN_SNCJsonDeserializer.class)
     private MDL_GEN_SNC sncAEndWith;
 
     @ManyToOne(cascade= CascadeType.ALL,optional = true)
     @JoinColumn(name="sncZEndWith_id")
+    @JsonSerialize(using = MDLUtil.MDL_GEN_SNCJsonSerializer.class)
+    @JsonDeserialize(using=MDLUtil.MDL_GEN_SNCJsonDeserializer.class)
     private MDL_GEN_SNC sncZEndWith;
     public MDL_CTP()
     {
     }
 
     public MDL_CTP(Long id, String name, Long neId, String neName, Long parentTPId, String rate, boolean connected, MDL_GEN_SNC sncAEndWith, MDL_GEN_SNC sncZEndWith) {
-        id= id<0 ? Utils.genNewId(2) : id;
+        id= id<0 ? Utils.genNewId(2)+1 : id;
         this.id = id;
         this.name = name;
         this.neId = neId;

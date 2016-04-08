@@ -50,7 +50,7 @@ public class MDL_CTPServlet extends HttpServlet
 			MDL_CTPDao dao= JPAUtils.getJPAXMLCtx().getBean(MDL_CTPDao.class);
 
 	        String msg = MDLUtil.Object_WRAP(dao.findByParentTPId(portId));
-	        // System.out.println(msg);
+	        System.out.println(msg);
 	        out.println(msg);
 		}
 		

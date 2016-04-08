@@ -1,12 +1,10 @@
 package org.nmsdemo.model;
 
 import org.nmsdemo.dao.MDL_NEDao;
-import org.nmsdemo.dao.MDL_NEGroupDao;
 import org.nmsdemo.utils.JPAUtils;
 import org.nmsdemo.utils.Utils;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Random;
 
@@ -26,12 +24,12 @@ public class MDL_NEGroup {
 		int LL = 1;
 		Random random = new Random();
 		for (int i = 0; i < LL; i++) {
-			long neId= Utils.genNewNeId(neGroupId);
+			long neId= Utils.genNewNeId(neGroupId)+1;
 			long fullNeId=Utils.genNEFullId(neGroupId, neId);
 			String neName="node-"+neGroupId+"-"+neId;
 			dao.save(new MDL_NE(fullNeId, neGroupId,
 					neGroupType,
-					neId, neName, "ChengDu" + i,
+					neId, neName, "ChengDu" + neId,
 					MDL_NE.genNEType(random),
 					random.nextInt(9) > 5 ? "sm" : "mc",
 					random.nextInt(9) > 5 ? "4.0" : "4.1",

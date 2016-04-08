@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface MDL_CTPDao extends CrudRepository<MDL_CTP, Long> {
     public List<MDL_CTP> findByParentTPId(Long parentTPId);
+    public MDL_CTP findByNeNameAndName(String neName, String name);
 }

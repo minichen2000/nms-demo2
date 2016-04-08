@@ -35,12 +35,12 @@ public class MDL_NE {
     public void createPorts(){
         MDL_PortDao dao = JPAUtils.getJPAXMLCtx().getBean(MDL_PortDao.class);
 
-        int LL = 1;
+        int LL = 4;
         Random random = new Random();
         for (int i = 0; i < LL; i++) {
             String neName=name;
             long fullNeId=id;
-            String tpName="Port"+i;
+            String tpName="port"+(i+1);
             boolean connected=random.nextInt(9) > 5;
             dao.save(new MDL_Port(-1L, tpName, neName, fullNeId,
                     random.nextInt(9) > 5 ? "STM1" : "STM4",

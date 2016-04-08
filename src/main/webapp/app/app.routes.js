@@ -164,6 +164,33 @@
                         return "NEBoardController as vm";
                     }
                 }
+            })
+            .state('main.treeitem_secondlevel.port_tabs', {
+                url: "main/treeitem_secondlevel/port_tabs/:tabId/:portId",
+                resolve: {
+                    retrievedCTPs: ['dataService', '$stateParams', 'logger',
+                        function(dataService, $stateParams, logger) {
+                            if ($stateParams.tabId != 'ctps') {
+                                return;
+                            } else {
+                                return dataService.retrievedCTPs($stateParams.portId);
+                            }
+                        }]
+                },
+                templateUrl: function($stateParams) {
+                    if ($stateParams.tabId == 'loadingFailed') {
+                        return "./app/loading-failed/loadingfailed.html?dummy";
+                    } else if ($stateParams.tabId == 'ctps') {
+                        return "./app/main-area/single/port-ctps/port-ctps.html?dummy";
+                    }
+                },
+                controllerProvider: function($stateParams) {
+                    if ($stateParams.tabId == 'loadingFailed') {
+                        return "LoadingFailedController as vm";
+                    } else if ($stateParams.tabId == 'ctps') {
+                        return "PortCTPController as vm";
+                    }
+                }
             });
     }
 })();

@@ -55,10 +55,14 @@ public class DBUtils
                 ne.createPorts();
             }
 
+            MDL_EMS.createSNCs();
+
             MDL_PortDao portDao=JPAUtils.getJPAXMLCtx().getBean(MDL_PortDao.class);
             for(MDL_Port port :portDao.findAll()){
                 port.createCTPs();
             }
+
+            MDL_EMS.updateCTPs();
             dbInitialized=true;
         }
     }

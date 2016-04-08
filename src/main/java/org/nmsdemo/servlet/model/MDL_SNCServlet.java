@@ -11,9 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.nmsdemo.dao.MDL_GEN_SNCDao;
 import org.nmsdemo.model.MDLUtil;
 import org.nmsdemo.model.MDL_CTP;
 import org.nmsdemo.model.MDL_GEN_SNC;
+import org.nmsdemo.utils.DBUtils;
+import org.nmsdemo.utils.JPAUtils;
 import org.nmsdemo.utils.Utils;
 
 public class MDL_SNCServlet extends HttpServlet {
@@ -24,30 +27,21 @@ public class MDL_SNCServlet extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		// req.setCharacterEncoding("utf-8");
 
+		DBUtils.initDB();
+		MDL_GEN_SNCDao dao= JPAUtils.getJPAXMLCtx().getBean(MDL_GEN_SNCDao.class);
 		List<MDL_GEN_SNC> sncs = new ArrayList<MDL_GEN_SNC>();
-		int LL = 30000;
-		Random random = new Random();
 
-		for (int i = 0; i < LL; i++) {
-			List<MDL_CTP> aEnds=new ArrayList<MDL_CTP>();
-			long fullNeId=Utils.genNEFullId(100, Utils.genNewNeId(100));
-			long portId=Utils.genNewId(1);
-			aEnds.add(new MDL_CTP(-1L, "trail"+i+"_aEndTP", fullNeId, "node"+fullNeId, portId, "", true, null, null));
-			
-			List<MDL_CTP> zEnds=new ArrayList<MDL_CTP>();
-			fullNeId=Utils.genNEFullId(100, Utils.genNewNeId(100));
-			portId=Utils.genNewId(1);
-			zEnds.add(new MDL_CTP(-1L, "trail"+i+"_zEndTP", fullNeId, "node"+fullNeId, portId, "", true, null, null));
-			
-		    sncs.add(new MDL_GEN_SNC(-1L,
-			"trail" + i, 
-			genSNCRate(random),
-			genSNCState(random),
-			random.nextInt(9) > 5 ? "protected" : "unprotected",
-			aEnds,
-			zEnds));
+
+		try {
+			for(MDL_GEN_SNC snc : dao.findAll()){
+                sncs.add(snc);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("e:\n"+e);
+			return;
 		}
-		
+
 
 		PrintWriter out = resp.getWriter();
 
@@ -62,35 +56,6 @@ public class MDL_SNCServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(req, resp);
 	}
-	private String genSNCState(Random r){
-		switch(r.nextInt(2)){
-			case 0:
-				return "defined";
-			case 1:
-				return "allocated";
-			case 2:
-				return "implemented";
-			default:
-				return "1660sm";
-		}
-	}
-	private String genSNCRate(Random r){
-        switch(r.nextInt(6)){
-            case 0:
-                return "VC4";
-            case 1:
-                return "VC3";
-            case 2:
-                return "VC12";
-			case 3:
-                return "VC4C";
-            case 4:
-                return "VC3C";
-            case 5:
-                return "VC12C";
-            default:
-                return "VC4";
-        }
-    }
+
 
 }

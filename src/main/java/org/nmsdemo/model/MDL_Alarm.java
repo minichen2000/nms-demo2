@@ -31,7 +31,7 @@ public class MDL_Alarm {
 	}
 
 	public MDL_Alarm(Long id, String objectName, Long objectId, String objectType, String probableCause, String probableCauseId, String alarmType, String perceivedSeverity, String neTime, String emsTime, boolean cleared, String clearingTime, boolean ack, String ackTime, String ackUser, String serviceAffecting, String additionalText) {
-		id= id<0 ? Utils.genNewId(11) : id;
+		id= id<0 ? Utils.genNewId(11)+1 : id;
 		this.id = id;
 		this.objectName = objectName;
 		this.objectId = objectId;
