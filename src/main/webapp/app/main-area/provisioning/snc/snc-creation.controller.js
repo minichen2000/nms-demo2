@@ -5,8 +5,8 @@
         .module('nmsdemoApp')
         .controller('SNCCreationController', SNCCreationController);
 
-    SNCCreationController.$inject = ['$state', '$timeout', '$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter'];
-    function SNCCreationController($state, $timeout, $http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter) {
+    SNCCreationController.$inject = ['$state', '$timeout', '$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter', '$base64'];
+    function SNCCreationController($state, $timeout, $http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter, $base64) {
         var vm = this;
         vm.getH = commonUtil.getH;
         
@@ -44,22 +44,23 @@
             }
         };
 
-
-
-
         vm.getBaiduToken=function(){
 
             return $http({
                 method:'post',
-                url:'https://openapi.baidu.com/oauth/2.0/token',
-                headers:{'Content-Type': 'application/json, text/plain, */*', 'Access-Control-Allow-Origin':'*'},
-                params: {grant_type:'client_credentials', client_id:'9RSvbfgClfh6gU2Cg5F4n2wM', client_secret:'fd6497cdd954d4a6aba07cc27b5e6fe9'}
+                url:'./rest-tester-param-post',
+                //url:'http://www.mobisoftwarestudio.com',
+                //url:'https://api.shanbay.com/bdc/search/',
+                //url:'http://127.0.0.1:8080/',
+                //headers:{'Content-Type': 'application/json, text/plain, */*', 'Access-Control-Allow-Origin':'*'},
+                params: {url:'https://openapi.baidu.com/oauth/2.0/token', grant_type:'client_credentials', client_id:'9RSvbfgClfh6gU2Cg5F4n2wM', client_secret:'fd6497cdd954d4a6aba07cc27b5e6fe9'}
             })
                 .then(OK)
                 .catch(KO);
             function OK(rsp) {
                 logger.log("getBaiduToken returned.");
                 logger.log("rlt:\n"+JSON.stringify(rsp.data));
+                vm.access_token=rsp.data.access_token;
                 return rsp.data;
 
             }
@@ -69,6 +70,73 @@
                 return $q.reject(rsp);
             }
         }
+
+        vm.getBaiduRecog=function(){
+
+            logger.log("vm.access_token=\n"+vm.access_token);
+            var originalSpeech="12341rkdef;ad;vnqeo 'wknv'kwe4ifn;kdnsdkf;KSDFA;DFJ [WEOF'SDF;ODFDFJKVADDEPRIUGNEVPIEHRFGPIEFGAIOFA[OIDFHQAERIFQAHIFPAIHFPIFHVAPIHFVPWEHIFV[diva;sv pzxihaspidfhqpweuha;sdfprh[aidvhnadpigaergaeiorhw295ihwpqghqw49p5gj[orgn[qw9ghq[4r0gq[";
+            return $http({
+                method:'post',
+                url:'./rest-tester-json-post',
+                params: {url:'http://vop.baidu.com/server_api', param: {
+                    format: 'pcm',
+                    rate: 8000,
+                    channel: 1,
+                    cuid: 'jJtWf8J010294JJASDDRFS',
+                    token: vm.access_token,
+                    lan: 'en',
+                    speech: $base64.encode(originalSpeech),
+                    len: originalSpeech.length
+                }}
+            })
+                .then(OK)
+                .catch(KO);
+            function OK(rsp) {
+                logger.log("getBaiduRecog returned.");
+                logger.log("rlt:\n"+JSON.stringify(rsp.data));
+                vm.access_token=rsp.data.access_token;
+                return rsp.data;
+
+            }
+            function KO(rsp) {
+                var errorMsg = JSON.stringify(rsp);
+                logger.error("getBaiduRecog:" + errorMsg);
+                return $q.reject(rsp);
+            }
+        }
+
+        vm.getBaiduRecogFile=function(){
+
+            logger.log("vm.access_token=\n"+vm.access_token);
+            return $http({
+                method:'post',
+                url:'./rest-tester-file-post',
+                params: {url:'http://vop.baidu.com/server_api', 
+                    cuid: 'jJtWf8J010294JJASDDRFS',
+                    token: vm.access_token,
+                    lan: 'zh',
+                    contentType: 'audio/pcm; rate=8000',
+                    filePath: 'C:/gitrepo/github/nms-demo2/test.pcm'
+                }
+            })
+                .then(OK)
+                .catch(KO);
+            function OK(rsp) {
+                logger.log("getBaiduRecogFile returned.");
+                logger.log("rlt:\n"+JSON.stringify(rsp.data));
+                vm.access_token=rsp.data.access_token;
+                return rsp.data;
+
+            }
+            function KO(rsp) {
+                var errorMsg = JSON.stringify(rsp);
+                logger.error("getBaiduRecogFile:" + errorMsg);
+                return $q.reject(rsp);
+            }
+        }
+
+
+        
         ///////////////////////////
         vm.checkBoxClass=function(fun){
             logger.log("checkBoxClass");

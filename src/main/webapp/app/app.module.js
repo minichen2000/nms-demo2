@@ -8,6 +8,7 @@
         'ui.router',
         'nvd3',
         'ui.bootstrap',
-        'agGrid'
+        'agGrid',
+        'base64'
     ]);
 })();

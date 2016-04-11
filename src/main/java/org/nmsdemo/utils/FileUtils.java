@@ -137,4 +137,26 @@ public class FileUtils {
 		return true;
 	}
 
+	public static byte[] loadFile2Bytes(File file) throws IOException {
+		InputStream is = new FileInputStream(file);
+
+		long length = file.length();
+		byte[] bytes = new byte[(int) length];
+
+		int offset = 0;
+		int numRead = 0;
+		while (offset < bytes.length
+				&& (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+			offset += numRead;
+		}
+
+		if (offset < bytes.length) {
+			is.close();
+			throw new IOException("Could not completely read file " + file.getName());
+		}
+
+		is.close();
+		return bytes;
+	}
+
 }

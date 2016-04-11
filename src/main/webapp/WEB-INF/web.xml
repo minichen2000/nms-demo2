@@ -31,6 +31,33 @@
       <param-value>false</param-value>
     </init-param>
   </servlet>
+
+  <servlet>
+    <servlet-name>rest-tester-param-post</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.operation.RestTesterParamPostServlet</servlet-class>
+    <init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>rest-tester-json-post</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.operation.RestTesterJsonPostServlet</servlet-class>
+    <init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>rest-tester-file-post</servlet-name>
+    <servlet-class>org.nmsdemo.servlet.operation.RestTesterFilePostServlet</servlet-class>
+    <init-param>
+      <param-name>useFileMappedBuffer</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
   
   <servlet>
     <servlet-name>notification</servlet-name>
@@ -120,6 +147,18 @@
   <servlet-mapping>
     <servlet-name>tester</servlet-name>
     <url-pattern>/tester/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>rest-tester-param-post</servlet-name>
+    <url-pattern>/rest-tester-param-post/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>rest-tester-json-post</servlet-name>
+    <url-pattern>/rest-tester-json-post/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>rest-tester-file-post</servlet-name>
+    <url-pattern>/rest-tester-file-post/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>notification</servlet-name>

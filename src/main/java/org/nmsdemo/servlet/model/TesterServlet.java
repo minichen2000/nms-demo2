@@ -96,7 +96,7 @@ public class TesterServlet extends HttpServlet
         
         System.out.println("\n\n\nne:\n"+msg);
 
-        JPAUtils.testNE();
+        //JPAUtils.testNE();
         
         try
         {
