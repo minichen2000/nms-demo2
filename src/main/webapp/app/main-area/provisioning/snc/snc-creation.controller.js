@@ -43,6 +43,32 @@
                 return $q.reject(rsp);
             }
         };
+
+
+
+
+        vm.getBaiduToken=function(){
+
+            return $http({
+                method:'post',
+                url:'https://openapi.baidu.com/oauth/2.0/token',
+                headers:{'Content-Type': 'application/json, text/plain, */*', 'Access-Control-Allow-Origin':'*'},
+                params: {grant_type:'client_credentials', client_id:'9RSvbfgClfh6gU2Cg5F4n2wM', client_secret:'fd6497cdd954d4a6aba07cc27b5e6fe9'}
+            })
+                .then(OK)
+                .catch(KO);
+            function OK(rsp) {
+                logger.log("getBaiduToken returned.");
+                logger.log("rlt:\n"+JSON.stringify(rsp.data));
+                return rsp.data;
+
+            }
+            function KO(rsp) {
+                var errorMsg = JSON.stringify(rsp);
+                logger.error("getBaiduToken:" + errorMsg);
+                return $q.reject(rsp);
+            }
+        }
         ///////////////////////////
         vm.checkBoxClass=function(fun){
             logger.log("checkBoxClass");
