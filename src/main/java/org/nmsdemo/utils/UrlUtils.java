@@ -18,7 +18,7 @@ public class UrlUtils {
 
     private static HttpURLConnection openConnection(String url){
         try {
-            return (HttpURLConnection) (new URL(url).openConnection(getProxy()));
+            return (HttpURLConnection) (new URL(url).openConnection(/*getProxy()*/));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -52,7 +52,7 @@ public class UrlUtils {
             if(!bin){
                 result = StreamTool.streamToString(inStream);
             }else{
-                result="./result.mp3";
+                result="./src/main/webapp/result.mp3";
                 StreamTool.streamSaveAsFile(inStream, new File(result));
             }
 

@@ -16,8 +16,7 @@
     "angular-bootstrap": "1.1.2",
     "angular-nvd3": "1.0.5",
     "ag-grid":"3.3.0",
-    "angular-base64":"",
-    "angular-audio":""
+    "angular-base64":""
   },
   "resolutions": {
     "font-awesome": "4.5.0",

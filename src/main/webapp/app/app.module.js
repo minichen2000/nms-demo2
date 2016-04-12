@@ -9,6 +9,7 @@
         'nvd3',
         'ui.bootstrap',
         'agGrid',
-        'base64'
+        'base64',
+        'ngAudio'
     ]);
 })();

@@ -5,8 +5,8 @@
         .module('nmsdemoApp')
         .controller('SNCCreationController', SNCCreationController);
 
-    SNCCreationController.$inject = ['$state', '$timeout', '$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter', '$base64'];
-    function SNCCreationController($state, $timeout, $http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter, $base64) {
+    SNCCreationController.$inject = ['ngAudio', '$state', '$timeout', '$http', '$q', '$stateParams', 'statasticService', 'commonUtil', 'logger', 'dataService', '$filter', '$base64'];
+    function SNCCreationController(ngAudio, $state, $timeout, $http, $q, $stateParams, statasticService, commonUtil, logger, dataService, $filter, $base64) {
         var vm = this;
         vm.getH = commonUtil.getH;
         
@@ -94,13 +94,13 @@
             function OK(rsp) {
                 logger.log("getBaiduRecog returned.");
                 logger.log("rlt:\n"+JSON.stringify(rsp.data));
-                return rsp.data;
+                //return rsp.data;
 
             }
             function KO(rsp) {
                 var errorMsg = JSON.stringify(rsp);
                 logger.error("getBaiduRecog:" + errorMsg);
-                return $q.reject(rsp);
+                //return $q.reject(rsp);
             }
         }
 
@@ -123,13 +123,28 @@
             function OK(rsp) {
                 logger.log("getBaiduRecogFile returned.");
                 logger.log("rlt:\n"+JSON.stringify(rsp.data));
-                return rsp.data;
+                //return rsp.data;
 
             }
             function KO(rsp) {
                 var errorMsg = JSON.stringify(rsp);
                 logger.error("getBaiduRecogFile:" + errorMsg);
-                return $q.reject(rsp);
+                //return $q.reject(rsp);
+            }
+        }
+
+        vm.readIt=function(txt){
+            if(vm.access_token){
+                vm.getBaiduText2Audio(txt);
+            }else{
+                vm.getBaiduToken()
+                    .then(function(rsp){
+                        vm.getBaiduText2Audio(txt);
+                    })
+                    .catch(function(rs){
+                        var errorMsg = JSON.stringify(rsp);
+                        logger.error("getBaiduRecogFile:" + errorMsg);
+                    });
             }
         }
 
@@ -156,13 +171,14 @@
             function OK(rsp) {
                 logger.log("getBaiduText2Audio returned.");
                 logger.log("rlt:\n"+JSON.stringify(rsp.data));
-                return rsp.data;
+                ngAudio.play('./result.mp3');
+                //return rsp.data;
 
             }
             function KO(rsp) {
                 var errorMsg = JSON.stringify(rsp);
                 logger.error("getBaiduText2Audio:" + errorMsg);
-                return $q.reject(rsp);
+                //return $q.reject(rsp);
             }
         }
 
