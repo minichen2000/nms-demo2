@@ -94,7 +94,6 @@
             function OK(rsp) {
                 logger.log("getBaiduRecog returned.");
                 logger.log("rlt:\n"+JSON.stringify(rsp.data));
-                vm.access_token=rsp.data.access_token;
                 return rsp.data;
 
             }
@@ -116,7 +115,7 @@
                     token: vm.access_token,
                     lan: 'zh',
                     contentType: 'audio/pcm; rate=8000',
-                    filePath: 'C:/gitrepo/github/nms-demo2/test.pcm'
+                    filePath: './test.pcm'
                 }
             })
                 .then(OK)
@@ -124,13 +123,45 @@
             function OK(rsp) {
                 logger.log("getBaiduRecogFile returned.");
                 logger.log("rlt:\n"+JSON.stringify(rsp.data));
-                vm.access_token=rsp.data.access_token;
                 return rsp.data;
 
             }
             function KO(rsp) {
                 var errorMsg = JSON.stringify(rsp);
                 logger.error("getBaiduRecogFile:" + errorMsg);
+                return $q.reject(rsp);
+            }
+        }
+
+        vm.getBaiduText2Audio=function(txt){
+
+            logger.log("vm.access_token=\n"+vm.access_token);
+            return $http({
+                method:'post',
+                url:'./rest-tester-param-post',
+                //url:'http://www.mobisoftwarestudio.com',
+                //url:'https://api.shanbay.com/bdc/search/',
+                //url:'http://127.0.0.1:8080/',
+                //headers:{'Content-Type': 'application/json, text/plain, */*', 'Access-Control-Allow-Origin':'*'},
+                params: {url:'http://tsn.baidu.com/text2audio',
+                    tex:txt,
+                    lan:'zh',
+                    tok:vm.access_token,
+                    ctp:1,
+                    cuid: 'jJtWf8J010294JJASDDRFS'
+                }
+            })
+                .then(OK)
+                .catch(KO);
+            function OK(rsp) {
+                logger.log("getBaiduText2Audio returned.");
+                logger.log("rlt:\n"+JSON.stringify(rsp.data));
+                return rsp.data;
+
+            }
+            function KO(rsp) {
+                var errorMsg = JSON.stringify(rsp);
+                logger.error("getBaiduText2Audio:" + errorMsg);
                 return $q.reject(rsp);
             }
         }

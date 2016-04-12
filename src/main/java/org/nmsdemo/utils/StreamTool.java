@@ -19,7 +19,7 @@ public class StreamTool {
      * @param is
      * @param outfile
      */
-    public void streamSaveAsFile(InputStream is, File outfile) {
+    static public void streamSaveAsFile(InputStream is, File outfile) {
         FileOutputStream fos = null;
         try {
             File file = outfile;
