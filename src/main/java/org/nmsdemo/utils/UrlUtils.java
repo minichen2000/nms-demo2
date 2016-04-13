@@ -18,7 +18,7 @@ public class UrlUtils {
 
     private static HttpURLConnection openConnection(String url){
         try {
-            return (HttpURLConnection) (new URL(url).openConnection(/*getProxy()*/));
+            return (HttpURLConnection) (new URL(url).openConnection(getProxy()));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

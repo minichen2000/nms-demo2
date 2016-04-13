@@ -38,11 +38,21 @@
             watchDelayReload: watchDelayReload,
             WatchTrigger: WatchTrigger,
             genDelayScopeApplyEventListener: genDelayScopeApplyEventListener,
-            breadcrumb: breadcrumb
+            breadcrumb: breadcrumb,
+            aliYunReqUrl: aliYunReqUrl
         };
         return service;
 
         ////////////
+
+        function aliYunReqUrl(verb, hostname, bucketName, objectName, expireSecs, AKI, AKS){
+            var _aks= AKS ? AKS : "OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV";
+            var _aki= AKI ? AKI : "";
+            var expires=Math.round((new Date()).getTime()/1000)+expireSecs;
+            var hmacSHA1=CryptoJS.HmacSHA1(verb+"\n\n\n"+expires+"\n/"+bucketName+"/"+objectName, _aks);
+            var sig=CryptoJS.enc.Base64.stringify(hmacSHA1);
+            return "http://"+hostname+"/"+objectName+"?OSSAccessKeyId="+_aki+"&Expires="+expires+"&Signature="+encodeURIComponent(sig);
+        };
 
         function treeNavWithLoadingPage($state, $timeout, state, nav_params, isInherit) {
             genericNavWithLoadingPage($state, 'main.treeitem', 'treeItemId', $timeout, state, nav_params, isInherit);

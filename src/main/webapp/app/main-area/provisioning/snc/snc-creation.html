@@ -24,15 +24,24 @@
             <div class="panel-body">
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">速率</span>
-                    <input type="text" placeholder="速率" ng-model="vm.SNCRateSelected" uib-typeahead="sncRate as sncRate.name for sncRate in vm.SNCRateWithFlags | filter:{name:$viewValue}"
-                           class="form-control" style="{{vm.isSNCRateSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" typeahead-template-url="sncRateSelectCustomTemplate.html" >
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}" ></i></span>
+                    <input type="text" placeholder="速率" ng-model="vm.SNCRateSelected"
+                           uib-typeahead="sncRate as sncRate.name for sncRate in vm.SNCRateWithFlags | filter:{name:$viewValue}"
+                           class="form-control"
+                           style="{{vm.isSNCRateSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}"
+                           typeahead-show-hint="true" typeahead-min-length="0"
+                           typeahead-template-url="sncRateSelectCustomTemplate.html">
+                    <span class="input-group-addon checkbox-wrap"><i
+                            class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCRateSelected)}}"></i></span>
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">名称</span>
-                    <input type="text" placeholder="子网连接名称" ng-model="vm.SNCUserlabelSelected" uib-typeahead="sncItem as sncItem.name for sncItem in vm.getSNCUserlabelList()"
-                           class="form-control" style="{{vm.isSNCUserlabelSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" >
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCUserlabelSelected)}}" ></i></span>
+                    <input type="text" placeholder="子网连接名称" ng-model="vm.SNCUserlabelSelected"
+                           uib-typeahead="sncItem as sncItem.name for sncItem in vm.getSNCUserlabelList()"
+                           class="form-control"
+                           style="{{vm.isSNCUserlabelSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}"
+                           typeahead-show-hint="true" typeahead-min-length="0">
+                    <span class="input-group-addon checkbox-wrap"><i
+                            class="fa fa-fw {{vm.checkBoxClass(vm.validateSNCUserlabelSelected)}}"></i></span>
                 </div>
             </div>
         </div>
@@ -46,25 +55,36 @@
             <div class="panel-body">
                 <div class="input-group  form-inputgroup">
                     <span class="input-group-addon">网元</span>
-                    <input type="text" placeholder="网元名称" ng-model="vm.AEndNESelected" uib-typeahead="aEndNE as aEndNE.name for aEndNE in vm.neList | filter:{name:$viewValue}"
-                           class="form-control" style="{{vm.isAEndNESelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isSNCRateSelected" >
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}" ></i></span>
+                    <input type="text" placeholder="网元名称" ng-model="vm.AEndNESelected"
+                           uib-typeahead="aEndNE as aEndNE.name for aEndNE in vm.neList | filter:{name:$viewValue}"
+                           class="form-control"
+                           style="{{vm.isAEndNESelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}"
+                           typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isSNCRateSelected">
+                    <span class="input-group-addon checkbox-wrap"><i
+                            class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndNESelected)}}"></i></span>
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">端口</span>
-                    <input type="text" placeholder="端口名称" ng-model="vm.AEndPortSelected" uib-typeahead="aEndPort as aEndPort.name for aEndPort in vm.getAEndPortNameList($viewValue)"
-                           class="form-control" style="{{vm.isAEndPortSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndNESelected" >
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndPortSelected)}}" ></i></span>
+                    <input type="text" placeholder="端口名称" ng-model="vm.AEndPortSelected"
+                           uib-typeahead="aEndPort as aEndPort.name for aEndPort in vm.getAEndPortNameList($viewValue)"
+                           class="form-control"
+                           style="{{vm.isAEndPortSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}"
+                           typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndNESelected">
+                    <span class="input-group-addon checkbox-wrap"><i
+                            class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndPortSelected)}}"></i></span>
                 </div>
                 <div class="input-group form-inputgroup">
                     <span class="input-group-addon">时隙</span>
-                    <input type="text" placeholder="时隙" ng-model="vm.AEndCTPSelected" uib-typeahead="aEndCTP as aEndCTP.name for aEndCTP in vm.getAEndCTPNameList($viewValue)"
-                           class="form-control" style="{{vm.isAEndCTPSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}" typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndPortSelected" >
-                    <span class="input-group-addon checkbox-wrap"><i class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndCTPSelected)}}" ></i></span>
+                    <input type="text" placeholder="时隙" ng-model="vm.AEndCTPSelected"
+                           uib-typeahead="aEndCTP as aEndCTP.name for aEndCTP in vm.getAEndCTPNameList($viewValue)"
+                           class="form-control"
+                           style="{{vm.isAEndCTPSelected ? 'color: mediumseagreen; font-weight:bold' : 'color: darkgray; font-weight:normal'}}"
+                           typeahead-show-hint="true" typeahead-min-length="0" ng-disabled="!vm.isAEndPortSelected">
+                    <span class="input-group-addon checkbox-wrap"><i
+                            class="fa fa-fw {{vm.checkBoxClass(vm.validateAEndCTPSelected)}}"></i></span>
                 </div>
             </div>
         </div>
-
 
 
         <button class="btn btn-primary pull-right" ng-click="vm.submitSomething()">提交</button>
@@ -73,14 +93,59 @@
         <button class="btn btn-primary pull-right" ng-click="vm.getBaiduToken()">提交1</button>
 
         <br><br>
-        <div class="input-group  form-inputgroup">
-            <input type="text" placeholder="输入要朗读的文本" ng-model="vm.text" class="form-control" >
-        <span class="input-group-btn">
-                  <button class="btn btn-primary" type="button" ng-click="vm.readIt(vm.text)" ng-disabled="!vm.text || vm.text.length<=0">
-                     朗读！
+        <form role="form">
+            <div class="form-group">
+                <textarea type="text" placeholder="输入" ng-model="vm.text" rows="8" class="form-control"></textarea>
+
+                <label class="select-inline">
+                    per
+                    <select class="form-control" ng-model="vm.per", ng-options="per.id as per.label for per in vm.perRange">
+                    </select>
+                </label>
+                <label class="select-inline">
+                    spd
+                    <select class="form-control" ng-model="vm.spd", ng-options="spd for spd in vm.readValueRange">
+                    </select>
+                </label>
+                <label class="select-inline">
+                    pit
+                    <select class="form-control" ng-model="vm.pit", ng-options="pit for pit in vm.readValueRange">
+                    </select>
+                </label>
+                <label class="select-inline">
+                    vol
+                    <select class="form-control" ng-model="vm.vol", ng-options="vol for vol in vm.readValueRange">
+                    </select>
+                </label>
+                <br>
+                <button class="btn btn-info" type="button" ng-click="vm.readIt(vm.text)"
+                        ng-disabled="!vm.text || vm.text.length<=0">
+                    readIt！
                   </button>
-               </span>
-        </div>
+                <br>
+                <div class="input-group">
+                    <input type="text" placeholder="bucketName" class="form-control inline" ng-model="vm.aliBucketName">
+                    <input type="text" placeholder="objectName" class="form-control inline" ng-model="vm.aliObjectName">
+                   <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="vm.showObject()" ng-disabled="!vm.aliObjectName || vm.aliObjectName.length<=0">
+                         img!
+                      </button>
+                   </span>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="vm.getAliYunObject()" ng-disabled="!vm.aliObjectName || vm.aliObjectName.length<=0">
+                         txt!
+                      </button>
+                   </span>
+                </div>
+                <div class="input-group">
+                    <textarea type="text" placeholder="imgSrc" class="form-control" rows="8" ng-model="vm.imgSrc"></textarea>
+                </div>
+                <br>
+                <a target="_blank" ng-href="{{vm.imgSrc}}"><img ng-src="{{vm.imgSrc}}" ng-show="vm.canShow"></a>
+            </div>
+        </form>
+        <br><br>
+
     </div>
 
 
