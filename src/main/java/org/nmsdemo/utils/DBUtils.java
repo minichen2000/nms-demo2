@@ -50,7 +50,7 @@ public class DBUtils
                 neG.createNes();
             }
 
-            /*MDL_NEDao neDao=JPAUtils.getJPAXMLCtx().getBean(MDL_NEDao.class);
+            MDL_NEDao neDao=JPAUtils.getJPAXMLCtx().getBean(MDL_NEDao.class);
             for(MDL_NE ne :neDao.findAll()){
                 ne.createPorts();
             }
@@ -62,7 +62,7 @@ public class DBUtils
                 port.createCTPs();
             }
 
-            MDL_EMS.updateCTPs();*/
+            MDL_EMS.updateCTPs();
             dbInitialized=true;
         }
     }

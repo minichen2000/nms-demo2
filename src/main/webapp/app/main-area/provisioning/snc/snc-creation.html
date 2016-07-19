@@ -86,66 +86,6 @@
             </div>
         </div>
 
-
-        <button class="btn btn-primary pull-right" ng-click="vm.submitSomething()">提交</button>
-        <button class="btn btn-primary pull-right" ng-click="vm.getBaiduText2Audio('请重试')">提交3</button>
-        <button class="btn btn-primary pull-right" ng-click="vm.getBaiduRecogFile()">提交2</button>
-        <button class="btn btn-primary pull-right" ng-click="vm.getBaiduToken()">提交1</button>
-
-        <br><br>
-        <form role="form">
-            <div class="form-group">
-                <textarea type="text" placeholder="输入" ng-model="vm.text" rows="8" class="form-control"></textarea>
-
-                <label class="select-inline">
-                    per
-                    <select class="form-control" ng-model="vm.per", ng-options="per.id as per.label for per in vm.perRange">
-                    </select>
-                </label>
-                <label class="select-inline">
-                    spd
-                    <select class="form-control" ng-model="vm.spd", ng-options="spd for spd in vm.readValueRange">
-                    </select>
-                </label>
-                <label class="select-inline">
-                    pit
-                    <select class="form-control" ng-model="vm.pit", ng-options="pit for pit in vm.readValueRange">
-                    </select>
-                </label>
-                <label class="select-inline">
-                    vol
-                    <select class="form-control" ng-model="vm.vol", ng-options="vol for vol in vm.readValueRange">
-                    </select>
-                </label>
-                <br>
-                <button class="btn btn-info" type="button" ng-click="vm.readIt(vm.text)"
-                        ng-disabled="!vm.text || vm.text.length<=0">
-                    readIt！
-                  </button>
-                <br>
-                <div class="input-group">
-                    <input type="text" placeholder="bucketName" class="form-control inline" ng-model="vm.aliBucketName">
-                    <input type="text" placeholder="objectName" class="form-control inline" ng-model="vm.aliObjectName">
-                   <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" ng-click="vm.showObject()" ng-disabled="!vm.aliObjectName || vm.aliObjectName.length<=0">
-                         img!
-                      </button>
-                   </span>
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" ng-click="vm.getAliYunObject()" ng-disabled="!vm.aliObjectName || vm.aliObjectName.length<=0">
-                         txt!
-                      </button>
-                   </span>
-                </div>
-                <div class="input-group">
-                    <textarea type="text" placeholder="imgSrc" class="form-control" rows="8" ng-model="vm.imgSrc"></textarea>
-                </div>
-                <br>
-                <a target="_blank" ng-href="{{vm.imgSrc}}"><img ng-src="{{vm.imgSrc}}" ng-show="vm.canShow"></a>
-            </div>
-        </form>
-        <br><br>
-
     </div>
 
 
